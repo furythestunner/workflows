@@ -13,7 +13,7 @@ is the master: change a hook here first, then copy it to each repo.
 
 | File | When | What |
 |---|---|---|
-| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff. Claude's first reply opens with the brief. |
+| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff. Claude's first reply opens with the brief. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed, asks Claude to record the decision. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (branches against GitHub, uncommitted work, open PRs and CI). |

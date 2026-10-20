@@ -28,7 +28,27 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then
     git pull -q --ff-only origin "$WORK_BRANCH" 2>/dev/null || echo "WARNING: $WORK_BRANCH could not fast-forward to origin; check before working."
   fi
 else
-  git fetch -q origin 2>/dev/null || echo "WARNING: git fetch failed; branch state may be old."
+  # PC: fetch (one retry: it can fail once on a cold start), then fast-forward the checked-out branch only when that
+  # is safe: nothing uncommitted and no commits that exist only here. Otherwise leave it alone and say why.
+  if git fetch -q origin 2>/dev/null || { sleep 3; git fetch -q origin 2>/dev/null; }; then
+    current=$(git branch --show-current)
+    if [ -n "$current" ] && git rev-parse -q --verify '@{u}' >/dev/null 2>&1; then
+      behind=$(git rev-list --count 'HEAD..@{u}') ahead=$(git rev-list --count '@{u}..HEAD')
+      if [ "$behind" -gt 0 ]; then
+        if ! git diff --quiet || ! git diff --cached --quiet; then
+          echo "WARNING: '$current' is $behind commit(s) behind origin but has uncommitted changes; NOT updated. Brief may be old."
+        elif [ "$ahead" -gt 0 ]; then
+          echo "WARNING: '$current' is $behind behind and $ahead ahead of origin; NOT updated. Sort this out first."
+        elif git merge -q --ff-only '@{u}' 2>/dev/null; then
+          echo "Updated '$current' from origin: $behind commit(s) pulled (nothing local was waiting)."
+        else
+          echo "WARNING: '$current' could not fast-forward to origin (a loose file in the way?); NOT updated."
+        fi
+      fi
+    fi
+  else
+    echo "WARNING: git fetch failed twice; branch state may be old and the copy was NOT updated."
+  fi
 fi
 
 echo "Branch: $(git branch --show-current)"
