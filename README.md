@@ -18,6 +18,13 @@ is the master: change a hook here first, then copy it to each repo.
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed, asks Claude to record the decision. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (branches against GitHub, uncommitted work, open PRs and CI). |
 | `.claude/skills/handoff/` | `/handoff` | The full tidy-up at the end of a session. |
+| `.claude/skills/grill-me/` | `/grill-me`, or before a big change | Interview in rounds, no cap on questions, each with a recommended answer ("yes" accepts it). |
+| `.claude/skills/questionnaire/` | `/questionnaire` | Turns open questions (e.g. `questions.md` §1) into a document for one person to fill in; answers go back to the trackers. |
+| `.claude/skills/wait-what/` | `/wait-what`, "I don't understand" | Re-explains the last message in plain words, with the missing context. |
+| `.claude/skills/pr-body/` | writing a pull request | What changes, evidence, merge danger (one-way or two-way door, blast radius), how to test. |
+| `.claude/skills/diagnosing-bugs/` | a bug or wrong number | Builds a check that fails on the bug first, then hypotheses, fix, proof, cleanup. |
+
+The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skills/THIRD-PARTY.md`).
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
