@@ -13,9 +13,10 @@ is the master: change a hook here first, then copy it to each repo.
 
 | File | When | What |
 |---|---|---|
-| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff. Claude's first reply opens with the brief. |
+| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed, asks Claude to record the decision. |
+| `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it and the brief ends with a short "Your skills" list, so they do not get forgotten. Update it with any skill change. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (branches against GitHub, uncommitted work, open PRs and CI). |
 | `.claude/skills/handoff/` | `/handoff` | The full tidy-up at the end of a session. |
 | `.claude/skills/grill-me/` | `/grill-me`, or before a big change | Interview in rounds, no cap on questions, each with a recommended answer ("yes" accepts it). |
@@ -58,6 +59,8 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
   `BACKLOG.md`, a rule for Claude to this file, a lesson to `notes/lessons.md`; never only into the chat.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   `<work branch>` without asking.
+- **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
+  not call, say so in one line ("Tip: `/grill-me` fits this") and carry on with the request.
 - The setup comes from github.com/furythestunner/workflows (`.claude/workflow-version` names the commit). Project
   values go only in `.claude/ground-truth.conf`, never in the scripts.
 ```
