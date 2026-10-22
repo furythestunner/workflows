@@ -42,7 +42,7 @@ open that already shipped, "done" items whose code changed since).
    - **STALE FACTS** → say each one first in the brief, and re-check it before anything relies on it. A fact the user
      confirmed (`verified by <name>, <date>`) wins over one Claude worked out; a re-checked fact gets a new date.
    - **NEEDS A LABEL** → name the issue in the brief. A missing type, or a missing status on an issue nobody has
-     approved, Claude may fix (`status::backlog`); anything else waits for the user.
+     approved, Claude may fix (`Status: Backlog`); anything else waits for the user.
    - **Open pull requests or issues when the script says UNKNOWN for them:** list them with the GitHub tools
      instead (the repos in `.claude/ground-truth.conf`). The script reads GitHub through `gh api` (REST); on a PC
      it needs the GitHub CLI (`winget install --id GitHub.cli`, then `gh auth login`).
@@ -56,13 +56,14 @@ open that already shipped, "done" items whose code changed since).
    - **Since last session:** what finished or changed (jobs, CI, merged PRs), contradictions first.
    - **Today:** at most 3 items, time-sensitive first. Each with its repo or area, its verified current state, one
      line on why now, and what "done" looks like. Default order when the user has no preference: work in flight,
-     bugs users hit, decided-but-not-done (🟢), then deferred work. Only `status::ready` issues (the user approved
-     them) or `status::in-progress` ones are started; a `status::backlog` issue is proposed for the user to approve.
+     bugs users hit, decided-but-not-done (🟢), then deferred work. Only `Status: Ready` issues (the user approved
+     them), `Status: In progress` ones, or a Backlog issue the user hands out in the chat are started; any other
+     `Status: Backlog` issue is proposed for the user to approve.
      Items in different repos or areas can run side by side (one session or worktree each). An item
      marked ⚠ cross-repo runs alone, in its order (producer first, then each consumer).
    - **Waiting for you:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
      what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
-     `status::review` issues to test and merge, and the `status::blocked` ones, each with the link to its question.
+     `Status: Review` issues to test and merge, and the `Status: Blocked` ones, each with the link to its question.
    - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
      command and when to use it, a few words each. In the 3-line brief before a specific task, one line naming them.
    - End by recommending one task and asking which to start.

@@ -16,7 +16,7 @@ session can find out what happened and why.
 |---|---|---|
 | Next tasks (task of the day), what waits for the user, what runs in the background, the last session | `notes/handoff.md` (live) | Rewritten at each handoff, after the old one is distilled and archived |
 | Earlier handoffs | `notes/handoff-archive.md` | Newest first, word for word. Never read at session start; searched when needed |
-| Open work | GitHub issues of each repo | One issue per item, one `type::` and one `status::` label. New work opens in `status::backlog`. A landed item closes when its pull request ("Closes #n") merges; Claude never closes one. Cross-repo items marked ⚠. `BACKLOG.md` only links there |
+| Open work | GitHub issues of each repo | One issue per item, one `Type:` and one `Status:` label. New work opens in `Status: Backlog`. A landed item closes when its pull request ("Closes #n") merges; Claude never closes one. Cross-repo items marked ⚠. `BACKLOG.md` only links there |
 | Questions for the user, rulings, deliberate non-fixes | `questions.md` | §1 💬 open; when the user rules, it moves to §2 as 🟢 with their words and the date |
 | Long-term state, rules, how-tos | `CLAUDE.md` | State, not history: no PR lists, no commit hashes, no to-dos |
 | Details of a topic (plans, measurements, incident notes, how-tos) | `notes/*.md`, component READMEs | Linked from where they are needed |
@@ -44,11 +44,11 @@ session can find out what happened and why.
      header), word for word.
    - **Write the new file** with the template below. Absolute dates, times with their zone. Name exact paths,
      branches, units and commands, so the next session can act without searching.
-3. **Update the trackers.** Issues: an item in an open pull request is `status::review` (the pull request says
-   "Closes #n"); a question that stops an item is posted on the issue, and the issue set to `status::blocked`;
-   what was found and not fixed becomes a new issue in `status::backlog` with one `type::` label (⚠ cross-repo if
-   it needs two repos); fix any issue the session proved wrong with a comment. Never set `status::ready` or
-   `status::done` and never close an issue: the user does that (the issue guard blocks it). `questions.md`: add new
+3. **Update the trackers.** Issues: an item in an open pull request is `Status: Review` (the pull request says
+   "Closes #n"); a question that stops an item is posted on the issue, and the issue set to `Status: Blocked`;
+   what was found and not fixed becomes a new issue in `Status: Backlog` with one `Type:` label (⚠ cross-repo if
+   it needs two repos); fix any issue the session proved wrong with a comment. Never set `Status: Ready` or
+   `Status: Done` and never close an issue: the user does that (the issue guard blocks it). `questions.md`: add new
    questions to §1 with a recommendation; move a question the user answered to §2 as 🟢 with their words (or delete
    it if nothing is left to guard). `CLAUDE.md` only when a rule, a how-to or the long-term state changed. Keep all
    three short.

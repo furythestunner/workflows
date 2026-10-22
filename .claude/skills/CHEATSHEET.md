@@ -20,6 +20,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
   is opened; type it to ask how risky a merge is.
 - `/diagnosing-bugs`: a bug loop that first builds a check that fails on the bug, then hypotheses, fix and proof. Use
   it for anything broken, wrong or slow, or when a quick fix did not work.
+- `/issue-run`: what the scheduled runs follow (`check` by day, `build` after midnight). They take only the issues
+  you set to Ready; questions come as comments on the issue. Type it to run a check by hand.
 - `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read and a
   Sonnet implementer writes. Use it for a bigger feature round you want done with workers.
 
@@ -31,5 +33,5 @@ update it in the same commit when a skill is added, renamed or changes what it i
   also opens with the brief (one per repo, this list once).
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff when pushed code is newer.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
-- `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to ready or done or closing it;
-  only you do that, on GitHub. `labels.sh` (next to the ground truth) creates the issue labels.
+- `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or Done or closing it;
+  only you do that, on GitHub. Moving one back to Backlog or Blocked is allowed. `labels.sh` (next to the ground truth) creates the issue labels.
