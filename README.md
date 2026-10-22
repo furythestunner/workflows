@@ -7,7 +7,9 @@ Started from github.com/truongfelix/workflow (6d2623c, 2026-10-10).
 
 A cloud session (claude.ai/code, the phone app) reads only the repo's own `.claude/settings.json`. Settings in
 `~/.claude` on a PC never reach it, and plugins do not load there. So every repo carries its own copy, and this repo
-is the master: change a hook here first, then copy it to each repo.
+is the master: every workflow change (hooks, skills, agents, the cheat sheet, the CLAUDE.md block) is made here
+first, then copied to each repo (intranet, KolLab.extension, website) and adjusted to the project. Workflow to-dos
+are in `BACKLOG.md` here.
 
 ## What it does
 
@@ -19,6 +21,7 @@ is the master: change a hook here first, then copy it to each repo.
 | `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it and the brief ends with a short "Your skills" list, so they do not get forgotten. Update it with any skill change. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (branches against GitHub, uncommitted work, open PRs and CI). |
 | `.claude/skills/handoff/` | `/handoff` | The full tidy-up at the end of a session. |
+| `.claude/skills/crew/`, `.claude/agents/` | `/crew` | A feature round as a crew: this session plans, talks to the user, reviews and commits; a Haiku `scout` reads and a Sonnet `implementer` writes. Checks come from the repo's CLAUDE.md. Round records in `notes/crew/`. |
 | `.claude/skills/grill-me/` | `/grill-me`, or before a big change | Interview in rounds, no cap on questions, each with a recommended answer ("yes" accepts it). |
 | `.claude/skills/questionnaire/` | `/questionnaire` | Turns open questions (e.g. `questions.md` §1) into a document for one person to fill in; answers go back to the trackers. |
 | `.claude/skills/wait-what/` | `/wait-what`, "I don't understand" | Re-explains the last message in plain words, with the missing context. |
@@ -34,7 +37,8 @@ The scripts hold no project data. Everything project-specific is in `.claude/gro
 1. Copy `.claude/` from here into the repo root (keep any `.claude/agents/` or other skills the repo already has;
    merge `settings.json` by hand if the repo has one).
 2. Edit `.claude/ground-truth.conf`: `REPOS`, `WORK_BRANCH`, `HANDOFF`, `DOCS`, `USER_NAME`.
-3. Create `notes/handoff.md`, `BACKLOG.md`, `questions.md` (§1 open questions, §2 rulings) and `notes/lessons.md`.
+3. Create `notes/handoff.md`, `BACKLOG.md`, `questions.md` (§1 open questions, §2 rulings), `notes/lessons.md` and
+   `notes/crew/log.md` (its starting table is at the end of `.claude/skills/crew/SKILL.md`).
 4. Add the block below to the repo's `CLAUDE.md` (replace `<work branch>`).
 5. Write the commit of this repo into `.claude/workflow-version`, commit, push to the work branch.
 6. Check: start a new cloud session; the first reply must open with the brief.
@@ -61,6 +65,12 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
   `<work branch>` without asking.
 - **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
   not call, say so in one line ("Tip: `/grill-me` fits this") and carry on with the request.
+- **Crew rounds (`/crew`):** the session is the orchestrator (brief, the user's OK, review, commit); a Haiku `scout`
+  reads and a Sonnet `implementer` writes (`.claude/agents/`). The model of each role is the user's call. An open
+  round's brief and status are in `notes/crew/`: read it at session start.
 - The setup comes from github.com/furythestunner/workflows (`.claude/workflow-version` names the commit). Project
   values go only in `.claude/ground-truth.conf`, never in the scripts.
+- **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
+  sheet, these session rules) is made in github.com/furythestunner/workflows first, then copied to every repo that
+  uses it, adjusted to the project. A workflow to-do goes in the master copy's `BACKLOG.md`, never in one repo's.
 ```
