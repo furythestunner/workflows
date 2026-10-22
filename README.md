@@ -7,7 +7,9 @@ Started from github.com/truongfelix/workflow (6d2623c, 2026-10-10).
 
 A cloud session (claude.ai/code, the phone app) reads only the repo's own `.claude/settings.json`. Settings in
 `~/.claude` on a PC never reach it, and plugins do not load there. So every repo carries its own copy, and this repo
-is the master: change a hook here first, then copy it to each repo.
+is the master: every workflow change (hooks, skills, agents, the cheat sheet, the CLAUDE.md block) is made here
+first, then copied to each repo (intranet, KolLab.extension, website) and adjusted to the project. Workflow to-dos
+are in `BACKLOG.md` here.
 
 ## What it does
 
@@ -68,4 +70,7 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
   round's brief and status are in `notes/crew/`: read it at session start.
 - The setup comes from github.com/furythestunner/workflows (`.claude/workflow-version` names the commit). Project
   values go only in `.claude/ground-truth.conf`, never in the scripts.
+- **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
+  sheet, these session rules) is made in github.com/furythestunner/workflows first, then copied to every repo that
+  uses it, adjusted to the project. A workflow to-do goes in the master copy's `BACKLOG.md`, never in one repo's.
 ```
