@@ -63,6 +63,8 @@ open that already shipped, "done" items whose code changed since).
    - **Waiting for you:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
      what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
      `status::review` issues to test and merge, and the `status::blocked` ones, each with the link to its question.
+   - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
+     command and when to use it, a few words each. In the 3-line brief before a specific task, one line naming them.
    - End by recommending one task and asking which to start.
 5. **Wait for the user's choice** before long work or anything outward (push, PR, merge, release, comments,
    messages). Reading and checking are fine. The user decides the day's priorities, and the handoff can be stale.

@@ -72,4 +72,9 @@ fi
 echo
 echo "===== $HANDOFF ====="
 head -80 "$HANDOFF" 2>/dev/null || echo "(missing)"
+if [ -f .claude/skills/CHEATSHEET.md ]; then
+  echo
+  echo "===== .claude/skills/CHEATSHEET.md (the brief ends with \"Your skills\": one short line per skill) ====="
+  sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | head -40
+fi
 exit 0

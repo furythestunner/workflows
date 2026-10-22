@@ -221,7 +221,7 @@ for spec in "${REPOS[@]}"; do
     unknown "gh is not installed: open PRs, CI and issues not checked"
   else
     if ! prs=$(with_timeout 60 gh api "repos/$gh_repo/pulls?state=open&per_page=30" \
-      --jq '.[] | [(.number|tostring), .head.ref, .head.sha, (if .draft then " draft" else "" end), .title] | @tsv' 2>&1); then
+      --jq '.[] | [(.number|tostring), .head.ref, .head.sha, (if .draft then "draft" else "-" end), .title] | @tsv' 2>&1); then
       unknown "open PRs of $gh_repo could not be read: $prs"
     elif [ -z "$prs" ]; then
       echo "  open PRs ($gh_repo): none"
@@ -240,6 +240,8 @@ for spec in "${REPOS[@]}"; do
           verdict="CI UNKNOWN"
           FAILED=$((FAILED + 1))
         fi
+        # A tab is whitespace to `read`, so an empty field would shift the next one: "-" stands for "not a draft".
+        [ "$draft" = draft ] && draft=" draft" || draft=""
         echo "    #$num [$ref]$draft $verdict: $title"
       done <<<"$prs"
     fi
