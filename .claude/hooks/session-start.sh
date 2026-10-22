@@ -18,8 +18,11 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then
   current=$(git branch --show-current)
   if [ "$current" != "$WORK_BRANCH" ]; then
     if git diff --quiet && git diff --cached --quiet; then
-      git checkout -q "$WORK_BRANCH" 2>/dev/null || git checkout -q -b "$WORK_BRANCH" "origin/$WORK_BRANCH"
-      echo "Switched from '$current' to $WORK_BRANCH (cloud sessions work on $WORK_BRANCH)."
+      if git checkout -q "$WORK_BRANCH" 2>/dev/null || git checkout -q -b "$WORK_BRANCH" "origin/$WORK_BRANCH" 2>/dev/null; then
+        echo "Switched from '$current' to $WORK_BRANCH (cloud sessions work on $WORK_BRANCH)."
+      else
+        echo "WARNING: $WORK_BRANCH exists neither here nor on origin; stayed on '$current'."
+      fi
     else
       echo "WARNING: uncommitted changes on '$current'; NOT switched to $WORK_BRANCH. Sort this out first."
     fi
@@ -53,7 +56,7 @@ fi
 
 echo "Branch: $(git branch --show-current)"
 echo
-timeout 60 bash .claude/skills/session-start/ground-truth.sh 2>&1 | head -80
+timeout 60 bash .claude/skills/session-start/ground-truth.sh 2>&1 | head -150
 echo
 
 # Handoff freshness: code commits after the last handoff commit (DOCS excluded).
