@@ -19,6 +19,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
   is opened; type it to ask how risky a merge is.
 - `/diagnosing-bugs`: a bug loop that first builds a check that fails on the bug, then hypotheses, fix and proof. Use
   it for anything broken, wrong or slow, or when a quick fix did not work.
+- `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read and a
+  Sonnet implementer writes. Use it for a bigger feature round you want done with workers.
 
 ## Hooks (run by themselves)
 
