@@ -18,7 +18,7 @@ are the issues of this repo.
 | `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. |
-| `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `status::ready` or `status::done`, from closing an issue, and from opening one outside `status::backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
+| `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `Status: Ready` or `Status: Done`, from closing an issue, and from opening one outside `Status: Backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
 | `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it and the brief ends with a short "Your skills" list, so they do not get forgotten. Update it with any skill change. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (stale facts first, branches against GitHub, uncommitted work, open PRs and CI, open issues by status). `labels.sh` creates the issue labels. |
 | `.claude/skills/handoff/` | `/handoff` | The full tidy-up at the end of a session. |
@@ -27,6 +27,7 @@ are the issues of this repo.
 | `.claude/skills/questionnaire/` | `/questionnaire` | Turns open questions (e.g. `questions.md` §1) into a document for one person to fill in; answers go back to the trackers. |
 | `.claude/skills/wait-what/` | `/wait-what`, "I don't understand" | Re-explains the last message in plain words, with the missing context. |
 | `.claude/skills/pr-body/` | writing a pull request | What changes, evidence, merge danger (one-way or two-way door, blast radius), how to test. |
+| `.claude/skills/issue-run/` | a scheduled run | Unattended work on the issues: `check` asks the questions on the issues, `build` builds Ready issues and opens the pull request. |
 | `.claude/skills/diagnosing-bugs/` | a bug or wrong number | Builds a check that fails on the bug first, then hypotheses, fix, proof, cleanup. |
 
 The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skills/THIRD-PARTY.md`).
@@ -43,7 +44,7 @@ The scripts hold no project data. Everything project-specific is in `.claude/gro
    `.claude/skills/crew/SKILL.md`) and a `BACKLOG.md` that holds only the link to the repo's issues
    (`https://github.com/<owner>/<repo>/issues`).
 4. Create the labels: `bash .claude/skills/session-start/labels.sh` (every GitHub repo in the config).
-5. An existing `BACKLOG.md`: one issue per item, `status::backlog`, the section it sat in as its `type::` label
+5. An existing `BACKLOG.md`: one issue per item, `Status: Backlog`, the section it sat in as its `Type:` label
    (pick the closest of feature, bug, config, docs) and the item's text as the body. Then cut the file down to the
    link. Every fact that can go stale, in `notes/lessons.md` or in a memory, gets a `(check by YYYY-MM-DD)` tag
    and lives in `notes/lessons.md` (delete the memory).
@@ -70,13 +71,18 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
   `/handoff` skill.
 - **Decisions go into the trackers in the same reply:** a ruling to `questions.md` §2, new open work to a GitHub
   issue, a rule for Claude to this file, a lesson to `notes/lessons.md`; never only into the chat.
-- **Trackers:** open work is the repo's GitHub issues (`BACKLOG.md` only links there). Each issue has one `type::`
-  label (feature, bug, config, docs) and one `status::` label (backlog, ready, in-progress, blocked, review, done).
-  Only <user> moves backlog → ready and review → done, and closes issues, on GitHub; Claude gives the link. Claude
-  opens new issues in backlog, may move ready → in-progress, any → blocked (after posting the question on the issue,
-  never guessing) and in-progress → review (only with an open pull request that says "Closes #<n>"; merging it
-  closes the issue). `.claude/hooks/issue-guard.mjs` blocks the rest, even when asked in the chat. Rulings stay in
-  `questions.md`.
+- **Trackers:** open work is the repo's GitHub issues (`BACKLOG.md` only links there). Each issue has one `Type:`
+  label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
+  Ready means <user> approved it; an open issue in any other status is for <user> to look at, or for later. Only
+  <user> moves an issue to Ready or Done and closes issues, on GitHub; Claude gives the link. Claude opens new issues
+  in Backlog and may move: Ready → In progress; a Backlog issue <user> hands out in the chat → In progress (the chat
+  is the approval); any → Blocked (after posting the question on the issue, never guessing); any → Backlog when it
+  turns out to be on hold (a comment says what it waits for, the title starts with ⏸️ and names the trigger); In
+  progress → Review (only with an open pull request that says "Closes #<n>"; merging it closes the issue).
+  `.claude/hooks/issue-guard.mjs` blocks the rest, even when asked in the chat. Rulings stay in `questions.md`.
+- **Unattended runs:** scheduled sessions follow `/issue-run` (`check` by day, `build` after midnight). They work
+  only on Ready issues and on Blocked ones <user> has answered; every question goes on the issue, never into a chat
+  nobody reads. A run never merges.
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, and ends in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default,
   never more than 12. One <user> confirmed reads `(verified by <user>, YYYY-MM-DD)`, gets 12 months and wins over
@@ -109,9 +115,15 @@ GitLab.
   listed as BAD TAG.
 - Facts that can go stale live only in `notes/lessons.md`: memories stay on one PC, and a cloud session cannot see
   their dates. Default 3 months, at most 12; a fact the user confirmed also expires, after 12 months.
-- The user moves issues to ready or done by clicking on GitHub (website or phone app). The guard has no "unlock"
-  phrase: a phrase could be copied from a document or an issue comment.
-- Done = closed: the pull request says "Closes #<n>" and merging it is the approval. `status::done` is for work with
+- The user moves issues to Ready or Done by clicking on GitHub (website or phone app). The guard has no "unlock"
+  phrase: a phrase could be copied from a document or an issue comment. Moving down (to Backlog or Blocked) needs
+  no approval, so Claude may do it (Balázs, 22 Oct 2026): anything not in Ready is then the user's signal to look.
+- Labels read as plain words, "Status: Ready", "Type: Bug" (Balázs, 22 Oct 2026; until then `status::ready`).
+  `labels.sh` renames the old ones, so every issue keeps its status.
+- Scheduled runs (Balázs, 22 Oct 2026): a day check every 4 hours asks its questions on the issues, a night build
+  after midnight Budapest time builds the approved ones and opens the pull request; a phone notification only
+  when something needs the user.
+- Done = closed: the pull request says "Closes #<n>" and merging it is the approval. `Status: Done` is for work with
   no pull request (a server or a setting).
 - Claude may open issues, always in backlog. An issue with a missing or double label is listed as NEEDS A LABEL,
   never guessed into a status.

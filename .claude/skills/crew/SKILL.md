@@ -27,7 +27,7 @@ Why: the expensive model spends its tokens on judgment, the cheaper models on vo
 ## Steps
 
 1. **Intake.** Find the issue (or take the user's words) and re-confirm it is still open. Start only a
-   `status::ready` issue (the user approved it) and set it to `status::in-progress`. Check the branch: the work branch (`WORK_BRANCH` in `.claude/ground-truth.conf`), up to date
+   `Status: Ready` issue (the user approved it) and set it to `Status: In progress`. Check the branch: the work branch (`WORK_BRANCH` in `.claude/ground-truth.conf`), up to date
    with `main` (CLAUDE.md, Git workflow).
 2. **Scout** (skip when you already know where everything is). One question per scout; several scouts may run in
    parallel. Before you build the plan on a finding, open the cited line yourself: a scout's finding is a lead, not a
@@ -47,7 +47,7 @@ Why: the expensive model spends its tokens on judgment, the cheaper models on vo
      send-backs; after that, stop and ask the user.
 7. **Commit, push, pull request.** Stage the changed paths by name, read `git diff --cached --name-only`, commit to
    the work branch, push, and open or update the one pull request from it to `main` (a migration or other manual step
-   is named at the top; the body says "Closes #<n>"), then set the issue to `status::review`. Never merge.
+   is named at the top; the body says "Closes #<n>"), then set the issue to `Status: Review`. Never merge.
 8. **Report** to the user per CLAUDE.md: what changed for the people who use it, how it was checked, and what the
    user does to test it. Fill the round record's "Crew log" and add its line to `notes/crew/log.md` (create it from the table under
    "Round record" if it is missing).

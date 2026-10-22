@@ -52,7 +52,7 @@ if ((asked || said) && !recorded) {
     decision: 'block',
     reason: 'Decision check: this turn ' + who + ' ' + (asked ? 'answered a multiple-choice question' : 'used decision words') +
       ' and no tracker was touched. If it set something for the future (how a feature must work, a deliberate non-fix, ' +
-      'a workflow rule), record it now: a ruling in questions.md §2 (🟢, date, ' + who + '’s words), new open work as a GitHub issue (status::backlog and one type:: label), ' +
+      'a workflow rule), record it now: a ruling in questions.md §2 (🟢, date, ' + who + '’s words), new open work as a GitHub issue (Status: Backlog and one Type: label), ' +
       'a rule for Claude in CLAUDE.md; then commit and push the docs to ' + branch + ' (handoff rule). If it was only a ' +
       'choice for the task at hand, stop now and add no text.'
   }));

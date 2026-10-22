@@ -41,7 +41,7 @@ the rest of the round now. Every decision goes to the user, and you wait for the
 The grilling is done when the frontier is empty: every branch visited, nothing silently assumed. Then:
 
 1. Write back the agreed plan in a short numbered list and ask the user to confirm it. Act only after the yes.
-2. Record the outcome where it belongs, in the same reply (rulings to `questions.md` §2, new work to a GitHub issue in `status::backlog`,
+2. Record the outcome where it belongs, in the same reply (rulings to `questions.md` §2, new work to a GitHub issue in `Status: Backlog`,
    a rule for Claude to `CLAUDE.md`). A choice that only shapes the task at hand needs no tracker.
 
 The user can stop at any time ("enough", "wrap up"): then summarise what is settled, list what is still open, and

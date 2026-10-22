@@ -247,13 +247,14 @@ for spec in "${REPOS[@]}"; do
       done <<<"$prs"
     fi
 
-    # Open issues by status label (each issue has exactly one status:: and one type:: label). An issue with a
+    # Open issues by status label (each issue has exactly one "Status: x" and one "Type: x" label; the old
+    # "status::x" / "type::x" names still count). An issue with a
     # missing or double label is listed under NEEDS A LABEL, never guessed into a status. Closed issues are done.
     if [ "$ISSUES" = 1 ]; then
       if ! issues=$(with_timeout 60 gh api --paginate "repos/$gh_repo/issues?state=open&per_page=100" --jq '.[] |
           select(.pull_request | not) |
-          [ ([.labels[].name | select(startswith("status::")) | ltrimstr("status::")] | join(",")),
-            ([.labels[].name | select(startswith("type::")) | ltrimstr("type::")] | join(",")),
+          [ ([.labels[].name | select(test("^status(::|: )"; "i")) | sub("^status(::|: )"; ""; "i") | ascii_downcase | gsub(" "; "-")] | join(",")),
+            ([.labels[].name | select(test("^type(::|: )"; "i")) | sub("^type(::|: )"; ""; "i") | ascii_downcase] | join(",")),
             (.number | tostring), .title ] | @tsv' 2>&1); then
         unknown "open issues of $gh_repo could not be read: $issues"
       elif [ -z "$issues" ]; then
