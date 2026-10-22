@@ -88,6 +88,7 @@ for f in $FACT_FILES; do
       while ((i = index(low, "(check by")) > 0) {
         tag = substr(rest, i); j = index(tag, ")"); tag = j ? substr(tag, 1, j) : tag
         low = substr(low, i + length(tag)); rest = substr(rest, i + length(tag))
+        if (tag == "(check by YYYY-MM-DD)") continue  # the format itself, written out as an example
         if (tag ~ /^\(check by [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\)$/) {
           d = substr(tag, 11, 10)
           if (d <= today) printf "  %s:%d (due %s): %s\n", f, NR, d, text
