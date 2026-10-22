@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: End-of-session handoff. Distils and archives the previous handoff, records what was done, what still runs in the background, what is next (the task of the day) and what waits for the user, in notes/handoff.md, BACKLOG.md, questions.md, CLAUDE.md, the topic notes and memory, then commits and pushes per the project's handoff rule, so any session on any machine can start from an empty context. Use it whenever the user wants to finish, close or wrap up a session ("handoff", "end of day", "save where we are", "switching machines", "battery dying"), before a /clear, or when the conversation is about to be compacted after a long stretch of work.
+description: End-of-session handoff. Distils and archives the previous handoff, records what was done, what still runs in the background, what is next (the task of the day) and what waits for the user, in notes/handoff.md, the GitHub issues, questions.md, CLAUDE.md, the topic notes and memory, then commits and pushes per the project's handoff rule, so any session on any machine can start from an empty context. Use it whenever the user wants to finish, close or wrap up a session ("handoff", "end of day", "save where we are", "switching machines", "battery dying"), before a /clear, or when the conversation is about to be compacted after a long stretch of work.
 ---
 
 # Handoff
@@ -16,12 +16,12 @@ session can find out what happened and why.
 |---|---|---|
 | Next tasks (task of the day), what waits for the user, what runs in the background, the last session | `notes/handoff.md` (live) | Rewritten at each handoff, after the old one is distilled and archived |
 | Earlier handoffs | `notes/handoff-archive.md` | Newest first, word for word. Never read at session start; searched when needed |
-| Open work | `BACKLOG.md` | One section per repo or file tree. A landed item is deleted, not ticked. Cross-repo items marked ⚠ |
+| Open work | GitHub issues of each repo | One issue per item, one `type::` and one `status::` label. New work opens in `status::backlog`. A landed item closes when its pull request ("Closes #n") merges; Claude never closes one. Cross-repo items marked ⚠. `BACKLOG.md` only links there |
 | Questions for the user, rulings, deliberate non-fixes | `questions.md` | §1 💬 open; when the user rules, it moves to §2 as 🟢 with their words and the date |
 | Long-term state, rules, how-tos | `CLAUDE.md` | State, not history: no PR lists, no commit hashes, no to-dos |
 | Details of a topic (plans, measurements, incident notes, how-tos) | `notes/*.md`, component READMEs | Linked from where they are needed |
-| Non-obvious learnings, user preferences, corrections | memory directory | One fact per file + one line in `MEMORY.md`; update instead of duplicating |
-| Lessons that every session needs | `notes/lessons.md`, imported by `CLAUDE.md` | Short rules; merge, don't append; drop what no longer holds |
+| Non-obvious learnings, user preferences, corrections (never a fact that can go stale) | memory directory | One fact per file + one line in `MEMORY.md`; update instead of duplicating |
+| Lessons that every session needs, facts that can go stale, hook candidates | `notes/lessons.md`, imported by `CLAUDE.md` | Short rules; merge, don't append; drop what no longer holds. A fact that can go stale ends in `(check by YYYY-MM-DD)` |
 | History (what changed when, and why) | git / GitHub | Never copied into the docs |
 
 ## Steps
@@ -44,8 +44,11 @@ session can find out what happened and why.
      header), word for word.
    - **Write the new file** with the template below. Absolute dates, times with their zone. Name exact paths,
      branches, units and commands, so the next session can act without searching.
-3. **Update the trackers.** `BACKLOG.md`: delete every item that landed, add what was found and not fixed in the
-   section it touches (⚠ cross-repo if it needs two), fix anything the session proved wrong. `questions.md`: add new
+3. **Update the trackers.** Issues: an item in an open pull request is `status::review` (the pull request says
+   "Closes #n"); a question that stops an item is posted on the issue, and the issue set to `status::blocked`;
+   what was found and not fixed becomes a new issue in `status::backlog` with one `type::` label (⚠ cross-repo if
+   it needs two repos); fix any issue the session proved wrong with a comment. Never set `status::ready` or
+   `status::done` and never close an issue: the user does that (the issue guard blocks it). `questions.md`: add new
    questions to §1 with a recommendation; move a question the user answered to §2 as 🟢 with their words (or delete
    it if nothing is left to guard). `CLAUDE.md` only when a rule, a how-to or the long-term state changed. Keep all
    three short.
@@ -56,6 +59,13 @@ session can find out what happened and why.
    - a rule every session needs (a tool quirk, a git habit, a verification rule, a way of working with the owner)
      → one line in `notes/lessons.md`, even when it sounds generic: a lesson belongs to the project that learned it
      and travels with its repo. Merge, don't append. Once a lesson is there, delete the memories it fully covers;
+   - a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) → `notes/lessons.md`,
+     never a memory, ending in `(check by YYYY-MM-DD)`: 3 months ahead by default, never more than 12. A fact the
+     user confirmed reads `(verified by <name>, YYYY-MM-DD) (check by <12 months later>)` and wins over one Claude
+     worked out. A re-checked fact gets a new date;
+   - a correction from the user → look under "Hook candidates" in `notes/lessons.md`. The first time, add one line
+     there (date, what was corrected). The second time, propose to the user a hook that blocks the behaviour, with a
+     recommendation: a rule written only as prose was not enough;
    - a narrow fact or a preference → this project's memory directory (local to this machine: anything another
      machine or a cloud session needs goes in the repo);
    - an improvement to the session loop itself (a skill step, a ground-truth check) → its generic part goes back to
@@ -73,7 +83,7 @@ session can find out what happened and why.
 ```markdown
 # Handoff (YYYY-MM-DD HH:MM <zone>)
 
-Read by /session-start. Open work: `BACKLOG.md`. Decisions and rulings: `questions.md`. Rewritten at each /handoff.
+Read by /session-start. Open work: the GitHub issues. Decisions and rulings: `questions.md`. Rewritten at each /handoff.
 
 ## Next (task of the day, in order)
 1. [<repo or area>] <task>: <why now>, <where to start: file, branch, command>, <done when ...>

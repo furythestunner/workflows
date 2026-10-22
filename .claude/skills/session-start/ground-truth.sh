@@ -2,7 +2,7 @@
 #
 # ground-truth.sh — what is TRUE right now, read from git, GitHub and the machine.
 #
-# notes/handoff.md, BACKLOG.md and questions.md are CLAIMS written by a past session; this script prints the FACTS
+# notes/handoff.md, the issue labels and questions.md are CLAIMS written by a past session; this script prints the FACTS
 # they are checked against. /session-start runs it before reading the handoff, /handoff before writing one, so the
 # reader and the writer look at the same picture.
 #
@@ -26,6 +26,8 @@ CONF="$ROOT/.claude/ground-truth.conf"
 REPOS=("$(basename "$ROOT")|.|origin||")
 KEEP_LOCAL=""
 UNITS=1
+ISSUES=1
+FACT_FILES="notes/lessons.md"
 # shellcheck source=/dev/null
 [ -f "$CONF" ] && . "$CONF"
 
@@ -71,6 +73,34 @@ with_timeout() { # <seconds> <command...>
 }
 
 echo "GROUND TRUTH — $(date '+%Y-%m-%d %H:%M %Z')"
+
+# Facts that can go stale end with exactly "(check by YYYY-MM-DD)". Due ones come first: the brief names them
+# before anything relies on them. A tag in another spelling is listed too, since this script cannot read it.
+echo
+stale=""
+today=$(date +%F)
+for f in $FACT_FILES; do
+  [ -f "$ROOT/$f" ] || continue
+  out=$(awk -v today="$today" -v f="$f" '
+    { low = tolower($0); rest = $0; text = $0
+      sub(/^[ \t]*[-*][ \t]*/, "", text)
+      if (length(text) > 140) text = substr(text, 1, 137) "..."
+      while ((i = index(low, "(check by")) > 0) {
+        tag = substr(rest, i); j = index(tag, ")"); tag = j ? substr(tag, 1, j) : tag
+        low = substr(low, i + length(tag)); rest = substr(rest, i + length(tag))
+        if (tag ~ /^\(check by [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]\)$/) {
+          d = substr(tag, 11, 10)
+          if (d <= today) printf "  %s:%d (due %s): %s\n", f, NR, d, text
+        } else printf "  %s:%d BAD TAG %s, write it as (check by YYYY-MM-DD): %s\n", f, NR, tag, text
+      } }' "$ROOT/$f")
+  [ -n "$out" ] && stale+="$out"$'\n'
+done
+if [ -n "$stale" ]; then
+  echo "== STALE FACTS (past their check-by date: say these first, re-check before relying on them)"
+  printf '%s' "$stale"
+else
+  echo "== STALE FACTS: none (checked: ${FACT_FILES:-nothing})"
+fi
 
 root_listed=0
 for spec in "${REPOS[@]}"; do
@@ -183,26 +213,68 @@ for spec in "${REPOS[@]}"; do
     printf '%s' "$others"
   fi
 
-  # Open PRs with a one-word CI verdict. An empty rollup is "no CI", never "green".
+  # Open PRs with a one-word CI verdict, read through the REST API (GraphQL, and so `gh pr list`, is blocked in
+  # cloud sessions). Check runs and commit statuses both count. An empty list is "no CI", never "green".
   if [ -z "$gh_repo" ]; then
     echo "  open PRs: not a GitHub repo (set gh_repo in the config to check)"
   elif ! command -v gh >/dev/null; then
-    unknown "gh is not installed: open PRs and CI not checked"
-  elif ! prs=$(with_timeout 60 gh pr list -R "$gh_repo" --state open --limit 30 \
-    --json number,title,headRefName,isDraft,statusCheckRollup --jq '
-      def verdict: [ .statusCheckRollup[]?
-                     | if (.status // "COMPLETED") != "COMPLETED" then "PENDING" else (.conclusion // .state // "PENDING") end ]
-        | if length == 0 then "no CI"
-          elif any(.[]; IN("FAILURE","CANCELLED","TIMED_OUT","ERROR","ACTION_REQUIRED","STARTUP_FAILURE")) then "CI RED"
-          elif any(.[]; IN("PENDING","EXPECTED","QUEUED","IN_PROGRESS","")) then "CI running"
-          else "CI green" end;
-      .[] | "    #\(.number) [\(.headRefName)]\(if .isDraft then " draft" else "" end) \(verdict): \(.title)"' 2>&1); then
-    unknown "gh pr list -R $gh_repo failed: $prs"
-  elif [ -z "$prs" ]; then
-    echo "  open PRs ($gh_repo): none"
+    unknown "gh is not installed: open PRs, CI and issues not checked"
   else
-    echo "  open PRs ($gh_repo):"
-    printf '%s\n' "$prs"
+    if ! prs=$(with_timeout 60 gh api "repos/$gh_repo/pulls?state=open&per_page=30" \
+      --jq '.[] | [(.number|tostring), .head.ref, .head.sha, (if .draft then "draft" else "-" end), .title] | @tsv' 2>&1); then
+      unknown "open PRs of $gh_repo could not be read: $prs"
+    elif [ -z "$prs" ]; then
+      echo "  open PRs ($gh_repo): none"
+    else
+      echo "  open PRs ($gh_repo):"
+      while IFS=$'\t' read -r num ref sha draft title; do
+        if states=$(with_timeout 30 gh api "repos/$gh_repo/commits/$sha/check-runs?per_page=100" --jq '.check_runs[] |
+              if .status != "completed" then "PENDING" else (.conclusion // "PENDING" | ascii_upcase) end' 2>/dev/null) &&
+           more=$(with_timeout 30 gh api "repos/$gh_repo/commits/$sha/status" --jq '.statuses[].state | ascii_upcase' 2>/dev/null); then
+          states=$(printf '%s\n%s\n' "$states" "$more" | sed '/^$/d')
+          if [ -z "$states" ]; then verdict="no CI"
+          elif grep -qE '^(FAILURE|CANCELLED|TIMED_OUT|ERROR|ACTION_REQUIRED|STARTUP_FAILURE)$' <<<"$states"; then verdict="CI RED"
+          elif grep -qE '^(PENDING|EXPECTED|QUEUED|IN_PROGRESS)$' <<<"$states"; then verdict="CI running"
+          else verdict="CI green"; fi
+        else
+          verdict="CI UNKNOWN"
+          FAILED=$((FAILED + 1))
+        fi
+        # A tab is whitespace to `read`, so an empty field would shift the next one: "-" stands for "not a draft".
+        [ "$draft" = draft ] && draft=" draft" || draft=""
+        echo "    #$num [$ref]$draft $verdict: $title"
+      done <<<"$prs"
+    fi
+
+    # Open issues by status label (each issue has exactly one status:: and one type:: label). An issue with a
+    # missing or double label is listed under NEEDS A LABEL, never guessed into a status. Closed issues are done.
+    if [ "$ISSUES" = 1 ]; then
+      if ! issues=$(with_timeout 60 gh api --paginate "repos/$gh_repo/issues?state=open&per_page=100" --jq '.[] |
+          select(.pull_request | not) |
+          [ ([.labels[].name | select(startswith("status::")) | ltrimstr("status::")] | join(",")),
+            ([.labels[].name | select(startswith("type::")) | ltrimstr("type::")] | join(",")),
+            (.number | tostring), .title ] | @tsv' 2>&1); then
+        unknown "open issues of $gh_repo could not be read: $issues"
+      elif [ -z "$issues" ]; then
+        echo "  open issues ($gh_repo): none"
+      else
+        echo "  open issues ($gh_repo):"
+        awk -F'\t' '
+          BEGIN { n = split("in-progress review blocked ready backlog done", order, " ")
+                  for (i = 1; i <= n; i++) valid[order[i]] = 1
+                  split("feature bug config docs", t, " "); for (i in t) types[t[i]] = 1 }
+          { line = "      #" $3 " [" ($2 == "" ? "no type" : $2) "] " $4
+            if (($1 in valid) && ($2 in types)) { count[$1]++; item[$1, count[$1]] = line }
+            else { bad++; badline[bad] = line " (status: " ($1 == "" ? "none" : $1) ")" } }
+          END { for (i = 1; i <= n; i++) { s = order[i]; if (!count[s]) continue
+                  print "    " s " (" count[s] "):"
+                  shown = (s == "backlog" && count[s] > 10) ? 10 : count[s]
+                  for (k = 1; k <= shown; k++) print item[s, k]
+                  if (shown < count[s]) print "      ... and " (count[s] - shown) " more" }
+                if (bad) { print "    NEEDS A LABEL (" bad "):"; for (k = 1; k <= bad; k++) print badline[k] } }
+        ' <<<"$issues"
+      fi
+    fi
   fi
 done
 

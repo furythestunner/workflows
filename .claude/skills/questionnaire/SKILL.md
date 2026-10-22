@@ -23,7 +23,7 @@ the questions in the document then target the gap between the two.
 3. **Write it** to `notes/questionnaires/<yyyy-mm-dd>-<topic>.md` with the template below and give the user the
    path. Done when every item from step 2 has a question.
 4. **When the answers come back** (the user pastes them or the file is filled in): move each answered question in
-   `questions.md` §1 to §2 as 🟢 with the recipient's words and the date, put new work in `BACKLOG.md`, and say
+   `questions.md` §1 to §2 as 🟢 with the recipient's words and the date, put new work in a GitHub issue (`status::backlog`), and say
    what is still unanswered.
 
 ## Writing the questions

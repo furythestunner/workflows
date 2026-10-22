@@ -5,7 +5,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
 
 ## Skills (type the command)
 
-- `/session-start`: a brief on where things stand (branches, open PRs and CI, the handoff) and a proposed task. Runs
+- `/session-start`: a brief on where things stand (stale facts, branches, open PRs and CI, open issues by status,
+  the handoff) and a proposed task. Runs
   by itself at the start; type it after `/clear` or when you ask "where are we?".
 - `/handoff`: the end-of-session tidy-up; writes `notes/handoff.md` and the trackers, then commits and pushes. Use it
   before closing, switching machines or `/clear`.
@@ -28,3 +29,5 @@ update it in the same commit when a skill is added, renamed or changes what it i
   handoff and this list.
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff when pushed code is newer.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
+- `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to ready or done or closing it;
+  only you do that, on GitHub. `labels.sh` (next to the ground truth) creates the issue labels.
