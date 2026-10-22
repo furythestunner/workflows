@@ -16,6 +16,7 @@ are the issues of this repo.
 | File | When | What |
 |---|---|---|
 | `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
+| `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo, the skills list once. In a one-repo session it does nothing. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. |
 | `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `status::ready` or `status::done`, from closing an issue, and from opening one outside `status::backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
@@ -49,7 +50,9 @@ The scripts hold no project data. Everything project-specific is in `.claude/gro
    and lives in `notes/lessons.md` (delete the memory).
 6. Add the block below to the repo's `CLAUDE.md` (replace `<work branch>` and `<user>`).
 7. Write the commit of this repo into `.claude/workflow-version`, commit, push to the work branch.
-8. Check: start a new cloud session; the first reply must open with the brief, and the brief must list the issues
+8. Once per cloud environment (not per repo): paste `cloud/setup-script.sh` into its Setup script, so sessions
+   with several repos get the brief too.
+9. Check: start a new cloud session; the first reply must open with the brief, and the brief must list the issues
    by status. `bash .claude/hooks/issue-guard.test.sh` must print no FAIL.
 
 Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).

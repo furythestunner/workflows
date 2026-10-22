@@ -27,6 +27,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
 
 - `session-start.sh`: at every start, moves a cloud session to the work branch, runs the ground truth and loads the
   handoff and this list.
+- `cloud/setup-script.sh`: pasted once into the cloud environment's Setup script, so a session with several repos
+  also opens with the brief (one per repo, this list once).
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff when pushed code is newer.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
 - `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to ready or done or closing it;
