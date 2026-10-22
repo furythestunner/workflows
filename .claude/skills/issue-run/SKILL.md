@@ -16,7 +16,9 @@ Mode is the argument: `check` or `build`. Without one, `check`.
 
 - **Ready** issues (the user approved them) and **In progress** ones a run started earlier (its comment says so).
 - **Blocked** issues whose last comment is the user's, answering the question (the user replied).
-- Never Backlog, never an issue whose title starts with ⏸️, never Review or Done.
+- Never Backlog, never an issue whose title starts with ⏸️, never Review or Done. A **Ready** issue whose title
+  starts with ⏸️ is on hold, not approved work: set it to **Backlog** with a comment naming the trigger (the user
+  sets it back to Ready when the time comes). Anything not Ready is the user's signal to look.
 - Never anything on the repo CLAUDE.md's "Ask before" list (schema changes, `--remote` commands, DNS, Microsoft 365,
   credentials, new outside services or libraries, release folders...), however clear it looks: post the question,
   set Blocked.
