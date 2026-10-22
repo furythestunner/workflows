@@ -1,0 +1,6 @@
+{
+  "name": "skill-reminder",
+  "version": "0.1.0",
+  "description": "A pane listing this repo's skills and hooks with a short how-and-when, plus nudges when a prompt fits one",
+  "types": "./types/index.d.ts"
+}

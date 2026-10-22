@@ -28,6 +28,19 @@ The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skill
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
+## Skill reminder mod
+
+`mods/skill-reminder/` is a Claude Code mod that keeps the skills and hooks in view, so they do not get forgotten:
+
+- a **Skills & tools** pane beside the chat (opens at session start, or type `/my-skills`) listing every skill and
+  hook with one to three sentences on what it does and when to use it;
+- a **one-time tip** (a toast) when a prompt reads like a job a skill does, e.g. "bug" suggests `/diagnosing-bugs`,
+  "wrap up" suggests `/handoff`.
+
+Load it with `claude --plugin-dir mods/skill-reminder`, or copy the folder into a plugin folder the app loads.
+When a skill is added or changed here, update the `ENTRIES` list in `mods/skill-reminder/hooks/register.tsx`.
+Check it with `claude plugin validate mods/skill-reminder` and `claude plugin test mods/skill-reminder`.
+
 ## Add it to a repo
 
 1. Copy `.claude/` from here into the repo root (keep any `.claude/agents/` or other skills the repo already has;
