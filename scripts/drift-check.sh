@@ -10,9 +10,8 @@ start=$PWD
 cd "$(dirname "$0")/.." || exit 2
 ref=${DRIFT_REF:-origin/main}
 # Paths that make up the workflow. ground-truth.conf holds this repo's own values, so a change there is not drift.
-# README.md counts only where a commit changed its "CLAUDE.md block", the part every repo copies.
+# Since the sync, a repo behind means its "Workflow update" pull request is waiting to be merged.
 paths=(.claude cloud ':!.claude/ground-truth.conf')
-block() { git show "$1:README.md" 2>/dev/null | awk '/^## CLAUDE.md block/{f=1;next} f&&/^```markdown/{g=1;next} g&&/^```/{exit} g'; }
 
 head=$(git rev-parse --short "$ref" 2>/dev/null) || { echo "UNKNOWN  $ref not found; fetch it first"; exit 2; }
 rc=0
@@ -26,11 +25,6 @@ for arg in "$@"; do
     echo "UNKNOWN  $name: $ver is not in the history of $ref"; rc=2; continue
   fi
   missing=$(git log --oneline --no-merges "$ver..$ref" -- "${paths[@]}")
-  for c in $(git log --format=%h --no-merges "$ver..$ref" -- README.md); do
-    grep -q "^$c " <<<"$missing" && continue
-    [ "$(block "$c")" != "$(block "$c^")" ] && missing+=$'\n'$(git log -1 --oneline "$c")
-  done
-  missing=$(sed '/^$/d' <<<"$missing")
   if [ -z "$missing" ]; then echo "current  $name ($ver)"; continue; fi
   echo "BEHIND   $name: $(wc -l <<<"$missing") workflow commits ($ver -> $head)"
   sed 's/^/           /' <<<"$missing"
