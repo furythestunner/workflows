@@ -9,16 +9,15 @@ Updated: 2026-10-23
 
 ## Waiting for Balázs
 
-- Drift check: disable it (Claude may, with an OK), then recreate it from the claude.ai scheduled tasks page with
-  furythestunner/workflows and the three Kol-Lab-Design-Kft repos selected; same prompt.
+- Drift check: create it on the company claude.ai account (scheduled tasks page) with the four repos selected;
+  the personal-account task is disabled. Then Claude may delete the disabled one.
 - Close https://github.com/furythestunner/workflows/issues/14 as not planned (skills stay in the repos).
 - Labels on #5, #6 and #12; #12 can be closed (dev-test exists on GitHub).
 
 ## Running
 
-- Scheduled task "Workflow drift check" (Mondays 07:43 Budapest, phone notification). The test run on 2026-10-23
-  FAILED: the session could not attach the private project repos (no add_repo, GitHub 403), so nothing was
-  checked. Fix waits for Balázs (above).
+- Scheduled task "Workflow drift check" on the personal account: DISABLED on 2026-10-23 (its test run could not
+  reach the private project repos). Replaced by one Balázs creates on the company account.
 
 ## Unfinished
 
