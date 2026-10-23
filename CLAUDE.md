@@ -69,6 +69,8 @@ Merging, closing issues, changing a scheduled task, anything in the project repo
   candidates" in `notes/lessons.md`, so the second one is noticed.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   `dev-test` without asking.
+- **Time estimates are real session time:** size Claude's own work in minutes of actual session time, not a
+  human developer's hours or days, and give Balázs's part (clicks, merges, a token to create) separately.
 - **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
   not call, say so in one line ("Tip: `/grill-me` fits this") and carry on with the request.
 - **Crew rounds (`/crew`):** the session is the orchestrator (brief, the user's OK, review, commit); a Haiku `scout`
