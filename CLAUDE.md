@@ -81,3 +81,4 @@ Merging, closing issues, changing a scheduled task, anything in the project repo
 - **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
   sheet, these session rules) is made in github.com/furythestunner/workflows first, then copied to every repo that
   uses it, adjusted to the project. A workflow to-do is an issue in the master copy, never one in a project repo.
+<!-- End of the README.md block. Rules for this repo only go above it, under "This repo only". -->

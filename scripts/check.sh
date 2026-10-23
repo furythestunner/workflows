@@ -44,7 +44,7 @@ done
 # 6. This repo's CLAUDE.md carries README.md's rules block, with dev-test and Balázs filled in.
 want=$(awk '/^## CLAUDE.md block/{f=1;next} f&&/^```markdown/{g=1;next} g&&/^```/{exit} g' README.md |
   sed 's/<work branch>/dev-test/g; s/<user>/Balázs/g')
-have=$(sed -n '/^<!-- The block below is README.md/,$p' CLAUDE.md | tail -n +2)
+have=$(sed -n '/^<!-- The block below is README.md/,/^<!-- End of the README.md block/p' CLAUDE.md | sed '1d;$d')
 if [ -n "$want" ] && [ "$want" = "$have" ]; then ok "CLAUDE.md block matches README.md"
 else bad "CLAUDE.md block differs from README.md's CLAUDE.md block"; fi
 
