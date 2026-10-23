@@ -35,6 +35,14 @@ The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skill
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
+Only in this master copy (not copied to the repos):
+
+| File | When | What |
+|---|---|---|
+| `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, the issue guard's tests pass, the cheat sheet lists every skill. |
+| `scripts/drift-check.sh` | Mondays 07:43 Budapest, scheduled task "Workflow drift check" | Compares each repo's `.claude/workflow-version` with `main` here and lists the workflow commits it is missing. The task opens or updates one Backlog issue here when a repo is behind. |
+| `scripts/package-skills.sh` | after a change to a general skill | Zips `grill-me`, `wait-what`, `pr-body`, `diagnosing-bugs` and `questionnaire` into `dist/claude-ai-skills/` for upload to claude.ai (Settings, Capabilities, Skills). Uploaded skills reach every chat and cloud session, so the repo copies can go once the uploads are confirmed. |
+
 ## Add it to a repo
 
 1. Copy `.claude/` from here into the repo root (keep any `.claude/agents/` or other skills the repo already has;
@@ -86,6 +94,10 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
 - **Unattended runs:** scheduled sessions follow `/issue-run` (`check` by day, `build` after midnight). They work
   only on Ready issues and on Blocked ones <user> has answered; every question goes on the issue, never into a chat
   nobody reads. A run never merges.
+- **Every pull request gets a review and a watcher:** before opening one, run `/code-review` on the diff against
+  `main` and fix what it finds; a finding left as is gets a line in the pull request saying why. Right after opening
+  it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo), so failing checks and review
+  comments are handled until it is merged or closed.
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, and ends in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default,
   never more than 12. One <user> confirmed reads `(verified by <user>, YYYY-MM-DD)`, gets 12 months and wins over
@@ -131,3 +143,10 @@ GitLab.
 - Claude may open issues, always in backlog. An issue with a missing or double label is listed as NEEDS A LABEL,
   never guessed into a status.
 - Issues are not shared outside the repo's collaborators for now (the repos are private).
+- Decided by Balázs on 2026-10-23: this repo runs the workflow on itself (its own `CLAUDE.md`, handoff and
+  trackers); `scripts/check.sh` runs on every pull request; every pull request gets `/code-review` before it opens
+  and a watcher after; a weekly drift check (Mondays 07:43 Budapest, phone notification) reports repos on an old
+  copy; the five general skills are packaged for claude.ai and stay in the repos until the uploads are confirmed
+  to load, so no skill shows twice in the meantime.
+- Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
+  docs, "Settings in cloud sessions"), so the files are copied into each repo.
