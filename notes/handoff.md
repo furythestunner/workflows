@@ -4,18 +4,14 @@ Updated: 2026-10-23
 
 ## Next
 
-1. Roll the workflow out to intranet, KolLab.extension and website (#5) with the new sync: merge the dev-test
-   pull request, then run the "sync" action. Each repo gets a "Workflow update" pull request into its work branch.
-2. In each of those pull requests, before merging: move the project-specific lines of the old "Sessions and
-   trackers" block and of the four edited shared files (implementer, scout, crew, session-start) into that repo's
-   CLAUDE.md, then delete the old block. The pull request's "Do before merging" list names them.
+1. Check the brief in a new session on each work branch (intra-test, extension-test, website-test): all three got
+   the synced workflow on 2026-10-23 (intranet#68, KolLab.extension#30, website#10 merged).
+2. The drift check reads `main` of each repo, so it lists them as behind until each work branch is merged to `main`.
 
 ## Waiting for Balázs
 
-- Create the fine-grained token and save it as the secret `SYNC_TOKEN` in this repo (README.md, "How the sync
-  works", The token). The sync cannot run without it.
-- Review and merge the dev-test pull request that adds the sync.
-
+- Close #5 (rolled out) and #16 (drift fixed by the sync) on GitHub, once the brief looks right.
+- SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
 - Close https://github.com/furythestunner/workflows/issues/14 as not planned (skills stay in the repos).
 - Labels on #5, #6 and #12; #12 can be closed (dev-test exists on GitHub).
