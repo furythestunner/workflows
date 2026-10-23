@@ -48,8 +48,10 @@ Mode is the argument: `check` or `build`. Without one, `check`.
      no remote database). A check that cannot run here is named in the pull request as untested.
    - A check fails and the fix is not clear: undo this issue's changes, comment what failed, set **Blocked**.
    - Commit (stage only the paths changed) and push to the work branch.
-4. One pull request work branch → `main` (pr-body skill). Open it, or add to the open one; its description says
-   "Closes #<n>" for each issue built. Set those issues to **Review**. Never merge.
+4. One pull request work branch → `main` (pr-body skill). First run `/code-review` on the diff against `main` and
+   fix what it finds (a finding left as is gets a line in the description saying why). Open it, or add to the open
+   one; its description says "Closes #<n>" for each issue built. Subscribe to its activity, so failing checks and
+   review comments are handled. Set those issues to **Review**. Never merge.
 5. Update `notes/handoff.md` (Waiting for <user>: the pull request to test and merge) and push.
 
 ## Final message

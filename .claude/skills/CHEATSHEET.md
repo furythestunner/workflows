@@ -22,6 +22,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
   it for anything broken, wrong or slow, or when a quick fix did not work.
 - `/issue-run`: what the scheduled runs follow (`check` by day, `build` after midnight). They take only the issues
   you set to Ready; questions come as comments on the issue. Type it to run a check by hand.
+- `/code-review` (built in): reviews the diff for bugs. Runs before every pull request opens (CLAUDE.md); type it
+  to review any branch or pull request by hand.
 - `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read and a
   Sonnet implementer writes. Use it for a bigger feature round you want done with workers.
 
