@@ -30,9 +30,11 @@ if node -e '
   if (missing.length) { console.error("missing: " + missing.join(", ")); process.exit(1); }
 ' 2>"$err"; then ok ".claude/settings.json: valid, hook files exist"; else bad ".claude/settings.json: $(cat "$err")"; fi
 
-# 4. The issue guard blocks and allows what its tests say.
-if out=$(bash .claude/hooks/issue-guard.test.sh 2>&1); then ok "issue-guard.test.sh"
-else bad "issue-guard.test.sh"; echo "$out" | grep FAIL; fi
+# 4. The guards block and allow what their tests say.
+for f in .claude/hooks/*.test.sh; do
+  if out=$(bash "$f" 2>&1); then ok "$(basename "$f")"
+  else bad "$(basename "$f")"; echo "$out" | grep FAIL; fi
+done
 
 # 5. The cheat sheet names every skill (the brief's "Your skills" list comes from it).
 for d in .claude/skills/*/; do

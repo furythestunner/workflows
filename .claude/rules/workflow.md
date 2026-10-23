@@ -47,6 +47,13 @@ file, say so to the user, and propose either a change in the master copy or a fi
   candidates" in `notes/lessons.md`, so the second one is noticed.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   the work branch without asking.
+- **One work branch, named branches only:** all work goes on `WORK_BRANCH`, never on the cloud session's own
+  `claude/...` branch and never on `main`. A second branch only when parallel work really needs one (the user asks
+  for it, or a round on the work branch must not mix with this one), named `WORK_BRANCH-<topic>`: the topic in 1 to
+  4 lowercase words joined by hyphens (`app-test-leave-totals` for a work branch `app-test`). The sync's own
+  `workflow-sync` is the only other name. Say in the chat when one is made, list it in the handoff's Unfinished
+  until its pull request is merged, and then ask the user to click "Delete branch" on the merged pull request (a
+  cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
 - **Time estimates are real session time:** size Claude's own work in minutes of actual session time, not a
   human developer's hours or days, and give the user's part (clicks, merges, a token to create) separately.
 - **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
