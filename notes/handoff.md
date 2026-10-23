@@ -10,6 +10,11 @@ Updated: 2026-10-23
 
 ## Waiting for Balázs
 
+- Delete 20 merged branches on GitHub by hand (a cloud session gets 403): claude-mods: all except `main` and
+  `mods-test`; workflows: the four `claude/...`; intranet: `design-review`, `workflow-sync`, `ccr-1699d267-miqhie`;
+  KolLab.extension and website: `workflow-sync`.
+- Say whether to open the pull request `dev-test` → `main` for the branch guard (the sync carries it to the
+  project repos only from `main`).
 - Close #5 (rolled out) and #16 (drift fixed by the sync) on GitHub, once the brief looks right.
 - SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
@@ -26,4 +31,5 @@ Updated: 2026-10-23
 
 ## Unfinished
 
-Nothing on one disk only.
+- `dev-test`: branch guard (rule, hook, test), pushed, not on `main` yet.
+- claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.

@@ -140,6 +140,10 @@ GitLab.
   copy.
 - Skills live only in the repos, never uploaded to a claude.ai account (Balázs, 2026-10-23): he works on a personal
   and a company account and does not want to install them on each, and only the repo copy reaches every session.
+- Branches (Balázs, 2026-10-23): work goes on the work branch; a second branch only for parallel work, named
+  `WORK_BRANCH-<topic>`, and the branch guard blocks any other name. No automatic branch deletion on GitHub: it
+  would delete the work branch itself when its pull request is merged. A merged extra branch is deleted by hand
+  ("Delete branch" on the pull request); a cloud session cannot delete branches (GitHub answers 403).
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
   docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo.
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo
