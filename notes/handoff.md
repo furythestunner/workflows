@@ -13,8 +13,6 @@ Updated: 2026-10-23
 
 - Drift check: disable it (Claude may, with an OK), then recreate it from the claude.ai scheduled tasks page with
   furythestunner/workflows and the three Kol-Lab-Design-Kft repos selected; same prompt.
-- Pull request https://github.com/furythestunner/workflows/pull/13 (self-hosting files, CI, the review rule, the
-  drift check, the skill packages): test and merge.
 - Upload the five zips from `bash scripts/package-skills.sh` in claude.ai (Settings, Capabilities, Skills), then
   open a new cloud session and check they are listed.
 - Labels on #5, #6 and #12; #12 can be closed (dev-test exists on GitHub).
