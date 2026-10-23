@@ -41,7 +41,6 @@ Only in this master copy (not copied to the repos):
 |---|---|---|
 | `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, the issue guard's tests pass, the cheat sheet lists every skill. |
 | `scripts/drift-check.sh` | Mondays 07:43 Budapest, scheduled task "Workflow drift check" | Compares each repo's `.claude/workflow-version` with `main` here and lists the workflow commits it is missing. The task opens or updates one Backlog issue here when a repo is behind. |
-| `scripts/package-skills.sh` | after a change to a general skill | Zips `grill-me`, `wait-what`, `pr-body`, `diagnosing-bugs` and `questionnaire` into `dist/claude-ai-skills/` for upload to claude.ai (Settings, Capabilities, Skills). Uploaded skills reach every chat and cloud session, so the repo copies can go once the uploads are confirmed. |
 
 ## Add it to a repo
 
@@ -146,7 +145,8 @@ GitLab.
 - Decided by Balázs on 2026-10-23: this repo runs the workflow on itself (its own `CLAUDE.md`, handoff and
   trackers); `scripts/check.sh` runs on every pull request; every pull request gets `/code-review` before it opens
   and a watcher after; a weekly drift check (Mondays 07:43 Budapest, phone notification) reports repos on an old
-  copy; the five general skills are packaged for claude.ai and stay in the repos until the uploads are confirmed
-  to load, so no skill shows twice in the meantime.
+  copy.
+- Skills live only in the repos, never uploaded to a claude.ai account (Balázs, 2026-10-23): he works on a personal
+  and a company account and does not want to install them on each, and only the repo copy reaches every session.
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
   docs, "Settings in cloud sessions"), so the files are copied into each repo.

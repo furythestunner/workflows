@@ -19,8 +19,6 @@ No em dashes.
 - `bash scripts/check.sh` prints no FAIL (CI runs the same on every pull request).
 - A hook change: start a new cloud session on dev-test; the first reply must open with the brief.
 - The rules block below changed: change the block in README.md the same way (`scripts/check.sh` compares them).
-- A general skill changed (grill-me, wait-what, pr-body, diagnosing-bugs, questionnaire): `bash
-  scripts/package-skills.sh` and tell Balázs to upload the new zip.
 
 ## Ask before
 
