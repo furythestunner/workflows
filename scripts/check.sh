@@ -41,11 +41,19 @@ for d in .claude/skills/*/; do
   else bad "CHEATSHEET.md does not list /$n"; fi
 done
 
-# 6. This repo's CLAUDE.md carries README.md's rules block, with dev-test and Balázs filled in.
-want=$(awk '/^## CLAUDE.md block/{f=1;next} f&&/^```markdown/{g=1;next} g&&/^```/{exit} g' README.md |
-  sed 's/<work branch>/dev-test/g; s/<user>/Balázs/g')
-have=$(sed -n '/^<!-- The block below is README.md/,/^<!-- End of the README.md block/p' CLAUDE.md | sed '1d;$d')
-if [ -n "$want" ] && [ "$want" = "$have" ]; then ok "CLAUDE.md block matches README.md"
-else bad "CLAUDE.md block differs from README.md's CLAUDE.md block"; fi
+# 6. The shared rules file is there and holds no project values (every repo gets it as it is).
+if [ ! -f .claude/rules/workflow.md ]; then bad ".claude/rules/workflow.md is missing"
+elif grep -nE '<user>|<work branch>|Balázs|dev-test' .claude/rules/workflow.md >"$err"; then
+  bad ".claude/rules/workflow.md has project values: $(head -3 "$err")"
+else ok ".claude/rules/workflow.md: shared, no project values"; fi
+
+# 7. The sync works on an empty repo: files copied, settings.json merged with its hooks, manifest written.
+tmp=$(mktemp -d)
+if git init -q "$tmp" && bash scripts/sync.sh "$tmp" >"$err" 2>&1 &&
+   [ -f "$tmp/.claude/rules/workflow.md" ] && [ -s "$tmp/.claude/workflow-manifest" ] &&
+   node -e 'const s=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); if(!s.hooks||!s.hooks.SessionStart) process.exit(1)' "$tmp/.claude/settings.json"
+then ok "scripts/sync.sh into an empty repo"
+else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
+rm -rf "$tmp"
 
 exit $fail

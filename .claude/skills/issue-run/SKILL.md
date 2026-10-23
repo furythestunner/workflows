@@ -52,7 +52,7 @@ Mode is the argument: `check` or `build`. Without one, `check`.
    fix what it finds (a finding left as is gets a line in the description saying why). Open it, or add to the open
    one; its description says "Closes #<n>" for each issue built. Subscribe to its activity, so failing checks and
    review comments are handled. Set those issues to **Review**. Never merge.
-5. Update `notes/handoff.md` (Waiting for <user>: the pull request to test and merge) and push.
+5. Update `notes/handoff.md` (Waiting for the user: the pull request to test and merge) and push.
 
 ## Final message
 

@@ -1,0 +1,31 @@
+# Opens or updates the "Workflow update" pull request in every repo of sync/repos.txt when the workflow changes on
+# main, once scripts/check.sh passes. Run it by hand from the Actions tab to sync again, or to sync one repo.
+# Needs the repository secret SYNC_TOKEN (README.md, "How the sync works").
+name: sync
+on:
+  push:
+    branches: [main]
+    paths: ['.claude/**', 'cloud/**', 'scripts/sync*', 'sync/**']
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Only this repo (owner/repo). Empty: every repo in sync/repos.txt'
+        required: false
+concurrency: sync
+permissions:
+  contents: read
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: bash scripts/check.sh
+      - run: bash scripts/sync-all.sh $REPO
+        env:
+          REPO: ${{ inputs.repo }}
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}

@@ -1,0 +1,6 @@
+# The repos the sync keeps on the current workflow, one GitHub owner/repo per line.
+# The sync pull request goes to the repo's work branch (WORK_BRANCH in its .claude/ground-truth.conf), or to its
+# default branch when there is none. Add a line here to bring a new repo in; remove one to stop syncing it.
+Kol-Lab-Design-Kft/intranet
+Kol-Lab-Design-Kft/KolLab.extension
+Kol-Lab-Design-Kft/website
