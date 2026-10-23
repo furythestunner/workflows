@@ -11,6 +11,8 @@ Updated: 2026-10-23
 
 ## Waiting for Balázs
 
+- Drift check: disable it (Claude may, with an OK), then recreate it from the claude.ai scheduled tasks page with
+  furythestunner/workflows and the three Kol-Lab-Design-Kft repos selected; same prompt.
 - Pull request https://github.com/furythestunner/workflows/pull/13 (self-hosting files, CI, the review rule, the
   drift check, the skill packages): test and merge.
 - Upload the five zips from `bash scripts/package-skills.sh` in claude.ai (Settings, Capabilities, Skills), then
@@ -19,9 +21,9 @@ Updated: 2026-10-23
 
 ## Running
 
-- Scheduled task "Workflow drift check" (Mondays 07:43 Budapest, phone notification); test-fired on
-  2026-10-23. It stores no connectors: if a run cannot attach the private repos, recreate it from the claude.ai
-  scheduled tasks page.
+- Scheduled task "Workflow drift check" (Mondays 07:43 Budapest, phone notification). The test run on 2026-10-23
+  FAILED: the session could not attach the private project repos (no add_repo, GitHub 403), so nothing was
+  checked. Fix waits for Balázs (below).
 
 ## Unfinished
 
