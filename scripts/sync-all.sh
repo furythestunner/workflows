@@ -26,7 +26,19 @@ for repo in "${repos[@]}"; do
   fi
   git checkout -q "$base"
   old=$(grep -oE '\b[0-9a-f]{7,40}\b' .claude/workflow-version 2>/dev/null | head -1)
-  git checkout -q -B workflow-sync
+  # An open sync branch with hand commits (e.g. CLAUDE.md moved in the same pull request) is built on, not reset.
+  push=(-f)
+  if git rev-parse -q --verify origin/workflow-sync >/dev/null &&
+     [ -n "$(git log --format=%an "$base..origin/workflow-sync" | grep -vx 'workflows sync')" ]; then
+    git checkout -q -B workflow-sync origin/workflow-sync
+    if ! git merge -q --no-edit "$base" >/dev/null; then
+      echo "::error::$repo: the open sync pull request has hand edits that conflict with $base; merge or close it first"
+      rc=1; cd "$master" || exit 1; echo "::endgroup::"; continue
+    fi
+    push=()
+  else
+    git checkout -q -B workflow-sync
+  fi
 
   notes=$work/notes.md; : >"$notes"
   if ! bash "$master/scripts/sync.sh" "$dir" "$notes"; then
@@ -38,7 +50,7 @@ for repo in "${repos[@]}"; do
   fi
   git -c user.name="workflows sync" -c user.email="workflows-sync@users.noreply.github.com" \
     commit -q -m "Workflow update to furythestunner/workflows $head"
-  if ! git push -q -f origin workflow-sync; then
+  if ! git push -q "${push[@]}" origin workflow-sync; then
     echo "::error::$repo: cannot push the workflow-sync branch (token rights or a branch rule)"; rc=1
     cd "$master" || exit 1; echo "::endgroup::"; continue
   fi
