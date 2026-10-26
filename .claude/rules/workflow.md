@@ -54,8 +54,9 @@ file, say so to the user, and propose either a change in the master copy or a fi
   `workflow-sync` is the only other name. Say in the chat when one is made, list it in the handoff's Unfinished
   until its pull request is merged, and then ask the user to click "Delete branch" on the merged pull request (a
   cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
-- **Time estimates are real session time:** size Claude's own work in minutes of actual session time, not a
-  human developer's hours or days, and give the user's part (clicks, merges, a token to create) separately.
+- **Time estimates are real session time:** size Claude's own work from the measured rounds in `notes/lessons.md`
+  (feel runs 4 to 6 times too high), give the user's part (clicks, merges) separately, and add the measured time
+  there after the work. `.claude/hooks/estimate-check.mjs` sends Claude back when a reply estimates without them.
 - **Use the skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did not
   call, use it and say so in one line ("Used `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely
   skill on every message; a review on a pull request always goes through `/verify`.
