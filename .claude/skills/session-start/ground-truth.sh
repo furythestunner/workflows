@@ -79,6 +79,8 @@ echo "GROUND TRUTH — $(date '+%Y-%m-%d %H:%M %Z')"
 echo
 stale=""
 today=$(date +%F)
+# The shared lessons (synced from the master copy) carry facts too, in every repo
+case " $FACT_FILES " in *" .claude/rules/shared-lessons.md "*) ;; *) FACT_FILES="$FACT_FILES .claude/rules/shared-lessons.md" ;; esac
 for f in $FACT_FILES; do
   [ -f "$ROOT/$f" ] || continue
   out=$(awk -v today="$today" -v f="$f" '
