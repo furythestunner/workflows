@@ -43,8 +43,8 @@ file, say so to the user, and propose either a change in the master copy or a fi
   never more than 12. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over
   one Claude worked out. The brief lists due facts first, under STALE FACTS; re-check them before relying on them.
 - **Corrected twice becomes a hook:** if the user corrects the same behaviour twice, propose a hook that blocks it,
-  with a recommendation. A rule written only as prose is not enough. The first correction goes under "Hook
-  candidates" in `notes/lessons.md`, so the second one is noticed.
+  with a recommendation (`/never-again`). A rule written only as prose is not enough. The first correction goes
+  under "Hook candidates" in `notes/lessons.md`, so the second one is noticed.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   the work branch without asking.
 - **One work branch, named branches only:** all work goes on `WORK_BRANCH`, never on the cloud session's own
@@ -56,8 +56,9 @@ file, say so to the user, and propose either a change in the master copy or a fi
   cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
 - **Time estimates are real session time:** size Claude's own work in minutes of actual session time, not a
   human developer's hours or days, and give the user's part (clicks, merges, a token to create) separately.
-- **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
-  not call, say so in one line ("Tip: `/grill-me` fits this") and carry on with the request.
+- **Use the skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did not
+  call, use it and say so in one line ("Used `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely
+  skill on every message; a review on a pull request always goes through `/verify`.
 - **Crew rounds (`/crew`):** the session is the orchestrator (brief, the user's OK, review, commit); a Haiku `scout`
   reads and a Sonnet `implementer` writes (`.claude/agents/`). The model of each role is the user's call. An open
   round's brief and status are in `notes/crew/`: read it at session start.

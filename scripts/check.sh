@@ -42,6 +42,9 @@ for d in .claude/skills/*/; do
   if grep -q "\`/$n\`" .claude/skills/CHEATSHEET.md; then ok "CHEATSHEET.md lists /$n"
   else bad "CHEATSHEET.md does not list /$n"; fi
 done
+n=$(sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | wc -l)
+if [ "$n" -le 60 ]; then ok "CHEATSHEET.md fits what session-start.sh prints ($n of 60 lines)"
+else bad "CHEATSHEET.md: $n lines from \"## Skills\"; session-start.sh prints only 60"; fi
 
 # 6. The shared rules file is there and holds no project values (every repo gets it as it is).
 if [ ! -f .claude/rules/workflow.md ]; then bad ".claude/rules/workflow.md is missing"
@@ -57,5 +60,15 @@ if git init -q "$tmp" && bash scripts/sync.sh "$tmp" >"$err" 2>&1 &&
 then ok "scripts/sync.sh into an empty repo"
 else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
 rm -rf "$tmp"
+
+# 8. Files loaded into every session, or read whole by a skill, stay short. A warning, not a failure: /distill
+#    shortens one without losing a rule.
+long() { # <file> <max lines>
+  local n; n=$(wc -l <"$1")
+  if [ "$n" -gt "$2" ]; then echo "WARN  $1: $n lines, over $2; shorten it with /distill"; else ok "$1: $n lines"; fi
+}
+long .claude/rules/workflow.md 80
+long CLAUDE.md 60
+for f in .claude/skills/*/SKILL.md; do long "$f" 120; done
 
 exit $fail

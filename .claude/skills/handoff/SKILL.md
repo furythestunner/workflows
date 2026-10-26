@@ -64,8 +64,9 @@ session can find out what happened and why.
      user confirmed reads `(verified by <name>, YYYY-MM-DD) (check by <12 months later>)` and wins over one Claude
      worked out. A re-checked fact gets a new date;
    - a correction from the user → look under "Hook candidates" in `notes/lessons.md`. The first time, add one line
-     there (date, what was corrected). The second time, propose to the user a hook that blocks the behaviour, with a
-     recommendation: a rule written only as prose was not enough;
+     there (date, what was corrected). The second time, run `/never-again`: it proposes a hook that blocks the
+     behaviour, with a recommendation (a rule written only as prose was not enough). Run it too when the session
+     had friction: errors a check could have caught, work that was slow;
    - a narrow fact or a preference → this project's memory directory (local to this machine: anything another
      machine or a cloud session needs goes in the repo);
    - an improvement to the session loop itself (a skill step, a ground-truth check) → its generic part goes back to

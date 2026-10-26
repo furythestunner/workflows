@@ -32,8 +32,15 @@ is the whole update. Workflow to-dos are the issues of this repo.
 | `.claude/skills/pr-body/` | writing a pull request | What changes, evidence, merge danger (one-way or two-way door, blast radius), how to test. |
 | `.claude/skills/issue-run/` | a scheduled run | Unattended work on the issues: `check` asks the questions on the issues, `build` builds Ready issues and opens the pull request. |
 | `.claude/skills/diagnosing-bugs/` | a bug or wrong number | Builds a check that fails on the bug first, then hypotheses, fix, proof, cleanup. |
+| `.claude/skills/never-again/` | `/never-again`, a second correction, `/handoff` | Turns a repeated mistake or session friction into a hook, a check or a rule, with the user's OK. |
+| `.claude/skills/plain/` | `/plain`, "what changed?", every pull request | Explains a change in plain words for a non-developer; `/pr-body` puts it in an "In plain words" section. |
+| `.claude/skills/verify/` | `/verify`, a review on a pull request | Checks each review comment against the code, then fixes it or answers with a reason. |
+| `.claude/skills/distill/` | `/distill`, "too long", a length warning from `scripts/check.sh` | Shortens a text and checks item by item that nothing needed was lost. |
+| `.claude/hooks/skill-nudge.mjs` | every message the user sends | Matches the message against a short phrase table (English and Hungarian) and names the fitting skill to Claude, so skills get used without being typed. A GitHub review event always names `/verify`. `skill-nudge.test.sh` next to it tests it. |
 
-The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skills/THIRD-PARTY.md`).
+`grill-me`, `questionnaire`, `wait-what`, `pr-body` and `diagnosing-bugs` are adapted from github.com/mattpocock/skills
+(MIT); `never-again`, `plain`, `verify` and `distill` from github.com/integralist/agent-skills. Both in
+`.claude/skills/THIRD-PARTY.md`.
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 

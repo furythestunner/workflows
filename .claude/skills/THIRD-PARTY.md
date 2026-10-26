@@ -27,3 +27,12 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 ```
+
+The skills `never-again`, `plain`, `verify` and `distill` are adapted from github.com/integralist/agent-skills
+(commit c8e1ccd, 2026-10-22; skills `durable-rules`, `summarize-for-product`, `code-review-feedback`, `distill`).
+Its README, section "License":
+
+```
+Personal coding skills and preferences. Feel free to use and adapt them for your
+own projects.
+```

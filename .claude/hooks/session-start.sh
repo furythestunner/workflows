@@ -82,6 +82,6 @@ fi
 if [ -f .claude/skills/CHEATSHEET.md ]; then
   echo
   echo "===== .claude/skills/CHEATSHEET.md (the brief ends with \"Your skills\": one short line per skill) ====="
-  sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | head -40
+  sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | head -60
 fi
 exit 0

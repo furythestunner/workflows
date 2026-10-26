@@ -24,6 +24,14 @@ update it in the same commit when a skill is added, renamed or changes what it i
   you set to Ready; questions come as comments on the issue. Type it to run a check by hand.
 - `/code-review` (built in): reviews the diff for bugs. Runs before every pull request opens (CLAUDE.md); type it
   to review any branch or pull request by hand.
+- `/never-again`: turns a mistake that happened twice, or a slow or error-filled session, into a hook, a check or a
+  rule so it does not happen again. Starts when you correct Claude a second time, and at `/handoff`.
+- `/plain`: explains a change or pull request in plain words, ready to paste. Every pull request description gets an
+  "In plain words" section from it; type it, or ask "what changed?".
+- `/verify`: checks each review comment against the code before acting on it, then fixes it or answers with a
+  reason. Runs by itself when a review arrives on a pull request.
+- `/distill`: shortens a long text and checks item by item that nothing important was lost. Use it when a rules
+  file or note grows too long (the check script warns).
 - `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read and a
   Sonnet implementer writes. Use it for a bigger feature round you want done with workers.
 
@@ -35,5 +43,7 @@ update it in the same commit when a skill is added, renamed or changes what it i
   also opens with the brief (one per repo, this list once).
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff when pushed code is newer.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
+- `skill-nudge.mjs`: on every message you send, names the skill that fits (English and Hungarian phrases), so
+  Claude uses it without you typing it. A review on a pull request always goes through `/verify`.
 - `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or Done or closing it;
   only you do that, on GitHub. Moving one back to Backlog or Blocked is allowed. `labels.sh` (next to the ground truth) creates the issue labels.
