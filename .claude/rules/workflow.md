@@ -68,7 +68,7 @@ file, say so to the user, and propose either a change in the master copy or a fi
   values go only in `.claude/ground-truth.conf`, never in the scripts.
 - **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
   sheets, these rules) is made in github.com/furythestunner/workflows. A sync pull request then brings it to every
-  repo; the user merges it. Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
+  repo; the sync merges it (one with steps by hand waits for the user). Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
   next sync undoes the edit. A workflow to-do is an issue in the master copy, never one in a project repo.
 - **A project's own skills** go in `.claude/skills/<name>/` under a name the master copy does not use, with one line
   in `.claude/skills/CHEATSHEET.project.md` (same shape as `CHEATSHEET.md`). The sync never touches them.
