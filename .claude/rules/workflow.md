@@ -62,7 +62,7 @@ file, say so to the user, and propose either a change in the master copy or a fi
   until its pull request is merged, and then ask the user to click "Delete branch" on the merged pull request (a
   cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
 - **Time estimates are measured, not felt:** `.claude/hooks/round-timer.mjs` writes each reply that made a code commit
-  to `notes/rounds.md` (commit it with the docs); the brief shows the latest. Size Claude's own work from the
+  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's own work from the
   closest round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
 - **Use the skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did not
   call, use it and say so in one line ("Used `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely
