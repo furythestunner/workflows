@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-26
+Updated: 2026-10-26 (after the less-admin change)
 
 ## Next
 
