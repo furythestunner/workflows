@@ -44,7 +44,7 @@
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/estimate-check.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/round-timer.mjs\"",
             "timeout": 30
           },
           {

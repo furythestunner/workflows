@@ -45,9 +45,12 @@ update it in the same commit when a skill is added, renamed or changes what it i
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
 - `skill-nudge.mjs`: on every message you send, names the skill that fits (English and Hungarian phrases), so
   Claude uses it without you typing it. A review on a pull request always goes through `/verify`.
-- `estimate-check.mjs`: after every reply, sends Claude back once to check a time estimate against the measured
-  times in `notes/lessons.md`, because estimates by feel ran 4 to 6 times too high.
+- `round-timer.mjs`: after every reply that made a commit, writes how long it took to `notes/rounds.md`; the brief
+  shows the latest, so time estimates come from measured rounds, not from feel.
 - `lesson-check.mjs`: after a reply that added a lesson, has Claude sort it: only this project, or shared (it then
   reaches every repo through the master copy, `.claude/rules/shared-lessons.md`).
 - `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or Done or closing it;
-  only you do that, on GitHub. Moving one back to Backlog or Blocked is allowed. `labels.sh` (next to the ground truth) creates the issue labels.
+  only you do that, on GitHub. Moving one back to Backlog or Blocked is allowed. `labels.sh` (next to the ground
+  truth) creates the issue labels.
+- `branch-guard.mjs`: before every git push or new branch, blocks any branch name other than the work branch,
+  `<work branch>-<topic>` or `workflow-sync`.
