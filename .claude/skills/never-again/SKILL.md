@@ -31,7 +31,7 @@ not a rule. A rule written only as prose is the weakest fix: prefer a hook or a 
    | Hook, workflow rule, skill change, cheat sheet | The master copy (github.com/furythestunner/workflows). In a project repo: a GitHub issue there, never an edit here (synced files, `.claude/workflow-manifest`) |
    | A check for this project's code | The project's own checks, named in its CLAUDE.md |
    | A rule only this project needs | The project's CLAUDE.md |
-   | A lesson, a tool quirk, a fact that can go stale | `notes/lessons.md` (a stale-able fact ends in `(check by YYYY-MM-DD)`) |
+   | A lesson, a tool quirk, a fact that can go stale | `notes/lessons.md` (a stale-able fact ends in `(check by YYYY-MM-DD)`); one that holds in any repo under its `## Shared (goes to every repo)` section |
    | A first correction | One line under "Hook candidates" in `notes/lessons.md`: date, what was corrected |
 
    Done when every item has a place.
