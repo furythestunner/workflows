@@ -10,13 +10,11 @@ Updated: 2026-10-26 (after the less-admin change)
 
 ## Waiting for Balázs
 
-- claude-mods joins the sync: create the `SYNC_TOKEN_OWN` token (README.md, "The token"), then merge the pull
-  request that adds it to `sync/repos.txt`. The sync then opens claude-mods' first "Workflow update" pull request.
-
+- claude-mods: its first "Workflow update" pull request https://github.com/furythestunner/claude-mods/pull/18 went to
+  `main` (no `ground-truth.conf` there yet). Decide: fill in `.claude/ground-truth.conf` on it (README.md, "Add it to a
+  repo", step 2, with `WORK_BRANCH="mods-test"`) and merge, so later syncs go to `mods-test`.
 - Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
   each), then delete the old merged branches once on the Branches page.
-- Merge #22 (dev-test → main): from then on the sync merges its own "Workflow update" pull requests, including the
-  ones open now in intranet, KolLab.extension and website.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
 - SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
