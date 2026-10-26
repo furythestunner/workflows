@@ -11,7 +11,7 @@ Updated: 2026-10-26 (after shared lessons, #23 merged, and the issue guard fix, 
 ## Waiting for Balázs
 
 - Merge pull request #24 (issue guard: "close 12" counts like "close #12"); its checks are green.
-- Say "distill workflow.md" if you want the shared rules shortened (it is at its 80-line limit).
+- Merge pull request #25 (shared rules shortened to 70 lines), then click "Delete branch" on it.
 - Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
   each), then delete the old merged branches once on the Branches page.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
@@ -29,5 +29,6 @@ Updated: 2026-10-26 (after shared lessons, #23 merged, and the issue guard fix, 
 
 ## Unfinished
 
+- dev-test-shorter-rules: the shorter shared rules, in pull request #25, not merged yet.
 - dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
