@@ -57,8 +57,10 @@ session can find out what happened and why.
 5. **Save memories** for what a future session would otherwise get wrong: corrections from the user, surprising
    facts, confirmed preferences. Check the index for an existing memory first. Route each one by how far it holds:
    - a rule every session needs (a tool quirk, a git habit, a verification rule, a way of working with the owner)
-     → one line in `notes/lessons.md`, even when it sounds generic: a lesson belongs to the project that learned it
-     and travels with its repo. Merge, don't append. Once a lesson is there, delete the memories it fully covers;
+     → one line in `notes/lessons.md`; if it holds in any repo (Claude Code, the PCs, tools, how Claude works with
+     the user), under its `## Shared (goes to every repo)` section, from where the master copy brings it to every
+     repo (`.claude/rules/shared-lessons.md`). Merge, don't append. Once a lesson is there, delete the memories it
+     fully covers;
    - a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) → `notes/lessons.md`,
      never a memory, ending in `(check by YYYY-MM-DD)`: 3 months ahead by default, never more than 12. A fact the
      user confirmed reads `(verified by <name>, YYYY-MM-DD) (check by <12 months later>)` and wins over one Claude

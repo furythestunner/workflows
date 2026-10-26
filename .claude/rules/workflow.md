@@ -46,6 +46,12 @@ file, say so to the user, and propose either a change in the master copy or a fi
 - **Corrected twice becomes a hook:** if the user corrects the same behaviour twice, propose a hook that blocks it,
   with a recommendation (`/never-again`). A rule written only as prose is not enough. The first correction goes
   under "Hook candidates" in `notes/lessons.md`, so the second one is noticed.
+- **Lessons, project or shared:** a lesson only about this project goes in `notes/lessons.md`; one that holds in any
+  repo (Claude Code, the PCs and tools, how Claude works with the user, a first correction) goes under
+  `## Shared (goes to every repo)` at the end of it. A daily job in the master copy collects those into
+  `.claude/rules/shared-lessons.md`, which the sync brings to every repo (loaded by itself); delete a lesson from
+  the Shared section once it is there. In the master copy one goes straight into that file.
+  `.claude/hooks/lesson-check.mjs` asks for both after a reply.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   the work branch without asking.
 - **One work branch, named branches only:** all work goes on `WORK_BRANCH`, never on the cloud session's own
