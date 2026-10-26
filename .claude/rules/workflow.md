@@ -25,7 +25,8 @@ file, say so to the user, and propose either a change in the master copy or a fi
 - **Trackers:** open work is the repo's GitHub issues (`BACKLOG.md` only links there). Each issue has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
   Ready means the user approved it; an open issue in any other status is for the user to look at, or for later. Only
-  the user moves an issue to Ready or Done and closes issues, on GitHub; Claude gives the link. Claude opens new issues
+  the user moves an issue to Ready or Done, on GitHub; Claude gives the link. Claude closes an issue only when the
+  user's own message says so by number ("close #12"); otherwise the user closes it. Claude opens new issues
   in Backlog and may move: Ready → In progress; a Backlog issue the user hands out in the chat → In progress (the chat
   is the approval); any → Blocked (after posting the question on the issue, never guessing); any → Backlog when it
   turns out to be on hold (a comment says what it waits for, the title starts with ⏸️ and names the trigger); In

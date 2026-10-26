@@ -37,7 +37,7 @@ open that already shipped, "done" items whose code changed since).
    - **Today's date and time** against deadlines (expiries, scheduled jobs, events). Anything due within a day goes
      first.
    - Before proposing an issue, re-confirm it in the code: is it still broken or missing? If it is done already,
-     say so and comment on the issue that it can be closed (only the user closes issues). A fix you *depend on*:
+     say so and comment on the issue that it can be closed (or close it, if the user says so by number). A fix you *depend on*:
      spot-check that it still holds.
    - **STALE FACTS** → say each one first in the brief, and re-check it before anything relies on it. A fact the user
      confirmed (`verified by <name>, <date>`) wins over one Claude worked out; a re-checked fact gets a new date.

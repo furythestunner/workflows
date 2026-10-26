@@ -63,7 +63,11 @@ for repo in "${repos[@]}"; do
   body=$work/body.md
   {
     echo "Brings this repo's workflow (skills, agents, hooks, shared rules) up to furythestunner/workflows \`$head\`."
-    echo "Opened by the sync. Merging it is the whole update."
+    if [ -s "$notes" ] || [ ${#push[@]} -eq 0 ]; then
+      echo "Opened by the sync. Merging it is the whole update."
+    else
+      echo "Opened and merged by the sync (scripts/check.sh passed in the master copy first)."
+    fi
     echo
     echo "## What changed in the workflow"
     if [ -n "$old" ] && git -C "$master" merge-base --is-ancestor "$old" HEAD 2>/dev/null; then
@@ -85,7 +89,21 @@ for repo in "${repos[@]}"; do
       echo "::error::$repo: cannot update pull request #$num"; rc=1
     fi
   else
-    gh pr create -R "$repo" --base "$base" --head workflow-sync --title "Workflow update ($head)" --body-file "$body" || rc=1
+    if url=$(gh pr create -R "$repo" --base "$base" --head workflow-sync --title "Workflow update ($head)" --body-file "$body"); then
+      echo "$url"; num=${url##*/}
+    else
+      rc=1; num=
+    fi
+  fi
+  # Merged right away, unless it needs steps by hand ("Do before merging") or carries hand commits: the master copy
+  # was already checked and merged by Balázs, so a second click per repo adds nothing (Balázs, 2026-10-26).
+  if [ -n "$num" ] && [ ! -s "$notes" ] && [ ${#push[@]} -gt 0 ]; then
+    if gh pr merge "$num" -R "$repo" --merge >/dev/null; then
+      gh api -X DELETE "repos/$repo/git/refs/heads/workflow-sync" >/dev/null 2>&1
+      echo "$repo: merged #$num into $base"
+    else
+      echo "::warning::$repo: could not merge #$num by itself; it waits for a merge by hand"
+    fi
   fi
   cd "$master" || exit 1
   echo "::endgroup::"

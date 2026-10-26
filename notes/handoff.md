@@ -13,15 +13,14 @@ Updated: 2026-10-26
 - claude-mods joins the sync: create the `SYNC_TOKEN_OWN` token (README.md, "The token"), then merge the pull
   request that adds it to `sync/repos.txt`. The sync then opens claude-mods' first "Workflow update" pull request.
 
-- Delete 20 merged branches on GitHub by hand (a cloud session gets 403): claude-mods: all except `main` and
-  `mods-test`; workflows: the four `claude/...`; intranet: `design-review`, `workflow-sync`, `ccr-1699d267-miqhie`;
-  KolLab.extension and website: `workflow-sync`.
-- Merge the "Workflow update" pull request in intranet, KolLab.extension and website (#21 merged 2026-10-26; the sync opened them).
-- Close #5 (rolled out) and #16 (drift fixed by the sync) on GitHub, once the brief looks right.
+- Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
+  each), then delete the old merged branches once on the Branches page.
+- Merge #22 (dev-test → main): from then on the sync merges its own "Workflow update" pull requests, including the
+  ones open now in intranet, KolLab.extension and website.
+- Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
 - SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
-- Close https://github.com/furythestunner/workflows/issues/14 as not planned (skills stay in the repos).
-- Labels on #5, #6 and #12; #12 can be closed (dev-test exists on GitHub).
+- #12 and #14 can be closed (dev-test exists; skills stay in the repos): say "close #12 and #14".
 
 ## Running
 
