@@ -43,14 +43,23 @@ file, say so to the user, and propose either a change in the master copy or a fi
   never more than 12. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over
   one Claude worked out. The brief lists due facts first, under STALE FACTS; re-check them before relying on them.
 - **Corrected twice becomes a hook:** if the user corrects the same behaviour twice, propose a hook that blocks it,
-  with a recommendation. A rule written only as prose is not enough. The first correction goes under "Hook
-  candidates" in `notes/lessons.md`, so the second one is noticed.
+  with a recommendation (`/never-again`). A rule written only as prose is not enough. The first correction goes
+  under "Hook candidates" in `notes/lessons.md`, so the second one is noticed.
 - **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
   the work branch without asking.
-- **Time estimates are real session time:** size Claude's own work in minutes of actual session time, not a
-  human developer's hours or days, and give the user's part (clicks, merges, a token to create) separately.
-- **Point out a skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did
-  not call, say so in one line ("Tip: `/grill-me` fits this") and carry on with the request.
+- **One work branch, named branches only:** all work goes on `WORK_BRANCH`, never on the cloud session's own
+  `claude/...` branch and never on `main`. A second branch only when parallel work really needs one (the user asks
+  for it, or a round on the work branch must not mix with this one), named `WORK_BRANCH-<topic>`: the topic in 1 to
+  4 lowercase words joined by hyphens (`app-test-leave-totals` for a work branch `app-test`). The sync's own
+  `workflow-sync` is the only other name. Say in the chat when one is made, list it in the handoff's Unfinished
+  until its pull request is merged, and then ask the user to click "Delete branch" on the merged pull request (a
+  cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
+- **Time estimates are real session time:** size Claude's own work from the measured rounds in `notes/lessons.md`
+  (feel runs 4 to 6 times too high), give the user's part (clicks, merges) separately, and add the measured time
+  there after the work. `.claude/hooks/estimate-check.mjs` sends Claude back when a reply estimates without them.
+- **Use the skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did not
+  call, use it and say so in one line ("Used `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely
+  skill on every message; a review on a pull request always goes through `/verify`.
 - **Crew rounds (`/crew`):** the session is the orchestrator (brief, the user's OK, review, commit); a Haiku `scout`
   reads and a Sonnet `implementer` writes (`.claude/agents/`). The model of each role is the user's call. An open
   round's brief and status are in `notes/crew/`: read it at session start.

@@ -19,7 +19,9 @@ is the whole update. Workflow to-dos are the issues of this repo.
 | `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo, the skills list once. In a one-repo session it does nothing. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. |
+| `.claude/hooks/estimate-check.mjs` | after every reply | If the reply gives a time and Claude did not read `notes/lessons.md` this turn, sends Claude back once to check the estimate against the measured rounds there. `estimate-check.test.sh` next to it tests it. |
 | `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `Status: Ready` or `Status: Done`, from closing an issue, and from opening one outside `Status: Backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
+| `.claude/hooks/branch-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from creating or pushing a branch named other than `WORK_BRANCH`, `WORK_BRANCH-<topic>` (1 to 4 lowercase words) or the sync's `workflow-sync`; a cloud session's own `claude/...` branch included. Deleting is never blocked. `branch-guard.test.sh` next to it tests it. |
 | `.claude/rules/workflow.md` | every session (Claude Code loads it like CLAUDE.md) | The shared session and tracker rules, the same in every repo. A project's CLAUDE.md only adds to them. |
 | `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it and the brief ends with a short "Your skills" list, so they do not get forgotten. Update it with any skill change. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (stale facts first, branches against GitHub, uncommitted work, open PRs and CI, open issues by status). `labels.sh` creates the issue labels. |
@@ -31,8 +33,15 @@ is the whole update. Workflow to-dos are the issues of this repo.
 | `.claude/skills/pr-body/` | writing a pull request | What changes, evidence, merge danger (one-way or two-way door, blast radius), how to test. |
 | `.claude/skills/issue-run/` | a scheduled run | Unattended work on the issues: `check` asks the questions on the issues, `build` builds Ready issues and opens the pull request. |
 | `.claude/skills/diagnosing-bugs/` | a bug or wrong number | Builds a check that fails on the bug first, then hypotheses, fix, proof, cleanup. |
+| `.claude/skills/never-again/` | `/never-again`, a second correction, `/handoff` | Turns a repeated mistake or session friction into a hook, a check or a rule, with the user's OK. |
+| `.claude/skills/plain/` | `/plain`, "what changed?", every pull request | Explains a change in plain words for a non-developer; `/pr-body` puts it in an "In plain words" section. |
+| `.claude/skills/verify/` | `/verify`, a review on a pull request | Checks each review comment against the code, then fixes it or answers with a reason. |
+| `.claude/skills/distill/` | `/distill`, "too long", a length warning from `scripts/check.sh` | Shortens a text and checks item by item that nothing needed was lost. |
+| `.claude/hooks/skill-nudge.mjs` | every message the user sends | Matches the message against a short phrase table (English and Hungarian) and names the fitting skill to Claude, so skills get used without being typed. A GitHub review event always names `/verify`. `skill-nudge.test.sh` next to it tests it. |
 
-The last five are adapted from github.com/mattpocock/skills (MIT, `.claude/skills/THIRD-PARTY.md`).
+`grill-me`, `questionnaire`, `wait-what`, `pr-body` and `diagnosing-bugs` are adapted from github.com/mattpocock/skills
+(MIT); `never-again`, `plain`, `verify` and `distill` from github.com/integralist/agent-skills. Both in
+`.claude/skills/THIRD-PARTY.md`.
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
@@ -139,6 +148,10 @@ GitLab.
   copy.
 - Skills live only in the repos, never uploaded to a claude.ai account (Balázs, 2026-10-23): he works on a personal
   and a company account and does not want to install them on each, and only the repo copy reaches every session.
+- Branches (Balázs, 2026-10-23): work goes on the work branch; a second branch only for parallel work, named
+  `WORK_BRANCH-<topic>`, and the branch guard blocks any other name. No automatic branch deletion on GitHub: it
+  would delete the work branch itself when its pull request is merged. A merged extra branch is deleted by hand
+  ("Delete branch" on the pull request); a cloud session cannot delete branches (GitHub answers 403).
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
   docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo.
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo

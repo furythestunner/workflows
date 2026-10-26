@@ -8,6 +8,11 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/issue-guard.mjs\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/branch-guard.mjs\"",
+            "timeout": 30
           }
         ]
       }
@@ -36,6 +41,22 @@
             "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/decision-check.mjs\"",
             "timeout": 30
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/estimate-check.mjs\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/skill-nudge.mjs\"",
+            "timeout": 10
           }
         ]
       }

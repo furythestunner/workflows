@@ -10,6 +10,11 @@
   cannot attach private repos (GitHub 403). Create tasks that need private repos from the claude.ai scheduled tasks
   page, with the repos selected (check by 2027-01-23)
 
+- Measured rounds (Claude's estimates by feel ran 4 to 6 times too high; estimate from these, add each new one): 4 skills
+  adapted + 1 hook with tests + check script + docs + code review with 8 fixes + pull request = about 15 min
+  (issue #20, 2026-10-26); 1 Stop hook with tests + rule + docs = about 5 min (2026-10-26). Give Balázs's part
+  (reviews, merges) separately
+
 ## Hook candidates
 
-None yet.
+None open. Time estimates (2026-10-26) became `.claude/hooks/estimate-check.mjs`.

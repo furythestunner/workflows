@@ -14,6 +14,9 @@ The reader merges it, and may not read code. Write for what people see and do. S
 ```markdown
 <If the pull request changes the database or needs a manual step after the merge, say so here, first, in bold.>
 
+## In plain words
+<written with /plain (shape `pr`): what changes for whom, what they will notice, what they need to do>
+
 ## What changes
 - <for whom, on which page or tool, in plain words; one line each>
 
