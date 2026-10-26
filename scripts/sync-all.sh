@@ -1,18 +1,23 @@
 #!/bin/bash
 # Opens or updates one "Workflow update" pull request in every repo of sync/repos.txt (or only the repos given as
 # arguments). Run by .github/workflows/sync.yml; GH_TOKEN needs Contents and Pull requests write access to them.
+# A fine-grained token reaches one owner only, so repos of OWN_OWNER (this repo's owner) use GH_TOKEN_OWN instead.
 set -uo pipefail
 master=$(cd "$(dirname "$0")/.." && pwd)
 head=$(git -C "$master" rev-parse --short HEAD)
 work=$(mktemp -d)
 rc=0
+other_token=${GH_TOKEN:-}
 if [ $# -gt 0 ]; then repos=("$@"); else mapfile -t repos < <(grep -vE '^[[:space:]]*(#|$)' "$master/sync/repos.txt"); fi
 
 for repo in "${repos[@]}"; do
   echo "::group::$repo"
   dir=$work/${repo//\//_}
+  secret=SYNC_TOKEN
+  export GH_TOKEN=$other_token
+  if [ -n "${OWN_OWNER:-}" ] && [ "${repo%%/*}" = "$OWN_OWNER" ]; then secret=SYNC_TOKEN_OWN; export GH_TOKEN=${GH_TOKEN_OWN:-}; fi
   if ! git clone -q "https://x-access-token:${GH_TOKEN}@github.com/$repo.git" "$dir"; then
-    echo "::error::$repo: cannot clone it (is it in the token's repository list?)"; rc=1; echo "::endgroup::"; continue
+    echo "::error::$repo: cannot clone it (is it in the repository list of the $secret token?)"; rc=1; echo "::endgroup::"; continue
   fi
   cd "$dir" || continue
 
@@ -58,7 +63,11 @@ for repo in "${repos[@]}"; do
   body=$work/body.md
   {
     echo "Brings this repo's workflow (skills, agents, hooks, shared rules) up to furythestunner/workflows \`$head\`."
-    echo "Opened by the sync. Merging it is the whole update."
+    if [ -s "$notes" ] || [ ${#push[@]} -eq 0 ]; then
+      echo "Opened by the sync. Merging it is the whole update."
+    else
+      echo "Opened and merged by the sync (scripts/check.sh passed in the master copy first)."
+    fi
     echo
     echo "## What changed in the workflow"
     if [ -n "$old" ] && git -C "$master" merge-base --is-ancestor "$old" HEAD 2>/dev/null; then
@@ -80,7 +89,21 @@ for repo in "${repos[@]}"; do
       echo "::error::$repo: cannot update pull request #$num"; rc=1
     fi
   else
-    gh pr create -R "$repo" --base "$base" --head workflow-sync --title "Workflow update ($head)" --body-file "$body" || rc=1
+    if url=$(gh pr create -R "$repo" --base "$base" --head workflow-sync --title "Workflow update ($head)" --body-file "$body"); then
+      echo "$url"; num=${url##*/}
+    else
+      rc=1; num=
+    fi
+  fi
+  # Merged right away, unless it needs steps by hand ("Do before merging") or carries hand commits: the master copy
+  # was already checked and merged by Balázs, so a second click per repo adds nothing (Balázs, 2026-10-26).
+  if [ -n "$num" ] && [ ! -s "$notes" ] && [ ${#push[@]} -gt 0 ]; then
+    if gh pr merge "$num" -R "$repo" --merge >/dev/null; then
+      gh api -X DELETE "repos/$repo/git/refs/heads/workflow-sync" >/dev/null 2>&1
+      echo "$repo: merged #$num into $base"
+    else
+      echo "::warning::$repo: could not merge #$num by itself; it waits for a merge by hand"
+    fi
   fi
   cd "$master" || exit 1
   echo "::endgroup::"

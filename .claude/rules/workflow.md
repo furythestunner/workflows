@@ -25,7 +25,8 @@ file, say so to the user, and propose either a change in the master copy or a fi
 - **Trackers:** open work is the repo's GitHub issues (`BACKLOG.md` only links there). Each issue has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
   Ready means the user approved it; an open issue in any other status is for the user to look at, or for later. Only
-  the user moves an issue to Ready or Done and closes issues, on GitHub; Claude gives the link. Claude opens new issues
+  the user moves an issue to Ready or Done, on GitHub; Claude gives the link. Claude closes an issue only when the
+  user's own message says so by number ("close #12"); otherwise the user closes it. Claude opens new issues
   in Backlog and may move: Ready → In progress; a Backlog issue the user hands out in the chat → In progress (the chat
   is the approval); any → Blocked (after posting the question on the issue, never guessing); any → Backlog when it
   turns out to be on hold (a comment says what it waits for, the title starts with ⏸️ and names the trigger); In
@@ -67,7 +68,7 @@ file, say so to the user, and propose either a change in the master copy or a fi
   values go only in `.claude/ground-truth.conf`, never in the scripts.
 - **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
   sheets, these rules) is made in github.com/furythestunner/workflows. A sync pull request then brings it to every
-  repo; the user merges it. Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
+  repo; the sync merges it (one with steps by hand waits for the user). Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
   next sync undoes the edit. A workflow to-do is an issue in the master copy, never one in a project repo.
 - **A project's own skills** go in `.claude/skills/<name>/` under a name the master copy does not use, with one line
   in `.claude/skills/CHEATSHEET.project.md` (same shape as `CHEATSHEET.md`). The sync never touches them.

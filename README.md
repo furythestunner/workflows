@@ -8,8 +8,8 @@ Started from github.com/truongfelix/workflow (6d2623c, 2026-10-10).
 A cloud session (claude.ai/code, the phone app) reads only the repo's own `.claude/` folder. Settings in
 `~/.claude` on a PC never reach it, and plugins do not load there. So every repo carries the files, and this repo is
 the one place they are edited. A GitHub Action copies them: when a change reaches `main` here and the checks pass,
-it opens (or updates) one "Workflow update" pull request in each repo of `sync/repos.txt`. Merging that pull request
-is the whole update. Workflow to-dos are the issues of this repo.
+it opens (or updates) one "Workflow update" pull request in each repo of `sync/repos.txt`. The sync merges it by itself
+unless it needs a step by hand (its "Do before merging" list). Workflow to-dos are the issues of this repo.
 
 ## What it does
 
@@ -50,7 +50,7 @@ Only in this master copy (not copied to the repos):
 | File | When | What |
 |---|---|---|
 | `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, the issue guard's tests pass, the cheat sheet lists every skill. |
-| `.github/workflows/sync.yml`, `scripts/sync-all.sh` | every push to `main` that changes the workflow; by hand from the Actions tab | Runs `scripts/check.sh`, then opens or updates the "Workflow update" pull request in each repo of `sync/repos.txt`. |
+| `.github/workflows/sync.yml`, `scripts/sync-all.sh` | every push to `main` that changes the workflow; by hand from the Actions tab | Runs `scripts/check.sh`, then opens or updates the "Workflow update" pull request in each repo of `sync/repos.txt` and merges it when it needs no step by hand. |
 | `scripts/sync.sh`, `scripts/sync-settings.mjs` | inside the sync; by hand to try a change | Brings one checkout up to this copy (README.md, "How the sync works"). |
 | `sync/repos.txt` | read by the sync | The repos that get the workflow, one `owner/repo` per line. |
 | `scripts/drift-check.sh` | Mondays 07:43 Budapest, scheduled task "Workflow drift check" | Compares each repo's `.claude/workflow-version` with `main` here and lists the workflow commits it is missing. The task opens or updates one Backlog issue here when a repo is behind. |
@@ -80,8 +80,10 @@ sessions run, from a branch named `workflow-sync`. There is one open sync pull r
 change updates it. The version reaches `main` with the next work branch to `main` merge, so until then the drift
 check, which reads `main`, may still list the repo as behind.
 
-**Latest or pinned.** Every repo follows the latest version through a pull request that the user merges (Balázs,
-2026-10-23). Nothing merges by itself.
+**Latest or pinned.** Every repo follows the latest version. The sync merges its own pull request right away
+(Balázs, 2026-10-26: the change was already checked and merged here), except one with a "Do before merging" list or
+with hand commits on `workflow-sync`: that one waits for the user. If the merge fails (e.g. the repo allows no merge
+commits), the pull request stays open with a warning in the Actions log.
 
 **The token.** The sync writes to repos of another owner (Kol-Lab-Design-Kft), so it needs a token in this repo's
 secret `SYNC_TOKEN`:
@@ -93,11 +95,15 @@ secret `SYNC_TOKEN`:
 4. This repo, Settings, Secrets and variables, Actions, New repository secret: name `SYNC_TOKEN`, the token as value.
 5. Actions tab, "sync", Run workflow: one pull request per repo, or "already current".
 
-A new repo added later needs to be added to the token's repository list too.
+A fine-grained token reaches one owner only. Repos of this repo's own owner (furythestunner, e.g. claude-mods) use a
+second token in the secret `SYNC_TOKEN_OWN`: the same steps with Resource owner furythestunner, only those repos, and
+the secret named `SYNC_TOKEN_OWN`.
+
+A new repo added later needs to be added to its owner's token's repository list too.
 
 ## Add it to a repo
 
-1. Add `owner/repo` to `sync/repos.txt` (and to the token's repository list), merge to `main`. The sync opens the
+1. Add `owner/repo` to `sync/repos.txt` (and to its owner's token's repository list), merge to `main`. The sync opens the
    repo's first "Workflow update" pull request, with a template `ground-truth.conf` when the repo has none.
 2. In that pull request's branch, fill in `.claude/ground-truth.conf`: `REPOS`, `WORK_BRANCH`, `HANDOFF`, `DOCS`,
    `USER_NAME`. Then merge it.
@@ -117,6 +123,20 @@ A new repo added later needs to be added to the token's repository list too.
    by status. `bash .claude/hooks/issue-guard.test.sh` must print no FAIL.
 
 Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
+
+## Delete merged branches by themselves
+
+Once per repo (about 2 min each, in this repo and each repo of `sync/repos.txt`). Do step 1 first: without it,
+GitHub would delete the work branch when it is merged to `main`.
+
+1. The repo on GitHub, Settings, Rules, Rulesets, New ruleset, New branch ruleset. Name: `keep main and work branch`.
+   Enforcement status: Active. Target branches, Add target, Include by pattern: `main`; again for the work branch
+   (e.g. `dev-test`). Under Rules, tick only "Restrict deletions". Create.
+2. Settings, General, scroll to Pull Requests, tick "Automatically delete head branches".
+3. Test once: the next merged pull request from the work branch to `main` must leave the work branch in place
+   (the Branches page lists it). If it is gone, recreate it from `main` and tell Claude.
+
+The branches already merged stay: delete those once on the Branches page (the bin icon).
 
 ## Rules of this setup
 
@@ -149,11 +169,17 @@ GitLab.
 - Skills live only in the repos, never uploaded to a claude.ai account (Balázs, 2026-10-23): he works on a personal
   and a company account and does not want to install them on each, and only the repo copy reaches every session.
 - Branches (Balázs, 2026-10-23): work goes on the work branch; a second branch only for parallel work, named
-  `WORK_BRANCH-<topic>`, and the branch guard blocks any other name. No automatic branch deletion on GitHub: it
-  would delete the work branch itself when its pull request is merged. A merged extra branch is deleted by hand
-  ("Delete branch" on the pull request); a cloud session cannot delete branches (GitHub answers 403).
+  `WORK_BRANCH-<topic>`, and the branch guard blocks any other name. Merged branches are deleted by GitHub
+  ("Automatically delete head branches", 2026-10-26), with a ruleset that protects `main` and the work branch from
+  deletion (README.md, "Delete merged branches by themselves"); a cloud session cannot delete branches (GitHub
+  answers 403).
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
   docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo.
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo
-  follows the latest version, merged by Balázs. The shared rules moved out of each CLAUDE.md into
+  follows the latest version (merged by the sync itself since 2026-10-26). The shared rules moved out of each CLAUDE.md into
   `.claude/rules/workflow.md`; a project's CLAUDE.md only adds to them. This repo stays on Balázs's personal account.
+- Less admin (Balázs, 2026-10-26): Claude closes an issue when Balázs's own message names it ("close #12"; the guard
+  reads only his typed message, so an issue comment or a pasted text cannot unlock it). The sync merges its own pull
+  requests. Merged branches delete themselves. Nothing new is added to the workflow for now.
+- claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
+  every other repo's instead of a personal or plugin copy. Work branch `mods-test`; its `PLAN.md` moves to issues.
