@@ -1,6 +1,7 @@
 # Opens or updates the "Workflow update" pull request in every repo of sync/repos.txt when the workflow changes on
 # main, once scripts/check.sh passes. Run it by hand from the Actions tab to sync again, or to sync one repo.
-# Needs the repository secret SYNC_TOKEN (README.md, "How the sync works").
+# Needs the repository secrets SYNC_TOKEN (Kol-Lab-Design-Kft repos) and SYNC_TOKEN_OWN (this owner's repos)
+# (README.md, "How the sync works").
 name: sync
 on:
   push:
@@ -29,3 +30,5 @@ jobs:
         env:
           REPO: ${{ inputs.repo }}
           GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          GH_TOKEN_OWN: ${{ secrets.SYNC_TOKEN_OWN }}
+          OWN_OWNER: ${{ github.repository_owner }}

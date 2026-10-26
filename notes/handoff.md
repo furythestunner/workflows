@@ -10,6 +10,9 @@ Updated: 2026-10-26
 
 ## Waiting for Balázs
 
+- claude-mods joins the sync: create the `SYNC_TOKEN_OWN` token (README.md, "The token"), then merge the pull
+  request that adds it to `sync/repos.txt`. The sync then opens claude-mods' first "Workflow update" pull request.
+
 - Delete 20 merged branches on GitHub by hand (a cloud session gets 403): claude-mods: all except `main` and
   `mods-test`; workflows: the four `claude/...`; intranet: `design-review`, `workflow-sync`, `ccr-1699d267-miqhie`;
   KolLab.extension and website: `workflow-sync`.

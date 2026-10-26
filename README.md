@@ -93,11 +93,15 @@ secret `SYNC_TOKEN`:
 4. This repo, Settings, Secrets and variables, Actions, New repository secret: name `SYNC_TOKEN`, the token as value.
 5. Actions tab, "sync", Run workflow: one pull request per repo, or "already current".
 
-A new repo added later needs to be added to the token's repository list too.
+A fine-grained token reaches one owner only. Repos of this repo's own owner (furythestunner, e.g. claude-mods) use a
+second token in the secret `SYNC_TOKEN_OWN`: the same steps with Resource owner furythestunner, only those repos, and
+the secret named `SYNC_TOKEN_OWN`.
+
+A new repo added later needs to be added to its owner's token's repository list too.
 
 ## Add it to a repo
 
-1. Add `owner/repo` to `sync/repos.txt` (and to the token's repository list), merge to `main`. The sync opens the
+1. Add `owner/repo` to `sync/repos.txt` (and to its owner's token's repository list), merge to `main`. The sync opens the
    repo's first "Workflow update" pull request, with a template `ground-truth.conf` when the repo has none.
 2. In that pull request's branch, fill in `.claude/ground-truth.conf`: `REPOS`, `WORK_BRANCH`, `HANDOFF`, `DOCS`,
    `USER_NAME`. Then merge it.
@@ -157,3 +161,5 @@ GitLab.
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo
   follows the latest version, merged by Balázs. The shared rules moved out of each CLAUDE.md into
   `.claude/rules/workflow.md`; a project's CLAUDE.md only adds to them. This repo stays on Balázs's personal account.
+- claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
+  every other repo's instead of a personal or plugin copy. Work branch `mods-test`; its `PLAN.md` moves to issues.

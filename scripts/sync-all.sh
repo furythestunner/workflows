@@ -1,18 +1,23 @@
 #!/bin/bash
 # Opens or updates one "Workflow update" pull request in every repo of sync/repos.txt (or only the repos given as
 # arguments). Run by .github/workflows/sync.yml; GH_TOKEN needs Contents and Pull requests write access to them.
+# A fine-grained token reaches one owner only, so repos of OWN_OWNER (this repo's owner) use GH_TOKEN_OWN instead.
 set -uo pipefail
 master=$(cd "$(dirname "$0")/.." && pwd)
 head=$(git -C "$master" rev-parse --short HEAD)
 work=$(mktemp -d)
 rc=0
+other_token=${GH_TOKEN:-}
 if [ $# -gt 0 ]; then repos=("$@"); else mapfile -t repos < <(grep -vE '^[[:space:]]*(#|$)' "$master/sync/repos.txt"); fi
 
 for repo in "${repos[@]}"; do
   echo "::group::$repo"
   dir=$work/${repo//\//_}
+  secret=SYNC_TOKEN
+  export GH_TOKEN=$other_token
+  if [ -n "${OWN_OWNER:-}" ] && [ "${repo%%/*}" = "$OWN_OWNER" ]; then secret=SYNC_TOKEN_OWN; export GH_TOKEN=${GH_TOKEN_OWN:-}; fi
   if ! git clone -q "https://x-access-token:${GH_TOKEN}@github.com/$repo.git" "$dir"; then
-    echo "::error::$repo: cannot clone it (is it in the token's repository list?)"; rc=1; echo "::endgroup::"; continue
+    echo "::error::$repo: cannot clone it (is it in the repository list of the $secret token?)"; rc=1; echo "::endgroup::"; continue
   fi
   cd "$dir" || continue
 

@@ -4,3 +4,4 @@
 Kol-Lab-Design-Kft/intranet
 Kol-Lab-Design-Kft/KolLab.extension
 Kol-Lab-Design-Kft/website
+furythestunner/claude-mods
