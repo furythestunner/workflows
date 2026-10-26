@@ -10,9 +10,8 @@ Updated: 2026-10-26 (after the less-admin change)
 
 ## Waiting for Balázs
 
-- claude-mods: its first "Workflow update" pull request https://github.com/furythestunner/claude-mods/pull/18 went to
-  `main` (no `ground-truth.conf` there yet). Decide: fill in `.claude/ground-truth.conf` on it (README.md, "Add it to a
-  repo", step 2, with `WORK_BRANCH="mods-test"`) and merge, so later syncs go to `mods-test`.
+- claude-mods: merge https://github.com/furythestunner/claude-mods/pull/19 (mods-test → main: its own settings, work
+  branch `mods-test`); until then a session there reads the master copy's settings that #18 copied in.
 - Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
   each), then delete the old merged branches once on the Branches page.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
