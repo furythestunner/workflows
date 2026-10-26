@@ -23,7 +23,8 @@ No em dashes.
 
 ## Ask before
 
-Merging, closing issues, changing a scheduled task, anything in the project repos.
+Merging a one-way door (the rest merges by itself: `.claude/rules/workflow.md`, Merging), closing issues, changing a
+scheduled task, anything in the project repos.
 
 ## This repo only
 

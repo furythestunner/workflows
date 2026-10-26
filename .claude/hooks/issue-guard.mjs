@@ -101,7 +101,7 @@ if (what) {
         'Done, on GitHub (website or phone app). Claude closes an issue only when ' + who + '\'s own last message ' +
         'says to close it by number ("close #12"); otherwise give ' + who + ' the link to the issue and say what to click. Claude may move Ready -> In progress, any -> Blocked (with the ' +
         'question posted on the issue), any -> Backlog (on hold) and In progress -> Review (with an open pull request ' +
-        'that says "Closes #<n>").'
+        'that says "Closes #<n>", or "Part of #<n>" in building mode).'
     }
   }));
 }
