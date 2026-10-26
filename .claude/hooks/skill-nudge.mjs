@@ -3,16 +3,18 @@
 // uses the skill unless it clearly does not fit. A message that starts with "/" (a skill typed) is left alone.
 import { readFileSync } from 'node:fs';
 
-const input = JSON.parse(readFileSync(0, 'utf8') || '{}');
-const prompt = String(input.prompt || '');
+let input;
+try { input = JSON.parse(readFileSync(0, 'utf8') || '{}'); } catch { process.exit(0); }
+const prompt = String(input?.prompt || '');
 if (!prompt.trim() || prompt.trimStart().startsWith('/')) process.exit(0);
 
-// A review on a pull request arrives as a GitHub event: /verify is not optional there.
-const REVIEW_EVENT = /<event[^>]*source="github"[^>]*kind="[^"]*(review|comment)[^"]*"/i;
+// A review on a pull request arrives as a GitHub event: /verify is not optional there. Not an issue comment: that is
+// usually the user answering a question.
+const REVIEW_EVENT = /<event[^>]*source="github"[^>]*kind="[^"]*review[^"]*"/i;
 
 // [skill, phrases, why]. English and Hungarian; keep each list short and specific.
 const TABLE = [
-  ['never-again', /\b(again|i (already )?(said|told you)|told you (before|already)|not what i (asked|said|meant)|stop doing|you forgot|keeps happening|never again)\b|már mondtam|megint|nem ezt kértem|elfelejtetted|soha többé/i,
+  ['never-again', /\b((did|doing|done|made) (it|that|this|the same \w+) again|same mistake|i (already )?(said|told you)|told you (before|already)|not what i (asked|said|meant)|stop doing|you forgot|keeps happening|never again)\b|már mondtam|már megint|megint (rossz|elrontottad|ugyanaz)|nem ezt kértem|elfelejtetted|soha többé/i,
     'this may be a correction. Check "Hook candidates" in notes/lessons.md: the first time, add one line there; if it is already listed, run /never-again and propose a hook'],
   ['plain', /\bwhat (has )?changed\b|\bwhat does (this|that|the) (pr|pull request|change|commit) do\b|\b(explain|say) it (simply|plainly)\b|\bin plain words\b|mi változott|mit csinál (ez|a)|magyarázd el egyszerűen/i,
     'the user wants a change explained in plain words'],
@@ -22,7 +24,7 @@ const TABLE = [
     'the last message did not land'],
   ['grill-me', /\bgrill me\b|\bask me everything\b|kérdezz ki/i,
     'the user wants to be interviewed about a plan'],
-  ['diagnosing-bugs', /\b(broken|doesn'?t work|not working|stopped working|bug|wrong (number|total|result)s?|too slow|crash(es|ed)?)\b|nem működik|elromlott|hibás|lassú/i,
+  ['diagnosing-bugs', /\b(is broken|(does|did)n'?t work|not working|stopped working|wrong (number|total|result)s?|too slow|crash(es|ed)?)\b|nem működik|elromlott|hibásan|túl lassú/i,
     'something is broken, wrong or slow'],
   ['questionnaire', /\bquestionnaire\b|\bquestions for (the )?(client|owner|him|her|them)\b|kérdőív/i,
     'questions only someone else can answer'],

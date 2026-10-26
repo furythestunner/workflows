@@ -1,7 +1,7 @@
 // PreToolUse hook: no randomly named branches (23 Oct 2026). Work goes on the work branch (WORK_BRANCH in the repo's
 // .claude/ground-truth.conf). A second branch, when parallel work needs one, is named "<work branch>-<topic>", the
 // topic 1 to 4 lowercase words joined by hyphens. The sync's own "workflow-sync" is the only other name. Checks the
-// git commands that create or push a branch (checkout -b, switch -c, branch, worktree add -b, push) and the GitHub
+// git commands that create or push a branch (checkout -b, switch -c, branch, worktree add, push) and the GitHub
 // tools' create_branch. Deleting a branch is never blocked. A repo without WORK_BRANCH is not checked. A guard
 // against mistakes, not against someone set on getting round it; anything it cannot read is let through.
 import { readFileSync, existsSync } from 'node:fs';
@@ -21,18 +21,27 @@ const SYNC_BRANCH = 'workflow-sync';
 const okName = (name, wb) => name === wb || name === SYNC_BRANCH ||
   (name.startsWith(wb + '-') && /^[a-z0-9]+(-[a-z0-9]+){0,3}$/.test(name.slice(wb.length + 1)));
 
-// Splits a command line into simple commands (on && || ; | and newlines), each a list of words, keeping quoted
-// text together, so that "git push" inside a commit message is not taken for a command.
+// Splits a command line into simple commands (on && || ; | $( ` and newlines), each a list of words, keeping quoted
+// text together, so that "git push" inside a commit message is not taken for a command. Redirections (2>&1,
+// >/dev/null, <file) are dropped with their target, so they are not taken for branch names.
 function commands(line) {
-  const out = []; let words = []; let word = null; let q = null;
-  const endWord = () => { if (word !== null) words.push(word); word = null; };
+  const out = []; let words = []; let word = null; let q = null; let redirect = false;
+  const endWord = () => { if (word !== null && !redirect) words.push(word); if (word !== null) redirect = false; word = null; };
   const endCmd = () => { endWord(); if (words.length) out.push(words); words = []; };
   for (let i = 0; i < line.length; i++) {
     const c = line[i];
     if (q) { if (c === q) q = null; else if (c === '\\' && q === '"' && i + 1 < line.length) word += line[++i]; else word += c; continue; }
     if (c === "'" || c === '"') { q = c; word = word ?? ''; }
     else if (c === '\\' && i + 1 < line.length) word = (word ?? '') + line[++i];
-    else if (c === '&' || c === '|' || c === ';' || c === '\n' || c === '(' || c === ')') endCmd();
+    else if (c === '>' || c === '<') {
+      if (word !== null && /^\d+$/.test(word)) word = null; // the fd of 2>
+      endWord();
+      while (line[i + 1] === '>' || line[i + 1] === '<') i++;
+      if (line[i + 1] === '&' && /[\d-]/.test(line[i + 2] || '')) { i++; while (/[\d-]/.test(line[i + 1] || '')) i++; }
+      else redirect = true; // the next word is the file
+    }
+    else if (c === '$' && line[i + 1] === '(') { endCmd(); i++; }
+    else if (c === '&' || c === '|' || c === ';' || c === '\n' || c === '(' || c === ')' || c === '`') endCmd();
     else if (c === ' ' || c === '\t') endWord();
     else word = (word ?? '') + c;
   }
@@ -58,9 +67,17 @@ function gitTargets(w, cwd) {
   const has = (...f) => rest.some(a => f.includes(a));
   const after = (...f) => { const k = rest.findIndex(a => f.includes(a)); return k >= 0 ? rest[k + 1] : undefined; };
   let names = [];
-  if (sub === 'checkout') names = [after('-b', '-B')];
-  else if (sub === 'switch') names = [after('-c', '-C', '--create', '--force-create')];
-  else if (sub === 'worktree' && rest[0] === 'add') names = [after('-b', '-B')];
+  if (sub === 'checkout') names = [after('-b', '-B', '--orphan')];
+  else if (sub === 'switch') names = [after('-c', '-C', '--create', '--force-create', '--orphan')];
+  else if (sub === 'worktree' && rest[0] === 'add') {
+    names = [after('-b', '-B')];
+    // Without -b and a commit, git names the branch after the folder and creates it when it does not exist.
+    const p = pos.slice(1);
+    if (!names[0] && !has('--detach', '-d') && p.length === 1) {
+      const n = p[0].replace(/\/+$/, '').split('/').pop();
+      if (!git(cwd, 'rev-parse', '--verify', '-q', 'refs/heads/' + n)) names = [n];
+    }
+  }
   else if (sub === 'branch') {
     if (has('-m', '-M', '--move', '-c', '-C', '--copy')) names = [pos[pos.length - 1]];
     else if (!has('-d', '-D', '--delete', '-l', '--list', '-a', '--all', '-r', '--remotes', '-v', '-vv', '--show-current',
@@ -93,7 +110,8 @@ function workBranchOf(owner, repo) {
   const id = `${owner}/${repo}`.toLowerCase();
   for (const dir of [projectDir, join(projectDir, repo), join(dirname(projectDir), repo)]) {
     const conf = readConf(dir);
-    if (conf && conf.toLowerCase().includes(id)) return confValue(conf, 'WORK_BRANCH');
+    const ids = [...conf.matchAll(/\|([^|"\s]+)"/g)].map(m => m[1].toLowerCase()); // REPOS entries end in owner/repo
+    if (ids.includes(id)) return confValue(conf, 'WORK_BRANCH');
   }
   return '';
 }
@@ -106,7 +124,9 @@ function check() {
   }
   if (tool !== 'Bash') return null;
   let cwd = input.cwd || projectDir;
-  for (const w of commands(String(args.command ?? ''))) {
+  for (let w of commands(String(args.command ?? ''))) {
+    // Skip a VAR=value prefix and the wrappers env and command: "GIT_TRACE=0 git push" is still a push.
+    while (w.length && (/^[A-Za-z_][A-Za-z0-9_]*=/.test(w[0]) || w[0] === 'env' || w[0] === 'command')) w = w.slice(1);
     if (w[0] === 'cd' && w[1]) { cwd = resolve(cwd, w[1]); continue; }
     if (w[0] !== 'git') continue;
     const t = gitTargets(w, cwd);

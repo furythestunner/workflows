@@ -54,4 +54,19 @@ t allow mcp__github__create_branch '{"owner":"acme","repo":"elsewhere","branch":
 git -C "$repo" checkout -q -b claude/vigilant-babbage-piirsk
 t block Bash '{"command":"git push -u origin"}'
 t block Bash '{"command":"git push origin HEAD"}'
+# Since 26 Oct 2026 (code review of issue #20): redirections, $( ), env prefixes, --orphan, worktree add without -b.
+git -C "$repo" checkout -q app-test
+t allow Bash '{"command":"git push -u origin app-test 2>&1 | tail -3"}'
+t allow Bash '{"command":"git push origin app-test >/dev/null 2>/dev/null"}'
+t allow Bash '{"command":"git branch 2>/dev/null"}'
+t allow Bash '{"command":"git push origin $(git branch --show-current)"}'
+t block Bash '{"command":"git push origin wip 2>&1"}'
+t block Bash '{"command":"GIT_TRACE=0 git push origin junk"}'
+t block Bash '{"command":"command git push origin junk"}'
+t block Bash '{"command":"git checkout --orphan junk"}'
+t block Bash '{"command":"git worktree add ../quick-fix"}'
+t allow Bash '{"command":"git worktree add ../app-test-docs"}'
+t allow Bash '{"command":"git worktree add --detach ../x"}'
+t allow Bash '{"command":"git worktree add ../x app-test"}'
+t allow mcp__github__create_branch '{"owner":"acme","repo":"ap","branch":"anything"}'
 exit $fail

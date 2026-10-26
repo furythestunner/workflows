@@ -11,7 +11,8 @@ t() { # <skill|none> <message>
   if [ "$got" = "$1" ]; then echo "ok    $1: $2"; else echo "FAIL  expected $1, got $got ($out): $2"; fail=1; fi
 }
 t never-again 'No, I already said the branch is dev-test'
-t never-again 'megint a rossz ágra pusholtál'
+t never-again 'már megint a rossz ágra pusholtál'
+t never-again 'you did it again'
 t plain 'what changed in the sync pull request?'
 t plain 'mi változott ebben a PR-ben?'
 t distill 'workflow.md is too long'
@@ -30,5 +31,11 @@ t verify '<event source="github" kind="pull_request_review_comment">{"body":"ren
 t none '<event source="github" kind="check_run">{"conclusion":"success"}</event>'
 t none 'add a line to README.md'
 t none '/plain'
+t none 'run the sync again'
+t none 'can you try again'
+t none 'add a bug label to #12'
+t none '<event source="github" kind="issue_comment">{"body":"yes, go"}</event>'
 t none ''
+out=$(printf '{bad' | node skill-nudge.mjs 2>&1); code=$?
+if [ $code -eq 0 ] && [ -z "$out" ]; then echo "ok    bad input: silent, exit 0"; else echo "FAIL  bad input: exit $code: $out"; fail=1; fi
 exit $fail
