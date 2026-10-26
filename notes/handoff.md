@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-26 (after shared lessons, #23 merged, and the issue guard fix, #24 open)
+Updated: 2026-10-26 (round timer in #28; #24, #25 still open)
 
 ## Next
 
@@ -32,6 +32,7 @@ Updated: 2026-10-26 (after shared lessons, #23 merged, and the issue guard fix, 
 
 ## Unfinished
 
+- dev-test-round-timer: the round timer, in pull request #28, not merged yet.
 - dev-test-shorter-rules: the shorter shared rules, in pull request #25, not merged yet.
 - dev-test-auto-merge: merges without the click (#26), in pull request #27 on top of #25, not merged yet.
 - dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
