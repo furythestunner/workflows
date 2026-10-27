@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-26 (round timer in #28; #24, #25 still open)
+Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 ## Next
 
@@ -15,9 +15,8 @@ Updated: 2026-10-26 (round timer in #28; #24, #25 still open)
   branch" on each.
 - After #27: the two GitHub settings per repo (README, "Merge by itself"), and say which projects are before v1.0
   (building mode).
-- Merge pull request #28 (round timer replaces the estimate check). It, #25 and #27 change `workflow.md`, so the
-  later ones need a small merge (Claude does it).
-- Pick which hook ideas from the 2026-10-26 chat become issues (decision check fixes, new hooks).
+- Merge pull request #28 (round timer), then #30 (five more guards, on top of #28; closes #29). They, #25 and #27
+  all change `workflow.md`, so the later ones need a small merge (Claude does it).
 - Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
   each), then delete the old merged branches once on the Branches page.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
@@ -36,6 +35,7 @@ Updated: 2026-10-26 (round timer in #28; #24, #25 still open)
 ## Unfinished
 
 - dev-test-round-timer: the round timer, in pull request #28, not merged yet.
+- dev-test-more-hooks: five more guards and hook fixes, in pull request #30 (on top of #28), not merged yet.
 - dev-test-shorter-rules: the shorter shared rules, in pull request #25, not merged yet.
 - dev-test-auto-merge: merges without the click (#26), in pull request #27 on top of #25, not merged yet.
 - dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
