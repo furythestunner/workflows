@@ -39,6 +39,13 @@ t mixed '- 2026-10-26 10:00 UTC: 40 min, 1 commit: Script B' block 2026-10-26T10
 t no-commit '' allow 2026-10-26T10:00:00Z false none
 t github-event-turn '' allow 2026-10-26T10:30:00Z false two_code github
 t second-stop-writes-no-send-back '- 2026-10-26 10:00 UTC: 40 min, 2 commits: Hook A; Tests for A' allow 2026-10-26T10:00:00Z true two_code
+# A turn started by a screenshot alone (no text) is timed from it, not from the message before.
+r="$tmp/image"; git init -q "$r"; commit "$r" 2026-10-26T10:35:00Z a.mjs "Hook A"
+printf '%s\n' '{"type":"user","timestamp":"2026-10-26T10:00:00Z","message":{"content":"first"}}' \
+  '{"type":"user","timestamp":"2026-10-26T10:30:00Z","message":{"content":[{"type":"image","source":{}}]}}' >"$r.jsonl"
+printf '{"transcript_path":"%s","stop_hook_active":false,"now":"2026-10-26T10:40:00Z"}' "$r.jsonl" | CLAUDE_PROJECT_DIR=$r node "$hook" >/dev/null
+got=$(grep '^- ' "$r/notes/rounds.md")
+if [ "$got" = '- 2026-10-26 10:30 UTC: 10 min, 1 commit: Hook A' ]; then echo "ok    screenshot turn"; else echo "FAIL  screenshot turn: $got"; fail=1; fi
 # The same turn stopping again (another hook sent Claude back): one line, no second send-back.
 r="$tmp/again"; git init -q "$r"; commit "$r" 2026-10-26T10:05:00Z a.mjs "Hook A"
 run "$r" 2026-10-26T10:00:00Z false >/dev/null; sent=$(run "$r" 2026-10-26T10:00:00Z true)

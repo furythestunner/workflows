@@ -31,10 +31,11 @@ try {
   }).filter(Boolean);
 } catch { process.exit(0); }
 
-// The message that started this turn: typed by the user or a GitHub event; not a tool result, not hook feedback.
-const text = e => typeof e.message?.content === 'string' ? e.message.content
-  : Array.isArray(e.message?.content) ? e.message.content.filter(b => b.type === 'text').map(b => b.text).join('\n') : '';
-const start = [...entries].reverse().find(e => e.type === 'user' && !e.isMeta && text(e).trim() && e.timestamp);
+// The message that started this turn: typed by the user (a screenshot alone counts) or a GitHub event; not a tool
+// result, not hook feedback.
+const sent = e => typeof e.message?.content === 'string' ? e.message.content.trim() !== ''
+  : Array.isArray(e.message?.content) && e.message.content.some(b => b.type === 'image' || (b.type === 'text' && b.text.trim()));
+const start = [...entries].reverse().find(e => e.type === 'user' && !e.isMeta && sent(e) && e.timestamp);
 if (!start) process.exit(0);
 const t0 = new Date(start.timestamp);
 if (isNaN(t0)) process.exit(0);
