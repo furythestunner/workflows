@@ -10,9 +10,9 @@ Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the 
 
 ## Waiting for Balázs
 
-- If GitHub did not delete them by itself: "Delete branch" on #25, #27, #28 and #30 (all merged 2026-10-27).
-- GitHub settings, once per repo (about 3 min each): furythestunner/workflows, furythestunner/claude-mods,
-  Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension, Kol-Lab-Design-Kft/website. On the repo's page:
+- GitHub settings, once per repo (about 3 min each). Done: furythestunner/workflows (2026-10-27). Still to do:
+  furythestunner/claude-mods, Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension,
+  Kol-Lab-Design-Kft/website. On the repo's page:
   1. Settings (top bar), Rules (left), Rulesets, New ruleset, New branch ruleset. Name: `keep main and work branch`.
      Enforcement status: Active. Target branches, Add target, Include by pattern: `main`. Add target again: the work
      branch (workflows `dev-test`, claude-mods `mods-test`, intranet `intra-test`, KolLab.extension
