@@ -64,6 +64,9 @@ open that already shipped, "done" items whose code changed since).
    - **Waiting for you:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
      what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
      `Status: Review` issues to test and merge, and the `Status: Blocked` ones, each with the link to its question.
+     Then every item of the handoff's "Waiting for the user", each with its steps written out in full (every click
+     and setting), never "see README" or another file. Repeat them every session until done: the user may have
+     missed them.
    - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
      command and when to use it, a few words each. In the 3-line brief before a specific task, one line naming them.
    - End by recommending one task and asking which to start.

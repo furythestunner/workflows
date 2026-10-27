@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#28 round timer and #30 more guards open)
+Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the project repos)
 
 ## Next
 
@@ -10,15 +10,25 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 ## Waiting for Balázs
 
-- Merge pull request #24 (issue guard: "close 12" counts like "close #12"); its checks are green.
-- Merge pull request #25 (shared rules shortened to 70 lines), then #27 (merges without the click); click "Delete
-  branch" on each.
-- After #27: the two GitHub settings per repo (README, "Merge by itself"), and say which projects are before v1.0
-  (building mode).
-- Merge pull request #28 (round timer), then #30 (five more guards, on top of #28; closes #29). They, #25 and #27
-  all change `workflow.md`, so the later ones need a small merge (Claude does it).
-- Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
-  each), then delete the old merged branches once on the Branches page.
+- If GitHub did not delete them by itself: "Delete branch" on #25, #27, #28 and #30 (all merged 2026-10-27).
+- GitHub settings, once per repo (about 3 min each): furythestunner/workflows, furythestunner/claude-mods,
+  Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension, Kol-Lab-Design-Kft/website. On the repo's page:
+  1. Settings (top bar), Rules (left), Rulesets, New ruleset, New branch ruleset. Name: `keep main and work branch`.
+     Enforcement status: Active. Target branches, Add target, Include by pattern: `main`. Add target again: the work
+     branch (workflows `dev-test`, claude-mods `mods-test`, intranet `intra-test`, KolLab.extension
+     `extension-test`, website `website-test`).
+  2. Same page, under Rules: tick only "Restrict deletions". Create.
+  3. Rulesets, New ruleset, New branch ruleset again. Name: `checks before main`. Enforcement status: Active. Add
+     target, Include by pattern: `main` only (not the work branch: there it would block every push). Under Rules,
+     tick "Require status checks to pass", Add checks, type `check`, pick it. Create. (Nothing shows up for `check`:
+     that repo has no check yet; skip this step.)
+  4. Settings, General (left), scroll to "Pull Requests": tick "Allow auto-merge" and "Automatically delete head
+     branches".
+  5. Branches (Code tab, "branches" link): delete the old merged branches with the bin icon; keep `main` and the
+     work branch.
+- Say in the chat which projects are before v1.0 (their pull requests then all merge by themselves).
+- Optional: say in the chat which command checks each project (the one CI runs); Claude adds it, and pushes there
+  then wait for it to pass.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
 - SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
@@ -34,9 +44,4 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 ## Unfinished
 
-- dev-test-round-timer: the round timer, in pull request #28, not merged yet.
-- dev-test-more-hooks: five more guards and hook fixes, in pull request #30 (on top of #28), not merged yet.
-- dev-test-shorter-rules: the shorter shared rules, in pull request #25, not merged yet.
-- dev-test-auto-merge: merges without the click (#26), in pull request #27 on top of #25, not merged yet.
-- dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.

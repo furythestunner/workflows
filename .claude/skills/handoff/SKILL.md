@@ -93,6 +93,7 @@ Read by /session-start. Open work: the GitHub issues. Decisions and rulings: `qu
 
 ## Waiting for the user
 <the `questions.md` §1 titles that block the Next list; a new question goes into questions.md first>
+<each thing only the user can do, with its full steps (every click and setting), never "see README">
 
 ## Running in the background
 | What | Unit / process | Ends | Check | Stop |

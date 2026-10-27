@@ -174,9 +174,9 @@ Once per repo (about 2 min each, in this repo and each repo of `sync/repos.txt`)
 and GitHub waits for the checks before merging (`.claude/rules/workflow.md`, Merging):
 
 1. The repo on GitHub, Settings, General, scroll to Pull Requests, tick "Allow auto-merge".
-2. Settings, Rules, Rulesets, open `keep main and work branch` (README, "Delete merged branches by themselves"), or
-   make a new branch ruleset for `main` if there is none. Tick "Require status checks to pass", Add checks, type
-   `check` and pick it. Save. (A repo with no check yet: skip this step; Claude then merges once the pull request
+2. Settings, Rules, Rulesets, New ruleset, New branch ruleset. Name: `checks before main`. Enforcement status:
+   Active. Add target, Include by pattern: `main` only (not the work branch: a required check there blocks every
+   direct push to it). Tick "Require status checks to pass", Add checks, type `check` and pick it. Create. (A repo with no check yet: skip this step; Claude then merges once the pull request
    can be merged.)
 
 Then, in the chat, say which projects are before v1.0: Claude adds `MERGE_MODE="building"` to their
@@ -228,6 +228,9 @@ GitLab.
   requests. Merged branches delete themselves. Nothing new is added to the workflow for now.
 - Time estimates are measured (Balázs, 2026-10-26): the estimate check (sent Claude back on every time in a reply)
   is gone; `round-timer.mjs` writes each work round to `notes/rounds.md` and the brief shows the latest.
+- The user's steps go in the chat (Balázs, 2026-10-27): written out in full, never "see README"; the handoff's
+  "Waiting for the user" keeps each item's steps and every brief repeats them until done. The README sections stay
+  as the reference Claude copies from.
 - Five more guards (Balázs, 2026-10-26: "do all improvements and hook suggestions"): checks before a push,
   secrets, a review before a pull request, synced files in project repos, em dashes. `CHECK` stays optional.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
