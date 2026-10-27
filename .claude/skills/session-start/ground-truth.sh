@@ -73,6 +73,7 @@ with_timeout() { # <seconds> <command...>
 }
 
 echo "GROUND TRUTH — $(date '+%Y-%m-%d %H:%M %Z')"
+echo "MERGE MODE: ${MERGE_MODE:-released} (.claude/rules/workflow.md, Merging)"
 
 # Facts that can go stale end with exactly "(check by YYYY-MM-DD)". Due ones come first: the brief names them
 # before anything relies on them. A tag in another spelling is listed too, since this script cannot read it.

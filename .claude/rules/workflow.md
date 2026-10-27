@@ -19,7 +19,8 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   newer. `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) to the work branch without
   asking.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
-  open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`.
+  open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
+  an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.
 - **Issues** are the open work (`BACKLOG.md` only links there; rulings stay in `questions.md`). Each has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
   Ready means the user approved it; any other open status is for the user to look at, or for later. Only the user
@@ -29,13 +30,22 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   - Ready → In progress; Backlog → In progress when the user hands it out in the chat (the chat is the approval);
   - any → Blocked, after posting the question on the issue (never guess);
   - any → Backlog when on hold: a comment says what it waits for, the title starts with ⏸️ and names the trigger;
-  - In progress → Review, only with an open pull request that says "Closes #<n>" (merging it closes the issue).
+  - In progress → Review, only with an open pull request that says "Closes #<n>" (merging it closes the issue), or
+    in building mode "Part of #<n>" (the issue stays open until the user has tested it and says to close it).
 - **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues and Blocked
-  ones the user answered; every question goes on the issue; a run never merges.
+  ones the user answered; every question goes on the issue; a run never merges and never turns on auto-merge.
 - **Pull requests:** before opening one, run `/code-review` on the diff against `main` and fix what it finds (a
   finding left as is gets a line in the pull request saying why). Right after opening it, subscribe to its activity
   (auto-fix; needs the Claude GitHub App on the repo) and handle failing checks and review comments until it is
   merged or closed. A review on a pull request always goes through `/verify`.
+- **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
+  its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
+  it once the checks pass if auto-merge cannot be turned on. `MERGE_MODE` in `.claude/ground-truth.conf` (the brief
+  shows it) decides which pull requests:
+  - `building` (before v1.0, nobody uses `main`): every one; it says "Part of #<n>", not "Closes #<n>", and one
+    round's fixes go in one pull request. Moving to v1.0 (`released`) is the user's call in the chat.
+  - `released` (the default when the key is missing): only a two-way door (`/pr-body`, "Merge danger"; when unsure,
+    it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for the user.
 - All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.
 - A second branch only when parallel work really needs it (the user asks, or a round must not mix with the work
   branch), named `WORK_BRANCH-<topic>` with 1 to 4 lowercase words joined by hyphens (`app-test-leave-totals` for
