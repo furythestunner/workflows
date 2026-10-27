@@ -15,11 +15,11 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 
 | File | When | What |
 |---|---|---|
-| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
+| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the latest measured rounds, the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
 | `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo, the skills list once. In a one-repo session it does nothing. |
 | `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. |
-| `.claude/hooks/estimate-check.mjs` | after every reply | If the reply gives a time and Claude did not read `notes/lessons.md` this turn, sends Claude back once to check the estimate against the measured rounds there. `estimate-check.test.sh` next to it tests it. |
+| `.claude/hooks/round-timer.mjs` | after every reply | If the reply made a commit that is not docs only, appends one line to `notes/rounds.md` (the start time, the minutes from the message that started the turn to the end of the reply, the commits) and sends Claude back once to commit that file. `session-start.sh` prints the latest 8, so estimates come from measured rounds. `round-timer.test.sh` next to it tests it. |
 | `.claude/hooks/lesson-check.mjs` | after every reply | If Claude added a lesson to `notes/lessons.md` this turn outside its "## Shared" section, sends Claude back once to sort it (only this project, or shared). If a lesson in that section already arrived in `.claude/rules/shared-lessons.md`, has Claude delete the copy. `lesson-check.test.sh` next to it tests it. |
 | `.claude/rules/shared-lessons.md` | every session (loaded by itself, like the rules) | Lessons that hold in every repo, collected from the repos (README, "Shared lessons"). Edited only here. |
 | `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `Status: Ready` or `Status: Done`, from closing an issue, and from opening one outside `Status: Backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
@@ -221,6 +221,8 @@ GitLab.
 - Less admin (Balázs, 2026-10-26): Claude closes an issue when Balázs's own message names it ("close #12"; the guard
   reads only his typed message, so an issue comment or a pasted text cannot unlock it). The sync merges its own pull
   requests. Merged branches delete themselves. Nothing new is added to the workflow for now.
+- Time estimates are measured (Balázs, 2026-10-26): the estimate check (sent Claude back on every time in a reply)
+  is gone; `round-timer.mjs` writes each work round to `notes/rounds.md` and the brief shows the latest.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
   every other repo's instead of a personal or plugin copy. Work branch `mods-test`; its `PLAN.md` moves to issues.
 - Merges without the click (Balázs, 2026-10-26, #26): agreeing in the chat on what to build is the approval, so a

@@ -63,9 +63,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `.claude/hooks/lesson-check.mjs` asks for both after a reply.
 - **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
   the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
-- **Time estimates are real session time:** size Claude's work from the measured rounds in `notes/lessons.md` (feel
-  runs 4 to 6 times too high), give the user's part (clicks, merges) separately, and add the measured time there
-  afterwards. `.claude/hooks/estimate-check.mjs` checks it.
+- **Time estimates are measured, not felt:** `.claude/hooks/round-timer.mjs` writes each reply that made a code commit
+  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's work from the closest
+  round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
 - **Use the skill that fits** (`.claude/skills/CHEATSHEET.md`) even when not called, and say so in one line ("Used
   `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely one on every message.
 - **Crew rounds:** `/crew` holds the roles, models and steps. At session start, read an open round's brief and

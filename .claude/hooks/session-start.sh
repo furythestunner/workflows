@@ -69,6 +69,12 @@ if [ -n "$h" ]; then
     git log --no-merges --format='  %ad %s' --date=short "$h"..HEAD -- . "${excl[@]}" | head -25
   fi
 fi
+# Measured rounds (round-timer.mjs writes them): every estimate of Claude's own work starts from these.
+if [ -f notes/rounds.md ]; then
+  echo
+  echo "===== notes/rounds.md, latest (size your own work from these, never by feel) ====="
+  grep '^- ' notes/rounds.md | tail -8
+fi
 echo
 echo "===== $HANDOFF ====="
 head -80 "$HANDOFF" 2>/dev/null || echo "(missing)"
