@@ -44,3 +44,7 @@ The reader merges it, and may not read code. Write for what people see and do. S
 - The **blast radius** is who or what is hit if it is wrong: one page, everyone's numbers, the month-end PDFs,
   billing, sign-in. Think it through before writing "small".
 - If the project merges to publish (the merge is the deploy), say so in the merge danger line.
+- The door decides the merge (`.claude/rules/workflow.md`, Merging): in `released` mode a two-way door merges by
+  itself, a one-way door waits for the user. When unsure, write one-way. In `building` mode every pull request merges
+  by itself and says "Part of #<n>" instead of "Closes #<n>".
+- A pull request that replaces something an earlier one built says so in one line ("Replaces #<n>'s ...").

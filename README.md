@@ -163,6 +163,20 @@ GitHub would delete the work branch when it is merged to `main`.
 
 The branches already merged stay: delete those once on the Branches page (the bin icon).
 
+## Merge by itself
+
+Once per repo (about 2 min each, in this repo and each repo of `sync/repos.txt`), so Claude can turn on auto-merge
+and GitHub waits for the checks before merging (`.claude/rules/workflow.md`, Merging):
+
+1. The repo on GitHub, Settings, General, scroll to Pull Requests, tick "Allow auto-merge".
+2. Settings, Rules, Rulesets, open `keep main and work branch` (README, "Delete merged branches by themselves"), or
+   make a new branch ruleset for `main` if there is none. Tick "Require status checks to pass", Add checks, type
+   `check` and pick it. Save. (A repo with no check yet: skip this step; Claude then merges once the pull request
+   can be merged.)
+
+Then, in the chat, say which projects are before v1.0: Claude adds `MERGE_MODE="building"` to their
+`.claude/ground-truth.conf`.
+
 ## Rules of this setup
 
 Decided by Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering team"); GitHub stays, no
@@ -182,7 +196,8 @@ GitLab.
 - Scheduled runs (Balázs, 22 Oct 2026): a day check every 4 hours asks its questions on the issues, a night build
   after midnight Budapest time builds the approved ones and opens the pull request; a phone notification only
   when something needs the user.
-- Done = closed: the pull request says "Closes #<n>" and merging it is the approval. `Status: Done` is for work with
+- Done = closed: the pull request says "Closes #<n>" and merging it is the approval (in building mode it says "Part
+  of #<n>" and Balázs closes the issue after testing). `Status: Done` is for work with
   no pull request (a server or a setting).
 - Claude may open issues, always in backlog. An issue with a missing or double label is listed as NEEDS A LABEL,
   never guessed into a status.
@@ -210,3 +225,8 @@ GitLab.
   is gone; `round-timer.mjs` writes each work round to `notes/rounds.md` and the brief shows the latest.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
   every other repo's instead of a personal or plugin copy. Work branch `mods-test`; its `PLAN.md` moves to issues.
+- Merges without the click (Balázs, 2026-10-26, #26): agreeing in the chat on what to build is the approval, so a
+  pull request merges by itself once its checks pass. Released projects: only two-way doors; a one-way door waits for
+  him. Building mode (before v1.0, nobody uses `main`): every pull request, "Part of #<n>" instead of "Closes #<n>",
+  so the issue stays open until he has tested it. Night runs never merge. Merge commits, not squash: the work branch
+  lives on after each merge, and squashed commits would make it conflict with `main`.

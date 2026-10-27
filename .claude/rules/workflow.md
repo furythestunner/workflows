@@ -2,79 +2,79 @@
      and the sync pull request brings it here. This repo's own rules go in its CLAUDE.md. -->
 # Session workflow (shared by every repo)
 
-These rules come from the master copy and are the same in every repo. The work branch is `WORK_BRANCH` and the
-user is `USER_NAME` in `.claude/ground-truth.conf`.
-
-**This repo's CLAUDE.md adds to these rules; it never replaces them.** It holds what is specific to this project
-(stack, checks, hard rules, extra "ask before" items). If a line there seems to contradict a rule here, follow this
-file, say so to the user, and propose either a change in the master copy or a fix to CLAUDE.md.
+Same in every repo, from the master copy. The work branch is `WORK_BRANCH` and the user is `USER_NAME` in
+`.claude/ground-truth.conf`. **This repo's CLAUDE.md adds to these rules, never replaces them** (stack, checks, hard
+rules, extra "ask before" items). If a line there seems to contradict this file, follow this file, tell the user,
+and propose a change in the master copy or a fix to CLAUDE.md.
 
 ## Sessions and trackers
 
-- **Session start and handoff are automatic** (hooks in `.claude/settings.json`). At every start,
-  `.claude/hooks/session-start.sh` moves a cloud session to the work branch, runs
-  `.claude/skills/session-start/ground-truth.sh` (configured in `.claude/ground-truth.conf`) and loads the handoff;
-  the first reply opens with the brief (`/session-start` steps 2 to 5). After every reply,
-  `.claude/hooks/handoff-check.sh` sends Claude back to update and push `notes/handoff.md` when pushed code on
-  the work branch is newer than it. The handoff is a claim, the script is the fact: a contradiction is reported first.
-- **The handoff is short:** `notes/handoff.md` holds only Next (in order), Waiting for the user and Unfinished (work
-  that is on one disk only, or committed but not merged). No diary: git has it. This overrides the template in the
-  `/handoff` skill.
-- **Decisions go into the trackers in the same reply:** a ruling to `questions.md` §2, new open work to a GitHub
-  issue, a rule for Claude to this file, a lesson to `notes/lessons.md`; never only into the chat.
-- **Trackers:** open work is the repo's GitHub issues (`BACKLOG.md` only links there). Each issue has one `Type:`
+- **Session start (automatic, hooks in `.claude/settings.json`):** `.claude/hooks/session-start.sh` moves a cloud
+  session to the work branch, runs `.claude/skills/session-start/ground-truth.sh` (configured in
+  `.claude/ground-truth.conf`) and loads the handoff. The first reply opens with the brief (`/session-start` steps 2
+  to 5). The handoff is a claim, the script is the fact: report a contradiction first.
+- **Handoff:** `notes/handoff.md` holds only Next (in order), Waiting for the user and Unfinished (work on one disk
+  only, or committed but not merged). No diary; this overrides the `/handoff` template. After a reply,
+  `.claude/hooks/handoff-check.sh` sends Claude back to update and push it when pushed code on the work branch is
+  newer. `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) to the work branch without
+  asking.
+- **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
+  open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
+  an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.
+- **Issues** are the open work (`BACKLOG.md` only links there; rulings stay in `questions.md`). Each has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
-  Ready means the user approved it; an open issue in any other status is for the user to look at, or for later. Only
-  the user moves an issue to Ready or Done, on GitHub; Claude gives the link. Claude closes an issue only when the
-  user's own message says so by number ("close #12"); otherwise the user closes it. Claude opens new issues
-  in Backlog and may move: Ready → In progress; a Backlog issue the user hands out in the chat → In progress (the chat
-  is the approval); any → Blocked (after posting the question on the issue, never guessing); any → Backlog when it
-  turns out to be on hold (a comment says what it waits for, the title starts with ⏸️ and names the trigger); In
-  progress → Review (only with an open pull request that says "Closes #<n>"; merging it closes the issue).
-  `.claude/hooks/issue-guard.mjs` blocks the rest, even when asked in the chat. Rulings stay in `questions.md`.
-- **Unattended runs:** scheduled sessions follow `/issue-run` (`check` by day, `build` after midnight). They work
-  only on Ready issues and on Blocked ones the user has answered; every question goes on the issue, never into a chat
-  nobody reads. A run never merges.
-- **Every pull request gets a review and a watcher:** before opening one, run `/code-review` on the diff against
-  `main` and fix what it finds; a finding left as is gets a line in the pull request saying why. Right after opening
-  it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo), so failing checks and review
-  comments are handled until it is merged or closed.
+  Ready means the user approved it; any other open status is for the user to look at, or for later. Only the user
+  moves an issue to Ready or Done, on GitHub (Claude gives the link), and closes it, unless the user's own message
+  names it by number ("close #12"). Claude opens issues in Backlog and may move only these
+  (`.claude/hooks/issue-guard.mjs` blocks the rest, even when asked in the chat):
+  - Ready → In progress; Backlog → In progress when the user hands it out in the chat (the chat is the approval);
+  - any → Blocked, after posting the question on the issue (never guess);
+  - any → Backlog when on hold: a comment says what it waits for, the title starts with ⏸️ and names the trigger;
+  - In progress → Review, only with an open pull request that says "Closes #<n>" (merging it closes the issue), or
+    in building mode "Part of #<n>" (the issue stays open until the user has tested it and says to close it).
+- **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues and Blocked
+  ones the user answered; every question goes on the issue; a run never merges and never turns on auto-merge.
+- **Pull requests:** before opening one, run `/code-review` on the diff against `main` and fix what it finds (a
+  finding left as is gets a line in the pull request saying why). Right after opening it, subscribe to its activity
+  (auto-fix; needs the Claude GitHub App on the repo) and handle failing checks and review comments until it is
+  merged or closed. A review on a pull request always goes through `/verify`.
+- **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
+  its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
+  it once the checks pass if auto-merge cannot be turned on. `MERGE_MODE` in `.claude/ground-truth.conf` (the brief
+  shows it) decides which pull requests:
+  - `building` (before v1.0, nobody uses `main`): every one; it says "Part of #<n>", not "Closes #<n>", and one
+    round's fixes go in one pull request. Moving to v1.0 (`released`) is the user's call in the chat.
+  - `released` (the default when the key is missing): only a two-way door (`/pr-body`, "Merge danger"; when unsure,
+    it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for the user.
+- All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.
+- A second branch only when parallel work really needs it (the user asks, or a round must not mix with the work
+  branch), named `WORK_BRANCH-<topic>` with 1 to 4 lowercase words joined by hyphens (`app-test-leave-totals` for
+  `app-test`). The only other name is the sync's `workflow-sync`. Say in the chat when one is made, list it in the
+  handoff's Unfinished until merged, then ask the user to click "Delete branch" on the merged pull request (a cloud
+  session cannot). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
-  `notes/lessons.md`, never in a memory, and ends in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default,
-  never more than 12. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over
-  one Claude worked out. The brief lists due facts first, under STALE FACTS; re-check them before relying on them.
-- **Corrected twice becomes a hook:** if the user corrects the same behaviour twice, propose a hook that blocks it,
-  with a recommendation (`/never-again`). A rule written only as prose is not enough. The first correction goes
-  under "Hook candidates" in `notes/lessons.md`, so the second one is noticed.
-- **Lessons, project or shared:** a lesson only about this project goes in `notes/lessons.md`; one that holds in any
-  repo (Claude Code, the PCs and tools, how Claude works with the user, a first correction) goes under
-  `## Shared (goes to every repo)` at the end of it. A daily job in the master copy collects those into
-  `.claude/rules/shared-lessons.md`, which the sync brings to every repo (loaded by itself); delete a lesson from
-  the Shared section once it is there. In the master copy one goes straight into that file.
+  `notes/lessons.md`, never in a memory, ending in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default, 12 at
+  most. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over one Claude
+  worked out. The brief lists due facts first (STALE FACTS); re-check them before relying on them.
+- **Project or shared:** a lesson only about this project goes in `notes/lessons.md`; one true in any repo (Claude
+  Code, the PCs and tools, working with the user, a first correction) goes under `## Shared (goes to every repo)` at
+  its end. A daily job in the master copy collects those into `.claude/rules/shared-lessons.md` (synced, loaded by
+  itself); then delete it from the Shared section. In the master copy, write it straight into that file.
   `.claude/hooks/lesson-check.mjs` asks for both after a reply.
-- **Handoff rule:** `/handoff` and the end-of-reply check commit and push the docs (handoff, trackers, `notes/`) to
-  the work branch without asking.
-- **One work branch, named branches only:** all work goes on `WORK_BRANCH`, never on the cloud session's own
-  `claude/...` branch and never on `main`. A second branch only when parallel work really needs one (the user asks
-  for it, or a round on the work branch must not mix with this one), named `WORK_BRANCH-<topic>`: the topic in 1 to
-  4 lowercase words joined by hyphens (`app-test-leave-totals` for a work branch `app-test`). The sync's own
-  `workflow-sync` is the only other name. Say in the chat when one is made, list it in the handoff's Unfinished
-  until its pull request is merged, and then ask the user to click "Delete branch" on the merged pull request (a
-  cloud session cannot delete branches). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
+- **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
+  the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
 - **Time estimates are measured, not felt:** `.claude/hooks/round-timer.mjs` writes each reply that made a code commit
-  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's own work from the
-  closest round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
-- **Use the skill that fits:** when a request fits a skill in `.claude/skills/CHEATSHEET.md` that the user did not
-  call, use it and say so in one line ("Used `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely
-  skill on every message; a review on a pull request always goes through `/verify`.
-- **Crew rounds (`/crew`):** the session is the orchestrator (brief, the user's OK, review, commit); a Haiku `scout`
-  reads and a Sonnet `implementer` writes (`.claude/agents/`). The model of each role is the user's call. An open
-  round's brief and status are in `notes/crew/`: read it at session start.
-- **The setup comes from github.com/furythestunner/workflows** (`.claude/workflow-version` names the commit). Project
-  values go only in `.claude/ground-truth.conf`, never in the scripts.
-- **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
-  sheets, these rules) is made in github.com/furythestunner/workflows. A sync pull request then brings it to every
-  repo; the sync merges it (one with steps by hand waits for the user). Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
-  next sync undoes the edit. A workflow to-do is an issue in the master copy, never one in a project repo.
-- **A project's own skills** go in `.claude/skills/<name>/` under a name the master copy does not use, with one line
-  in `.claude/skills/CHEATSHEET.project.md` (same shape as `CHEATSHEET.md`). The sync never touches them.
+  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's work from the closest
+  round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
+- **Use the skill that fits** (`.claude/skills/CHEATSHEET.md`) even when not called, and say so in one line ("Used
+  `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely one on every message.
+- **Crew rounds:** `/crew` holds the roles, models and steps. At session start, read an open round's brief and
+  status in `notes/crew/`.
+- **The setup comes from github.com/furythestunner/workflows** (`.claude/workflow-version` names the commit).
+  Project values go only in `.claude/ground-truth.conf`, never in the scripts.
+- **Workflow changes** (hooks, skills, agents, cheat sheets, these rules) and workflow to-dos (issues) belong in the
+  master copy (github.com/furythestunner/workflows) only. A sync pull request brings changes to every repo; the sync
+  merges it, except one with steps by hand, which waits for the user. Never edit a synced file in a project repo
+  (`.claude/workflow-manifest`): the next sync undoes it. A project's own skills go in `.claude/skills/<name>/` (a
+  name the master copy does not use) with one line in `.claude/skills/CHEATSHEET.project.md`; the sync never touches
+  them.
