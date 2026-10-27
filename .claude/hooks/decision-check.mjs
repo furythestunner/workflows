@@ -1,8 +1,9 @@
 // Stop hook: decisions made in the chat go into the trackers, not only into the chat (20 Oct 2026).
 // If this turn the user answered a multiple-choice question or used decision words, and Claude did not touch
-// questions.md, CLAUDE.md or notes/lessons.md and opened no GitHub issue, Claude is sent back once to record it. A nudge, not a
+// a tracker (questions.md, BACKLOG.md, CLAUDE.md, notes/lessons.md, .claude/rules/; README.md in the master copy, which
+// keeps its rulings there) and opened no GitHub issue, Claude is sent back once to record it. A nudge, not a
 // guarantee: it cannot tell a ruling from a choice for the task at hand, so Claude decides and may skip.
-import { readFileSync } from 'node:fs';
+import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
 // WORK_BRANCH and USER_NAME come from .claude/ground-truth.conf (plain bash assignments).
@@ -12,7 +13,8 @@ const confVar = (k, d) => (conf.match(new RegExp('^' + k + '="([^"]*)"', 'm')) |
 const branch = confVar('WORK_BRANCH', 'the work branch');
 const who = confVar('USER_NAME', 'the user');
 
-const input = JSON.parse(readFileSync(0, 'utf8') || '{}');
+let input;
+try { input = JSON.parse(readFileSync(0, 'utf8') || '{}'); } catch { process.exit(0); }
 if (input.stop_hook_active || !input.transcript_path) process.exit(0);
 
 let entries;
@@ -35,8 +37,13 @@ for (let i = entries.length - 1; i >= 0; i--) if (isTurnStart(entries[i])) { sta
 if (start < 0) process.exit(0);
 const turn = entries.slice(start);
 
-const DECISION_WORDS = /\b(from now on|decided|decision|ruling|we'll always|never again)\b|mostantól|döntés|döntöttem|döntöttünk|szabály|legyen így/i;
-const TRACKERS = /(questions\.md|BACKLOG\.md|CLAUDE\.md|lessons\.md)/;
+// Words that set something for the future; plain "decision" or "szabály" in a sentence are not enough (26 Oct 2026).
+const DECISION_WORDS = /\b(from now on|(i|we)(['’]ve| have)? decided|my decision|the rule is|ruling|we'll always|never again)\b|mostantól|döntöttem|döntöttünk|az a szabály|szabály legyen|legyen így/i;
+const isMaster = !existsSync(join(process.env.CLAUDE_PROJECT_DIR || '.', '.claude/workflow-version'));
+const TRACKERS = isMaster ? /(questions\.md|BACKLOG\.md|CLAUDE\.md|README\.md|lessons\.md|\.claude\/rules\/)/
+  : /(questions\.md|BACKLOG\.md|CLAUDE\.md|lessons\.md|\.claude\/rules\/)/;
+// A shell command counts only when it writes (a redirect, sed -i, tee, git add or commit), not when it reads a tracker.
+const WRITES = />|\bsed\s+-i|\btee\b|\bgit\s+(add|commit)\b/;
 const NEW_ISSUE = /\bgh\s+issue\s+create\b/;
 
 const toolUses = turn.flatMap(e => e.type === 'assistant' ? blocks(e).filter(b => b.type === 'tool_use') : []);
@@ -44,7 +51,8 @@ const asked = toolUses.some(b => b.name === 'AskUserQuestion');
 const said = DECISION_WORDS.test(userText(entries[start]));
 const recorded = toolUses.some(b =>
   (['Edit', 'Write', 'MultiEdit'].includes(b.name) && TRACKERS.test(b.input?.file_path || '')) ||
-  (b.name === 'Bash' && (TRACKERS.test(b.input?.command || '') || NEW_ISSUE.test(b.input?.command || ''))) ||
+  (b.name === 'Bash' && ((TRACKERS.test(b.input?.command || '') && WRITES.test(b.input?.command || '')) ||
+    NEW_ISSUE.test(b.input?.command || ''))) ||
   (/^mcp__.*github.*issue_write$/i.test(b.name) && b.input?.method === 'create'));
 
 if ((asked || said) && !recorded) {

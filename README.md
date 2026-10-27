@@ -17,13 +17,18 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 |---|---|---|
 | `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the latest measured rounds, the handoff and the skills cheat sheet. Claude's first reply opens with the brief. |
 | `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo, the skills list once. In a one-repo session it does nothing. |
-| `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. |
-| `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. |
+| `.claude/hooks/handoff-check.sh` | after every reply | If pushed code on `WORK_BRANCH` is newer than the handoff, sends Claude back once to update and push it. `handoff-check.test.sh` tests it. |
+| `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. `README.md` and `.claude/rules/` count as trackers; plain "decision" or "szabály" in a sentence does not count as deciding. `decision-check.test.sh` tests it. |
 | `.claude/hooks/round-timer.mjs` | after every reply | If the reply made a commit that is not docs only, appends one line to `notes/rounds.md` (the start time, the minutes from the message that started the turn to the end of the reply, the commits) and sends Claude back once to commit that file. `session-start.sh` prints the latest 8, so estimates come from measured rounds. `round-timer.test.sh` next to it tests it. |
 | `.claude/hooks/lesson-check.mjs` | after every reply | If Claude added a lesson to `notes/lessons.md` this turn outside its "## Shared" section, sends Claude back once to sort it (only this project, or shared). If a lesson in that section already arrived in `.claude/rules/shared-lessons.md`, has Claude delete the copy. `lesson-check.test.sh` next to it tests it. |
 | `.claude/rules/shared-lessons.md` | every session (loaded by itself, like the rules) | Lessons that hold in every repo, collected from the repos (README, "Shared lessons"). Edited only here. |
 | `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `Status: Ready` or `Status: Done`, from closing an issue, and from opening one outside `Status: Backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
 | `.claude/hooks/branch-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from creating or pushing a branch named other than `WORK_BRANCH`, `WORK_BRANCH-<topic>` (1 to 4 lowercase words) or the sync's `workflow-sync`; a cloud session's own `claude/...` branch included. Deleting is never blocked. `branch-guard.test.sh` next to it tests it. |
+| `.claude/hooks/push-check.mjs` | before every `git push` | Runs `CHECK` from `.claude/ground-truth.conf` (here `bash scripts/check.sh`, about 15 s) and blocks the push when it fails, with the failing lines. No `CHECK`, no check; the sync never asks for it. `push-check.test.sh` tests it. |
+| `.claude/hooks/secret-guard.mjs` | before every `git commit`, `git push` and GitHub file write | Blocks when what would go out has a secrets file (`.env`, `*.pem`, `*.key`, `credentials.json`, ...) or a line that looks like a GitHub, Anthropic, AWS or Slack token or a private key. Names the file, never the secret. `secret-guard.test.sh` tests it. |
+| `.claude/hooks/review-guard.mjs` | before opening a pull request | Blocks until `/code-review` has run in the session (Claude called it or the user typed it). `review-guard.test.sh` tests it. |
+| `.claude/hooks/synced-guard.mjs` | before every Edit or Write | In a project repo, blocks edits to a file listed in `.claude/workflow-manifest` (the next sync would undo them), except on the sync's `workflow-sync` branch. Does nothing here. `synced-guard.test.sh` tests it. |
+| `.claude/hooks/dash-check.mjs` | every message the user sends | If CLAUDE.md says "no em dashes" and Claude's previous reply had one, reminds Claude before it answers. No extra turn. `dash-check.test.sh` tests it. |
 | `.claude/rules/workflow.md` | every session (Claude Code loads it like CLAUDE.md) | The shared session and tracker rules, the same in every repo. A project's CLAUDE.md only adds to them. |
 | `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it and the brief ends with a short "Your skills" list, so they do not get forgotten. Update it with any skill change. |
 | `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (stale facts first, branches against GitHub, uncommitted work, open PRs and CI, open issues by status). `labels.sh` creates the issue labels. |
@@ -131,7 +136,7 @@ A new repo added later needs to be added to its owner's token's repository list 
 1. Add `owner/repo` to `sync/repos.txt` (and to its owner's token's repository list), merge to `main`. The sync opens the
    repo's first "Workflow update" pull request, with a template `ground-truth.conf` when the repo has none.
 2. In that pull request's branch, fill in `.claude/ground-truth.conf`: `REPOS`, `WORK_BRANCH`, `HANDOFF`, `DOCS`,
-   `USER_NAME`. Then merge it.
+   `USER_NAME`, and `CHECK` if the repo has a check command (the push check runs it before every push). Then merge it.
 3. Create `notes/handoff.md`, `questions.md` (§1 open questions, §2 rulings), `notes/lessons.md` (with a
    `## Hook candidates` heading), `notes/crew/log.md` (its starting table is at the end of
    `.claude/skills/crew/SKILL.md`) and a `BACKLOG.md` that holds only the link to the repo's issues
@@ -223,6 +228,8 @@ GitLab.
   requests. Merged branches delete themselves. Nothing new is added to the workflow for now.
 - Time estimates are measured (Balázs, 2026-10-26): the estimate check (sent Claude back on every time in a reply)
   is gone; `round-timer.mjs` writes each work round to `notes/rounds.md` and the brief shows the latest.
+- Five more guards (Balázs, 2026-10-26: "do all improvements and hook suggestions"): checks before a push,
+  secrets, a review before a pull request, synced files in project repos, em dashes. `CHECK` stays optional.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
   every other repo's instead of a personal or plugin copy. Work branch `mods-test`; its `PLAN.md` moves to issues.
 - Merges without the click (Balázs, 2026-10-26, #26): agreeing in the chat on what to build is the approval, so a
