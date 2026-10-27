@@ -30,6 +30,11 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 - A Claude subscription (claude.ai, Claude Code) does not cover the Claude API: a tool that calls the API needs a
   paid API key, billed per use. Say this before planning any feature that calls Claude from a script. (check by 2027-01-22)
 
+- GitHub does not enforce rulesets on a private repo of a free account (personal or organization): the ruleset
+  page shows "won't be enforced ... until you move to GitHub Team". There, "Automatically delete head branches"
+  would delete the work branch at its next merge to `main`, so leave it off (seen on furythestunner/claude-mods,
+  2026-10-27). (check by 2027-01-27)
+
 ## The user's Windows PCs
 
 - In the desktop app on the user's Windows PC the Bash tool drops backslashes inside heredocs (`\\` and `\K` arrive

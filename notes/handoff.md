@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the project repos)
+Updated: 2026-10-27 (#32 open: free-repo ruleset lesson, round timer screenshot fix)
 
 ## Next
 
@@ -10,9 +10,11 @@ Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the 
 
 ## Waiting for Balázs
 
-- If GitHub did not delete them by itself: "Delete branch" on #25, #27, #28 and #30 (all merged 2026-10-27).
-- GitHub settings, once per repo (about 3 min each): furythestunner/workflows, furythestunner/claude-mods,
-  Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension, Kol-Lab-Design-Kft/website. On the repo's page:
+- GitHub settings, once per repo (about 3 min each). Done: furythestunner/workflows (2026-10-27). Still to do:
+  furythestunner/claude-mods, Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension,
+  Kol-Lab-Design-Kft/website. A private repo on a free plan (claude-mods; a Kol-Lab repo too if its ruleset page
+  shows the yellow "won't be enforced" warning): rulesets do nothing there, so skip step 3 and in step 4 tick only
+  "Allow auto-merge", NOT "Automatically delete head branches" (it would delete the work branch). On the repo's page:
   1. Settings (top bar), Rules (left), Rulesets, New ruleset, New branch ruleset. Name: `keep main and work branch`.
      Enforcement status: Active. Target branches, Add target, Include by pattern: `main`. Add target again: the work
      branch (workflows `dev-test`, claude-mods `mods-test`, intranet `intra-test`, KolLab.extension
@@ -44,4 +46,5 @@ Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the 
 
 ## Unfinished
 
+- dev-test: the free-repo ruleset lesson and the round timer screenshot fix, in pull request #32, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
