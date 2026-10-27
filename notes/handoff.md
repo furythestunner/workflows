@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#28 round timer and #30 more guards open)
+Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the project repos)
 
 ## Next
 
@@ -10,12 +10,11 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 ## Waiting for Balázs
 
-- Merge pull request #24 (issue guard: "close 12" counts like "close #12"); its checks are green.
-- If GitHub did not delete them by itself: "Delete branch" on #25 and #27.
+- If GitHub did not delete them by itself: "Delete branch" on #25, #27, #28 and #30 (all merged 2026-10-27).
 - The two GitHub settings per repo (README, "Merge by itself"), and say which projects are before v1.0
   (building mode).
-- Merge pull request #28 (round timer), then #30 (five more guards, on top of #28; closes #29). They, #25 and #27
-  all change `workflow.md`, so the later ones need a small merge (Claude does it).
+- For the push check in a project repo: add its check command as `CHECK="..."` to its `ground-truth.conf`
+  (optional; without it the push check does nothing there).
 - Branches: in each repo, the one-time settings in README.md, "Delete merged branches by themselves" (about 2 min
   each), then delete the old merged branches once on the Branches page.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
@@ -33,7 +32,4 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 ## Unfinished
 
-- dev-test-round-timer: the round timer, in pull request #28, not merged yet.
-- dev-test-more-hooks: five more guards and hook fixes, in pull request #30 (on top of #28), not merged yet.
-- dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
