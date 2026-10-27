@@ -1,6 +1,8 @@
 ---
 name: plain
 description: Explain a change, a pull request or a plan in plain words for someone who is not a developer, ready to paste into a pull request, a chat or an e-mail. Use when the user says /plain, "what changed", "what does this pull request do", "explain it simply", "mi változott", "mit csinál ez", "magyarázd el egyszerűen", and for the "In plain words" section of every pull request (/pr-body).
+metadata:
+  short: "Explains a change or pull request in plain words."
 ---
 
 # Plain words

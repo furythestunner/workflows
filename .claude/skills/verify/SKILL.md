@@ -1,6 +1,8 @@
 ---
 name: verify
 description: Check review feedback against the code before acting on it, then fix it or answer with reasons. Use when the user says /verify, when a review or review comment arrives on a pull request (a GitHub event), or when someone suggests code changes to take over.
+metadata:
+  short: "Checks review comments against the code before fixing."
 ---
 
 # Verify review feedback

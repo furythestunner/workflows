@@ -1,6 +1,8 @@
 ---
 name: grill-me
 description: Interview the user relentlessly about a plan, feature or decision until every open branch is settled, in rounds, each question with a recommended answer. Use when the user says /grill-me, "grill me", "ask me everything", "kérdezz ki", or before a change big enough that a wrong guess would cost a rework.
+metadata:
+  short: "Before a big change: questions until every gap is settled."
 ---
 
 # Grill me

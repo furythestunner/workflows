@@ -1,6 +1,8 @@
 ---
 name: handoff
 description: End-of-session handoff. Distils and archives the previous handoff, records what was done, what still runs in the background, what is next (the task of the day) and what waits for the user, in notes/handoff.md, the GitHub issues, questions.md, CLAUDE.md, the topic notes and memory, then commits and pushes per the project's handoff rule, so any session on any machine can start from an empty context. Use it whenever the user wants to finish, close or wrap up a session ("handoff", "end of day", "save where we are", "switching machines", "battery dying"), before a /clear, or when the conversation is about to be compacted after a long stretch of work.
+metadata:
+  short: "End of session: saves where things stand, commits, pushes."
 ---
 
 # Handoff

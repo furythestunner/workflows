@@ -1,6 +1,9 @@
 ---
 name: issue-run
 description: Unattended work on the repo's GitHub issues, for a scheduled run nobody watches. `check` (by day) reads the open issues and asks every needed question on the issue itself; `build` (after midnight) builds the Ready issues and opens the pull request. Use it when a scheduled task says /issue-run, or the user asks for a check of the issues by hand.
+metadata:
+  short: "Scheduled runs on Ready issues; questions go on the issue."
+  run-by: claude
 ---
 
 # Issue run

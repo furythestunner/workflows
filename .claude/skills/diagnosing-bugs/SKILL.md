@@ -1,6 +1,8 @@
 ---
 name: diagnosing-bugs
 description: Disciplined loop for hard bugs, wrong numbers and slow pages - build a check that fails on this bug first, then hypothesise, fix, and prove it. Use when the user reports something broken, wrong, failing or slow, says "debug this" or "diagnose", or a first quick fix did not work.
+metadata:
+  short: "Something broken, wrong or slow: proves the bug, then fixes."
 ---
 
 # Diagnosing bugs
