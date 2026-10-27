@@ -35,10 +35,10 @@ file, say so to the user, and propose either a change in the master copy or a fi
 - **Unattended runs:** scheduled sessions follow `/issue-run` (`check` by day, `build` after midnight). They work
   only on Ready issues and on Blocked ones the user has answered; every question goes on the issue, never into a chat
   nobody reads. A run never merges.
-- **Every pull request gets a review and a watcher:** before opening one, run `/code-review` on the diff against
-  `main` and fix what it finds; a finding left as is gets a line in the pull request saying why. Right after opening
-  it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo), so failing checks and review
-  comments are handled until it is merged or closed.
+- **Every pull request gets a review and a watcher:** run `/code-review` on the diff against `main` before opening
+  one (`.claude/hooks/review-guard.mjs` blocks it otherwise) and fix what it finds; a finding left as is gets a line
+  in the pull request saying why. Right after opening it, subscribe to its activity (auto-fix; needs the Claude
+  GitHub App on the repo), so failing checks and review comments are handled until it is merged or closed.
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, and ends in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default,
   never more than 12. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over
@@ -74,7 +74,7 @@ file, say so to the user, and propose either a change in the master copy or a fi
   values go only in `.claude/ground-truth.conf`, never in the scripts.
 - **Workflow changes start in the master copy:** any change to the workflow (hooks, skills, agents, the cheat
   sheets, these rules) is made in github.com/furythestunner/workflows. A sync pull request then brings it to every
-  repo; the sync merges it (one with steps by hand waits for the user). Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them): the
+  repo; the sync merges it (one with steps by hand waits for the user). Never edit a synced file in a project repo (`.claude/workflow-manifest` lists them; `.claude/hooks/synced-guard.mjs` blocks it): the
   next sync undoes the edit. A workflow to-do is an issue in the master copy, never one in a project repo.
 - **A project's own skills** go in `.claude/skills/<name>/` under a name the master copy does not use, with one line
   in `.claude/skills/CHEATSHEET.project.md` (same shape as `CHEATSHEET.md`). The sync never touches them.

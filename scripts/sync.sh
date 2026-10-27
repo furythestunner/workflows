@@ -65,10 +65,10 @@ echo "workflows $(git rev-parse --short HEAD) $(git log -1 --format=%cs) (writte
 # 5. What a person has to do before merging.
 conf=$target/.claude/ground-truth.conf
 if [ ! -f "$conf" ]; then
-  cp .claude/ground-truth.conf "$conf"
+  sed 's/^CHECK=.*/CHECK=""/' .claude/ground-truth.conf >"$conf"  # this repo's check script is not there
   note "New \`.claude/ground-truth.conf\`, copied from the master copy: fill in REPOS, WORK_BRANCH, HANDOFF, DOCS and USER_NAME before merging."
 else
-  for k in $(grep -oE '^[A-Z_]+=' .claude/ground-truth.conf | tr -d =); do
+  for k in $(grep -oE '^[A-Z_]+=' .claude/ground-truth.conf | tr -d = | grep -vxE 'CHECK'); do  # CHECK is optional
     if ! grep -qE "^$k=" "$conf"; then
       note "\`.claude/ground-truth.conf\` has no \`$k\` yet (master copy: \`$(grep -E "^$k=" .claude/ground-truth.conf | cut -d= -f2-)\`); add it with this project's value."
     fi
