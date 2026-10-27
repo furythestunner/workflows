@@ -1,6 +1,8 @@
 ---
 name: session-start
 description: Start-of-session brief. Runs the ground-truth script (stale facts, repos, worktrees, open PRs + CI, open issues by status, background jobs), reads notes/handoff.md and reconciles it against those facts, checks deadlines, then proposes the task of the day from the handoff, the GitHub issues and questions.md. Use it at the start of every session, right after /clear, or whenever the user asks where things stand ("where are we", "what's next", "continue the work", "what's running", "resume", "start the day", "what did we do last time").
+metadata:
+  short: "Brief on where things stand; use it after /clear."
 ---
 
 # Session start

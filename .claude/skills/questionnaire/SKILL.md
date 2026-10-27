@@ -1,6 +1,8 @@
 ---
 name: questionnaire
 description: Turn open questions only someone else can answer into a short document for that one person to fill in, async or together in a meeting. Use when the user says /questionnaire, "make a questionnaire", "kérdőív", or wants to send questions from questions.md §1 to someone (an owner, a client, a colleague).
+metadata:
+  short: "Questions only someone else can answer, as a short doc."
 ---
 
 # Questionnaire

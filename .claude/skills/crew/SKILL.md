@@ -1,6 +1,8 @@
 ---
 name: crew
 description: Run a feature round as a crew. The main session is the orchestrator (plans, talks to the user, reviews, commits) and hands the reading to Haiku scouts and the writing to a Sonnet implementer. Use it when the user says /crew, "crew round", or asks to do a backlog item with workers.
+metadata:
+  short: "Bigger feature round, done by Haiku and Sonnet helpers."
 ---
 
 # Crew round

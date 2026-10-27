@@ -1,6 +1,8 @@
 ---
 name: wait-what
 description: Re-explain the last message that did not land, simpler and with the missing context. Use when the user says /wait-what, "wait what", "I don't understand", "what does that mean", "nem értem", "ez mit jelent", or answers a question in a way that shows the explanation was missed.
+metadata:
+  short: "Re-explains the last answer, simpler and with context."
 ---
 
 # Wait, what?

@@ -1,6 +1,8 @@
 ---
 name: distill
 description: Shorten a long text without losing anything needed to act on it, checked item by item. Use when the user says /distill, "too long", "shorten this", "make it shorter", "túl hosszú", "rövidítsd", or when scripts/check.sh warns that a rules file, a CLAUDE.md or a SKILL.md is too long.
+metadata:
+  short: "Shortens a long text, checking nothing important is lost."
 ---
 
 # Distill

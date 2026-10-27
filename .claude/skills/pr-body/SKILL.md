@@ -1,6 +1,9 @@
 ---
 name: pr-body
 description: The shape of a pull request description: what changes for the users, evidence that it works, and the merge danger (one-way or two-way door, blast radius). Use whenever you write or update a pull request description, or the user asks how risky a merge is.
+metadata:
+  short: "Pull request description, with how risky the merge is."
+  run-by: claude
 ---
 
 # Pull request description

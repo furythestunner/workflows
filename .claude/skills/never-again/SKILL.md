@@ -1,6 +1,8 @@
 ---
 name: never-again
 description: Turn a mistake that happened twice, or friction in a session, into a hook, a check or a rule so it does not happen again. Use when the user says /never-again, "never again", "this keeps happening", "soha többé", "megint ez", when a correction is already listed under "Hook candidates" in notes/lessons.md, or at the end of a session (/handoff step 5) when something went wrong or was slow.
+metadata:
+  short: "A mistake happened twice: turns it into a hook or rule."
 ---
 
 # Never again
