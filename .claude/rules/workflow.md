@@ -34,10 +34,10 @@ and propose a change in the master copy or a fix to CLAUDE.md.
     in building mode "Part of #<n>" (the issue stays open until the user has tested it and says to close it).
 - **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues and Blocked
   ones the user answered; every question goes on the issue; a run never merges and never turns on auto-merge.
-- **Pull requests:** before opening one, run `/code-review` on the diff against `main` and fix what it finds (a
-  finding left as is gets a line in the pull request saying why). Right after opening it, subscribe to its activity
-  (auto-fix; needs the Claude GitHub App on the repo) and handle failing checks and review comments until it is
-  merged or closed. A review on a pull request always goes through `/verify`.
+- **Pull requests:** before opening one, run `/code-review` on the diff against `main` (`.claude/hooks/review-guard.mjs`
+  blocks it otherwise) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
+  after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
+  checks and review comments until it is merged or closed. A review on a pull request always goes through `/verify`.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
   its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
   it once the checks pass if auto-merge cannot be turned on. `MERGE_MODE` in `.claude/ground-truth.conf` (the brief
@@ -63,9 +63,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `.claude/hooks/lesson-check.mjs` asks for both after a reply.
 - **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
   the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
-- **Time estimates are real session time:** size Claude's work from the measured rounds in `notes/lessons.md` (feel
-  runs 4 to 6 times too high), give the user's part (clicks, merges) separately, and add the measured time there
-  afterwards. `.claude/hooks/estimate-check.mjs` checks it.
+- **Time estimates are measured, not felt:** `.claude/hooks/round-timer.mjs` writes each reply that made a code commit
+  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's work from the closest
+  round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
 - **Use the skill that fits** (`.claude/skills/CHEATSHEET.md`) even when not called, and say so in one line ("Used
   `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely one on every message.
 - **Crew rounds:** `/crew` holds the roles, models and steps. At session start, read an open round's brief and
@@ -75,6 +75,6 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 - **Workflow changes** (hooks, skills, agents, cheat sheets, these rules) and workflow to-dos (issues) belong in the
   master copy (github.com/furythestunner/workflows) only. A sync pull request brings changes to every repo; the sync
   merges it, except one with steps by hand, which waits for the user. Never edit a synced file in a project repo
-  (`.claude/workflow-manifest`): the next sync undoes it. A project's own skills go in `.claude/skills/<name>/` (a
-  name the master copy does not use) with one line in `.claude/skills/CHEATSHEET.project.md`; the sync never touches
-  them.
+  (`.claude/workflow-manifest`; `.claude/hooks/synced-guard.mjs` blocks it): the next sync undoes it. A project's
+  own skills go in `.claude/skills/<name>/` (a name the master copy does not use) with one line in
+  `.claude/skills/CHEATSHEET.project.md`; the sync never touches them.
