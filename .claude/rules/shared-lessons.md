@@ -40,6 +40,9 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 
 ## Working with the user
 
+- Steps the user has to do go in the chat, written out click by click, never "see README" or another file: opening
+  the file is a hassle and the steps get missed. Repeat open ones in every brief until done (Balázs, 2026-10-27,
+  workflows; a hook candidate, first correction).
 - "Improve X" is not "replace X": asked to make a colour legend clearer, Claude moved it to a new tab and removed it
   from where it was; the user wanted it kept (KolLab.extension, 2026-10-26; a hook candidate, first correction).
   Keep what exists unless removal was asked; when an option removes something, say so in the question.

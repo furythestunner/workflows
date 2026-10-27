@@ -16,8 +16,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 - **Handoff:** `notes/handoff.md` holds only Next (in order), Waiting for the user and Unfinished (work on one disk
   only, or committed but not merged). No diary; this overrides the `/handoff` template. After a reply,
   `.claude/hooks/handoff-check.sh` sends Claude back to update and push it when pushed code on the work branch is
-  newer. `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) to the work branch without
-  asking.
+  newer. `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) to the work branch, unasked.
+- **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
+  file. Each Waiting item keeps its full steps, and every brief repeats them until done: the user may have missed it.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
   open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
   an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.
@@ -68,8 +69,7 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
 - **Use the skill that fits** (`.claude/skills/CHEATSHEET.md`) even when not called, and say so in one line ("Used
   `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely one on every message.
-- **Crew rounds:** `/crew` holds the roles, models and steps. At session start, read an open round's brief and
-  status in `notes/crew/`.
+- **Crew rounds:** `/crew` holds roles, models and steps; at start, read an open round's status in `notes/crew/`.
 - **The setup comes from github.com/furythestunner/workflows** (`.claude/workflow-version` names the commit).
   Project values go only in `.claude/ground-truth.conf`, never in the scripts.
 - **Workflow changes** (hooks, skills, agents, cheat sheets, these rules) and workflow to-dos (issues) belong in the
