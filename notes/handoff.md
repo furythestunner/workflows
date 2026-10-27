@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#32 open: free-repo ruleset lesson, round timer screenshot fix)
+Updated: 2026-10-27 (#32 merged; repo settings: workflows done, 4 to go)
 
 ## Next
 
@@ -10,8 +10,9 @@ Updated: 2026-10-27 (#32 open: free-repo ruleset lesson, round timer screenshot 
 
 ## Waiting for Balázs
 
-- GitHub settings, once per repo (about 3 min each). Done: furythestunner/workflows (2026-10-27). Still to do:
-  furythestunner/claude-mods, Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension,
+- GitHub settings, once per repo (about 3 min each). Done: furythestunner/workflows (2026-10-27); claude-mods
+  (settings right, auto-merge greyed out there; only step 5, deleting old branches, left). Still to do:
+  Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension,
   Kol-Lab-Design-Kft/website. A private repo on a free plan (claude-mods; a Kol-Lab repo too if its ruleset page
   shows the yellow "won't be enforced" warning): rulesets do nothing there, so skip step 3 and in step 4 tick only
   "Allow auto-merge", NOT "Automatically delete head branches" (it would delete the work branch). On the repo's page:
@@ -46,5 +47,4 @@ Updated: 2026-10-27 (#32 open: free-repo ruleset lesson, round timer screenshot 
 
 ## Unfinished
 
-- dev-test: the free-repo ruleset lesson and the round timer screenshot fix, in pull request #32, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
