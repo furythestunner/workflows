@@ -11,9 +11,8 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 ## Waiting for Balázs
 
 - Merge pull request #24 (issue guard: "close 12" counts like "close #12"); its checks are green.
-- Merge pull request #25 (shared rules shortened to 70 lines), then #27 (merges without the click); click "Delete
-  branch" on each.
-- After #27: the two GitHub settings per repo (README, "Merge by itself"), and say which projects are before v1.0
+- If GitHub did not delete them by itself: "Delete branch" on #25 and #27.
+- The two GitHub settings per repo (README, "Merge by itself"), and say which projects are before v1.0
   (building mode).
 - Merge pull request #28 (round timer), then #30 (five more guards, on top of #28; closes #29). They, #25 and #27
   all change `workflow.md`, so the later ones need a small merge (Claude does it).
@@ -36,7 +35,5 @@ Updated: 2026-10-27 (#28 round timer and #30 more guards open)
 
 - dev-test-round-timer: the round timer, in pull request #28, not merged yet.
 - dev-test-more-hooks: five more guards and hook fixes, in pull request #30 (on top of #28), not merged yet.
-- dev-test-shorter-rules: the shorter shared rules, in pull request #25, not merged yet.
-- dev-test-auto-merge: merges without the click (#26), in pull request #27 on top of #25, not merged yet.
 - dev-test: the issue guard fix, committed and pushed, in pull request #24, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
