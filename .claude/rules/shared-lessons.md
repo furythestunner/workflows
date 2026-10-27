@@ -33,7 +33,9 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 - GitHub does not enforce rulesets on a private repo of a free account (personal or organization): the ruleset
   page shows "won't be enforced ... until you move to GitHub Team". There, "Automatically delete head branches"
   would delete the work branch at its next merge to `main`, so leave it off; "Allow auto-merge" is greyed out, so
-  Claude merges by hand once the checks pass (seen on furythestunner/claude-mods, 2026-10-27). (check by 2027-01-27)
+  Claude merges by hand once the checks pass. Both GitHub accounts are on the free plan: furythestunner (claude-mods
+  private, workflows public) and the Kol-Lab-Design-Kft organization (all private) (verified by the user, 2026-10-27) (check by
+  2027-10-27)
 
 ## The user's Windows PCs
 

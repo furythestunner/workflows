@@ -10,30 +10,17 @@ Updated: 2026-10-27 (#32 merged; repo settings: workflows done, 4 to go)
 
 ## Waiting for Balázs
 
-- GitHub settings, once per repo (about 3 min each). Done: furythestunner/workflows (2026-10-27); claude-mods
-  (settings right, auto-merge greyed out there; only step 5, deleting old branches, left). Still to do:
-  Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension,
-  Kol-Lab-Design-Kft/website. A private repo on a free plan (claude-mods; a Kol-Lab repo too if its ruleset page
-  shows the yellow "won't be enforced" warning): rulesets do nothing there, so skip step 3 and in step 4 tick only
-  "Allow auto-merge", NOT "Automatically delete head branches" (it would delete the work branch). On the repo's page:
-  1. Settings (top bar), Rules (left), Rulesets, New ruleset, New branch ruleset. Name: `keep main and work branch`.
-     Enforcement status: Active. Target branches, Add target, Include by pattern: `main`. Add target again: the work
-     branch (workflows `dev-test`, claude-mods `mods-test`, intranet `intra-test`, KolLab.extension
-     `extension-test`, website `website-test`).
-  2. Same page, under Rules: tick only "Restrict deletions". Create.
-  3. Rulesets, New ruleset, New branch ruleset again. Name: `checks before main`. Enforcement status: Active. Add
-     target, Include by pattern: `main` only (not the work branch: there it would block every push). Under Rules,
-     tick "Require status checks to pass", Add checks, type `check`, pick it. Create. (Nothing shows up for `check`:
-     that repo has no check yet; skip this step.)
-  4. Settings, General (left), scroll to "Pull Requests": tick "Allow auto-merge" and "Automatically delete head
-     branches".
-  5. Branches (Code tab, "branches" link): delete the old merged branches with the bin icon; keep `main` and the
-     work branch.
+- Delete the old merged branches in the 3 Kol-Lab repos, if not done yet (about 1 min each): on the repo's page,
+  Code tab, "branches" link, bin icon on each old branch. Keep `main` and the work branch (intranet `intra-test`,
+  KolLab.extension `extension-test`, website `website-test`). (GitHub settings are done in all 5 repos, 2026-10-27:
+  rulesets only in workflows, the only public one; the others are on the free plan, where rulesets do nothing.)
 - Say in the chat which projects are before v1.0 (their pull requests then all merge by themselves).
 - Optional: say in the chat which command checks each project (the one CI runs); Claude adds it, and pushes there
   then wait for it to pass.
 - Say "close #5 and #16" in a chat once the brief looks right; Claude may close issues you name now.
-- SYNC_TOKEN expiry: put its date in `notes/lessons.md` with a `(check by YYYY-MM-DD)` tag a week before it.
+- Tell me when the SYNC_TOKEN token expires, so I can set a reminder a week before: github.com, your profile
+  picture (top right), Settings, Developer settings (bottom of the left list), Personal access tokens,
+  Fine-grained tokens; the date is next to the token used for the sync.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
 - #12 and #14 can be closed (dev-test exists; skills stay in the repos): say "close #12 and #14".
 
