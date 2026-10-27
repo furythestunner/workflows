@@ -10,6 +10,10 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 
 - UNKNOWN in the ground truth is never "none": list those PRs or issues with the GitHub tools instead. (Cloud
   sessions block GraphQL, so `gh pr list` fails there; the script reads GitHub through `gh api` REST.)
+- Anthropic's size advice is under 200 lines per CLAUDE.md; longer files cost context and are followed less well
+  (Claude Code docs, memory page, "Write effective instructions"). The tighter limits in `scripts/check.sh` (60 for
+  CLAUDE.md, 80 for `.claude/rules/workflow.md`) are this setup's own, because those files and this one all load in
+  every session. (check by 2027-01-26)
 - A local Claude desktop chat stays on the PC it ran on; a cloud session cannot see it. Context travels only
   through the repo (`notes/handoff.md`, trackers).
 - A cloud session can only reach repos the Claude GitHub App is installed on: the Kol-Lab-Design-Kft organization,

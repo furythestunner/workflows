@@ -1,7 +1,7 @@
 // PreToolUse hook: only the user approves work (22 Oct 2026). Claude may not move an issue to "Status: Ready" or
 // "Status: Done", may not close an issue, and opens new issues only in "Status: Backlog". Moving an issue back to
 // Backlog or to Blocked is allowed. Closing is allowed when the user's own last typed message says to close that
-// issue by number ("close #12", "zárd le a #12-t") (26 Oct 2026); issue comments and tool output never count. The old label names ("status::ready") are matched too. Covers the GitHub tools
+// issue by number, with or without # ("close #12", "close 12", "zárd le a #12-t") (26 Oct 2026); issue comments and tool output never count. The old label names ("status::ready") are matched too. Covers the GitHub tools
 // (mcp__*github*) and gh / curl in Bash. A guard against mistakes, not against someone set on getting round it:
 // a payload read from a file (--input) is not inspected.
 import { readFileSync } from 'node:fs';
@@ -30,13 +30,13 @@ function lastUserText() {
   }
   return '';
 }
-// "close #12", "close issues #12 and #14", "zárd le a #12-t"; never a sentence with a "no" in it ("don't close #12").
+// "close #12", "close 12", "close issues #12 and #14", "zárd le a 12-t"; never a sentence with a "no" in it ("don't close #12").
 function closeAsked(nums) {
   nums = [].concat(nums).filter(Boolean);
   if (!nums.length) return false;
   const yes = lastUserText().split(/[.\n!?;]/).filter(s =>
     /\b(close|closing)\b|zár/i.test(s) && !/\b(don'?t|do not|not|never|ne|nem)\b|n't\b/i.test(s));
-  return nums.every(n => yes.some(s => new RegExp(String.raw`#${n}(?!\d)`).test(s)));
+  return nums.every(n => yes.some(s => new RegExp(String.raw`(?<!\d)#?${n}(?!\d)`).test(s)));
 }
 // Every issue a command closes: "gh issue close 12 && gh issue close 13", ".../issues/12 ... state=closed".
 const issueNos = s => [...String(s).matchAll(/(?:issues\/|issue\s+close\s+#?)(\d+)/g)].map(m => m[1]);
@@ -101,7 +101,7 @@ if (what) {
         'Done, on GitHub (website or phone app). Claude closes an issue only when ' + who + '\'s own last message ' +
         'says to close it by number ("close #12"); otherwise give ' + who + ' the link to the issue and say what to click. Claude may move Ready -> In progress, any -> Blocked (with the ' +
         'question posted on the issue), any -> Backlog (on hold) and In progress -> Review (with an open pull request ' +
-        'that says "Closes #<n>").'
+        'that says "Closes #<n>", or "Part of #<n>" in building mode).'
     }
   }));
 }
