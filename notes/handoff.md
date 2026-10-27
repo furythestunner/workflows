@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the project repos)
+Updated: 2026-10-27 (#32 open: free-repo ruleset lesson, round timer screenshot fix)
 
 ## Next
 
@@ -46,4 +46,5 @@ Updated: 2026-10-27 (#24, #25, #27, #28, #30 merged; the sync takes them to the 
 
 ## Unfinished
 
+- dev-test: the free-repo ruleset lesson and the round timer screenshot fix, in pull request #32, not merged yet.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
