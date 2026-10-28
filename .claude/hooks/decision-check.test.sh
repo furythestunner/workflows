@@ -4,6 +4,7 @@
 # Usage: bash .claude/hooks/decision-check.test.sh   (exit 0 = all pass)
 cd "$(dirname "$0")" || exit 1
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 t() { # <block|allow> <user message> [tool name] [tool input JSON] [stop_hook_active]
   local f="$tmp/t.jsonl" out got

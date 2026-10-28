@@ -5,6 +5,7 @@
 cd "$(dirname "$0")" || exit 1
 here=$(pwd)
 repo=$(mktemp -d); other=$(mktemp -d); trap 'rm -rf "$repo" "$other"' EXIT
+command -v cygpath >/dev/null && { repo=$(cygpath -m "$repo"); other=$(cygpath -m "$other"); } # node on Windows needs C:/...
 git init -q -b app-test "$repo" && git init -q -b main "$other"
 mkdir -p "$repo/.claude"
 printf 'REPOS=("app|.|origin|main|acme/app")\nWORK_BRANCH="app-test"\n' > "$repo/.claude/ground-truth.conf"

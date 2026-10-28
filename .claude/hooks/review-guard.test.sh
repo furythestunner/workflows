@@ -3,6 +3,7 @@
 # Usage: bash .claude/hooks/review-guard.test.sh   (exit 0 = all pass)
 cd "$(dirname "$0")" || exit 1
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 none='{"type":"user","message":{"content":"open the PR"}}'
 skill='{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Skill","input":{"skill":"code-review","args":"main...HEAD"}}]}}'

@@ -4,6 +4,7 @@
 # Usage: bash .claude/hooks/dash-check.test.sh   (exit 0 = all pass)
 hook=$(cd "$(dirname "$0")" && pwd)/dash-check.mjs
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 dash=$(printf '\xe2\x80\x94')
 t() { # <remind|none> <name> <CLAUDE.md text> <previous reply> [new message already in the transcript: yes]

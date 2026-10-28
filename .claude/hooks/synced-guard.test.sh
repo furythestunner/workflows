@@ -4,6 +4,7 @@
 # Usage: bash .claude/hooks/synced-guard.test.sh   (exit 0 = all pass)
 hook=$(cd "$(dirname "$0")" && pwd)/synced-guard.mjs
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 p="$tmp/project"; m="$tmp/master"
 git init -q -b work "$p"; mkdir -p "$p/.claude/hooks" "$m/.claude"
