@@ -10,3 +10,4 @@ message that started the turn to the end of the reply. Size Claude's own work fr
 - 2026-10-27 07:04 UTC: 2 min, 2 commits: Rulesets are not enforced on free private repos: lesson, handoff steps; Round timer: a screenshot alone starts a turn
 - 2026-10-27 07:07 UTC: 1 min, 1 commit: Lesson: auto-merge greyed out on free private repos; claude-mods settings done
 - 2026-10-27 07:14 UTC: 1 min, 1 commit: Free plan on both accounts: lesson; handoff steps written out
+- 2026-10-28 11:49 UTC: 5 min, 2 commits: Hook tests pass on Windows: temp paths converted for node; Crew: file fence, fresh reviewer and smoke list
