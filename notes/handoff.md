@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-27 (#5, #12, #14, #16 closed; open steps in #35)
+Updated: 2026-10-28 (#40 merged: /crew fence, reviewer, smoke list; hook tests pass on Windows)
 
 ## Next
 
@@ -9,6 +9,10 @@ Updated: 2026-10-27 (#5, #12, #14, #16 closed; open steps in #35)
 2. The drift check reads `main` of each repo, so it lists them as behind until each work branch is merged to `main`.
 
 ## Waiting for Balázs
+
+- Issue #39 (/crew additions, merged in #40): try one short `/crew` round (about 10 min). In a project repo with a
+  Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
+  report has a test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
 
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 
