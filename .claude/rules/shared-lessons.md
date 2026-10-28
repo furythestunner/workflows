@@ -34,10 +34,13 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
   page shows "won't be enforced ... until you move to GitHub Team". There, "Automatically delete head branches"
   would delete the work branch at its next merge to `main`, so leave it off; "Allow auto-merge" is greyed out, so
   Claude merges by hand once the checks pass. Both GitHub accounts are on the free plan: furythestunner (claude-mods
-  private, workflows public) and the Kol-Lab-Design-Kft organization (all private) (verified by the user, 2026-10-27) (check by
-  2027-10-27)
+  private, workflows public) and the Kol-Lab-Design-Kft organization (all private) (verified by the user, 2026-10-27)
+  (check by 2027-10-27)
 
 ## The user's Windows PCs
+
+- Node on Windows cannot open a Git Bash path like `/tmp/...`: a test that hands a temp folder to node converts it
+  first (`command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp")`), or it fails only on the PC, never in CI.
 
 - In the desktop app on the user's Windows PC the Bash tool drops backslashes inside heredocs (`\\` and `\K` arrive
   broken): write text with Windows paths or regexes through the Edit / Write tools, not a heredoc script.

@@ -31,7 +31,7 @@ if node -e '
 ' 2>"$err"; then ok ".claude/settings.json: valid, hook files exist"; else bad ".claude/settings.json: $(cat "$err")"; fi
 
 # 4. The guards block and allow what their tests say.
-for f in .claude/hooks/*.test.sh; do
+for f in .claude/hooks/*.test.sh .claude/skills/*/*.test.sh; do
   if out=$(bash "$f" 2>&1); then ok "$(basename "$f")"
   else bad "$(basename "$f")"; echo "$out" | grep FAIL; fi
 done

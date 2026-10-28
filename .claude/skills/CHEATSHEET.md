@@ -32,8 +32,9 @@ update it in the same commit when a skill is added, renamed or changes what it i
   reason. Runs by itself when a review arrives on a pull request.
 - `/distill`: shortens a long text and checks item by item that nothing important was lost. Use it when a rules
   file or note grows too long (the check script warns).
-- `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read and a
-  Sonnet implementer writes. Use it for a bigger feature round you want done with workers.
+- `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read, a Sonnet
+  implementer writes and a Sonnet reviewer checks. You get a test list of only what Claude could not check. Use it
+  for a bigger feature round you want done with workers.
 
 ## Hooks (run by themselves)
 

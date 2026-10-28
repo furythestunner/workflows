@@ -4,6 +4,7 @@
 # Usage: bash .claude/hooks/round-timer.test.sh   (exit 0 = all pass)
 hook=$(cd "$(dirname "$0")" && pwd)/round-timer.mjs
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 commit() { # <repo> <ISO date> <file> <subject>
   mkdir -p "$1/$(dirname "$3")"; echo "$4" >>"$1/$3"
