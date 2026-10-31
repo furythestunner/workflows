@@ -56,3 +56,9 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 - "Improve X" is not "replace X": asked to make a colour legend clearer, Claude moved it to a new tab and removed it
   from where it was; the user wanted it kept (KolLab.extension, 2026-10-26; a hook candidate, first correction).
   Keep what exists unless removal was asked; when an option removes something, say so in the question.
+
+## New from the repos (move each into its section)
+- The Microsoft 365 connector's SharePoint upload takes at most 1 MB per file and needs the whole file inline in
+  the call, so a Word or PDF guide with screenshots cannot be uploaded by Claude: create the folder with the
+  connector, put the files in Downloads, and the user drags them in (27 Oct 2026, intranet user guides).
+  (check by 2027-01-27)
