@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-10-28 (#40 merged: /crew fence, reviewer, smoke list; hook tests pass on Windows)
+Updated: 2026-11-01 (#41: handoff check also on talk, docs commits and context size)
 
 ## Next
 
@@ -9,6 +9,11 @@ Updated: 2026-10-28 (#40 merged: /crew fence, reviewer, smoke list; hook tests p
 2. The drift check reads `main` of each repo, so it lists them as behind until each work branch is merged to `main`.
 
 ## Waiting for Balázs
+
+- Issue #41 (the handoff now updates itself): nothing to do on a normal day; just close sessions without typing
+  `/handoff`. Within the next week, check once (about 2 min): open a new session on `dev-test` and see that the
+  brief's Next and Waiting lines match what you did last time. If something is missing, say so in the chat.
+  Also say if 150k tokens is too early or too late for the "start a new session" reminder.
 
 - Issue #39 (/crew additions, merged in #40): try one short `/crew` round (about 10 min). In a project repo with a
   Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
@@ -28,14 +33,7 @@ All of these are also in issue https://github.com/furythestunner/workflows/issue
   Fine-grained tokens; the date is next to the token used for the sync.
 - Drift check: say whether Claude may delete the disabled personal-account task (the new one works).
 
-## Running
-
-- Scheduled task "Workflow drift check" on the personal account: DISABLED on 2026-10-23 (its test run could not
-  reach the private project repos).
-- Scheduled task "Workflow drift check" (trig_016Rncvz1ZjQntitYgwVUXYM): created 2026-10-23, Mondays 07:43
-  Budapest, push to phone. Test run 2026-10-23 OK: all four repos read, all three 4 commits behind, comment on #16.
-- Drift issue #16 closed 2026-10-27 (Balázs); the weekly drift check opens a new one when a repo falls behind.
-
 ## Unfinished
 
+- Pull request for #41 and #17 (dev-test to main): open until its checks pass, then merged.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
