@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-01 (#41: handoff check also on talk, docs commits and context size)
+Updated: 2026-11-01 (#42 merged: the handoff check also fires on talk, docs commits and context size)
 
 ## Next
 
@@ -35,5 +35,4 @@ All of these are also in issue https://github.com/furythestunner/workflows/issue
 
 ## Unfinished
 
-- Pull request for #41 and #17 (dev-test to main): open until its checks pass, then merged.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
