@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-01 (#43 open: the short brief keeps Next and Waiting)
+Updated: 2026-11-01 (#43 merged: the short brief keeps Next and Waiting)
 
 ## Next
 
@@ -19,7 +19,7 @@ Updated: 2026-11-01 (#43 open: the short brief keeps Next and Waiting)
   Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
   report has a test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
 
-- Short brief fix (pull request #43, merges by itself once its checks pass): after it merges, open a new session
+- Short brief fix (pull request #43, merged 2026-11-01): open a new session
   on `dev-test` and start with a task (for example "check issue #38"). The first reply should still list Next
   and Waiting for you, with the steps written out. If not, say so in the chat (about 2 min).
 
