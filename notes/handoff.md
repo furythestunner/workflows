@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-01 (#42 merged: the handoff check also fires on talk, docs commits and context size)
+Updated: 2026-11-01 (short brief left out Next and Waiting: fix proposed, lesson in notes/lessons.md)
 
 ## Next
 
@@ -18,6 +18,9 @@ Updated: 2026-11-01 (#42 merged: the handoff check also fires on talk, docs comm
 - Issue #39 (/crew additions, merged in #40): try one short `/crew` round (about 10 min). In a project repo with a
   Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
   report has a test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
+
+- Short brief fix: say yes in the chat and Claude makes the brief keep the Waiting items even when your first
+  message is a task (about 5 min, nothing to click).
 
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 
