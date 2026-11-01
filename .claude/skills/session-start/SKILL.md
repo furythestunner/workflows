@@ -20,7 +20,7 @@ open that already shipped, "done" items whose code changed since).
    PRs with a CI verdict, open issues by status label, background jobs; what it looks at is in
    `.claude/ground-truth.conf`). Exit 2 means a probe failed: that section is UNKNOWN, never "clean" or "no
    issues". An open PR is usually the active thread.
-2. **Read `notes/handoff.md`**: Next, Waiting for the user, Running, Last session.
+2. **Read `notes/handoff.md`**: Next, Waiting for the user, Unfinished.
    - If it is missing, or older than the latest activity in git or on GitHub, say so, and build the brief from
      the issues, `questions.md` and the ground truth instead.
    - `notes/handoff-archive.md` holds the earlier handoffs: never read it whole; search it when the handoff or a
@@ -33,8 +33,8 @@ open that already shipped, "done" items whose code changed since).
    claim the brief will repeat:
    - "merged", "pushed", "nothing uncommitted" → the repo sections. A LOCAL ONLY commit or an uncommitted worktree
      the handoff does not mention goes in the brief: work that exists only on this disk.
-   - **Each item in "Running"** → the background section. If it finished, read the last lines of its log and note
-     the outcome: done, failed, timed out. Analyze results only once the user picks that task.
+   - **Background work named in "Next"** → the background section. If it finished, read the last lines of its log
+     and note the outcome: done, failed, timed out. Analyze results only once the user picks that task.
    - **Failing CI** (`CI RED`) → `gh pr checks <n> -R <owner/repo>` for the failing job.
    - **Today's date and time** against deadlines (expiries, scheduled jobs, events). Anything due within a day goes
      first.

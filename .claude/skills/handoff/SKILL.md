@@ -1,6 +1,6 @@
 ---
 name: handoff
-description: End-of-session handoff. Distils and archives the previous handoff, records what was done, what still runs in the background, what is next (the task of the day) and what waits for the user, in notes/handoff.md, the GitHub issues, questions.md, CLAUDE.md, the topic notes and memory, then commits and pushes per the project's handoff rule, so any session on any machine can start from an empty context. Use it whenever the user wants to finish, close or wrap up a session ("handoff", "end of day", "save where we are", "switching machines", "battery dying"), before a /clear, or when the conversation is about to be compacted after a long stretch of work.
+description: End-of-session handoff. Distils and archives the previous handoff, records what is next (the task of the day), what waits for the user and what is unfinished, in notes/handoff.md, the GitHub issues, questions.md, CLAUDE.md, the topic notes and memory, then commits and pushes per the project's handoff rule, so any session on any machine can start from an empty context. Use it whenever the user wants to finish, close or wrap up a session ("handoff", "end of day", "save where we are", "switching machines", "battery dying"), before a /clear, or when the conversation is about to be compacted after a long stretch of work.
 metadata:
   short: "End of session: saves where things stand, commits, pushes."
 ---
@@ -16,7 +16,7 @@ session can find out what happened and why.
 
 | What | Where | Rule |
 |---|---|---|
-| Next tasks (task of the day), what waits for the user, what runs in the background, the last session | `notes/handoff.md` (live) | Rewritten at each handoff, after the old one is distilled and archived |
+| Next tasks (task of the day, background work to check), what waits for the user, unfinished work | `notes/handoff.md` (live) | Rewritten at each handoff, after the old one is distilled and archived |
 | Earlier handoffs | `notes/handoff-archive.md` | Newest first, word for word. Never read at session start; searched when needed |
 | Open work | GitHub issues of each repo | One issue per item, one `Type:` and one `Status:` label. New work opens in `Status: Backlog`. A landed item closes when its pull request ("Closes #n") merges; Claude never closes one. Cross-repo items marked ⚠. `BACKLOG.md` only links there |
 | Questions for the user, rulings, deliberate non-fixes | `questions.md` | §1 💬 open; when the user rules, it moves to §2 as 🟢 with their words and the date |
@@ -75,8 +75,8 @@ session can find out what happened and why.
      machine or a cloud session needs goes in the repo);
    - an improvement to the session loop itself (a skill step, a ground-truth check) → its generic part goes back to
      the workflow repo in its own commit (README, "Improve the workflow"). Never a lesson.
-6. **Background work:** stop anything that should not keep running; ask the user if unsure. Everything left running
-   goes in the "Running" table with how to check it and how to stop it.
+6. **Background work:** stop anything that should not keep running; ask the user if unsure. Anything left running
+   that the next session must check goes under "Next" as a step (what to check, how to stop it).
 7. **Commit and push the docs** (handoff, trackers, notes) per the project's handoff rule. Then verify that the
    remote has the tip (`git log origin/<branch> -1`, or run the ground truth again): a push that failed is a
    handoff that did not happen. Never commit secrets: if a secret is needed, write THAT it is needed, never its
@@ -97,14 +97,10 @@ Read by /session-start. Open work: the GitHub issues. Decisions and rulings: `qu
 <the `questions.md` §1 titles that block the Next list; a new question goes into questions.md first>
 <each thing only the user can do, with its full steps (every click and setting), never "see README">
 
-## Running in the background
-| What | Unit / process | Ends | Check | Stop |
-|---|---|---|---|---|
-
-## Last session (YYYY-MM-DD)
-- Done: <one line each, with PR numbers>
-- Unfinished: <repo>: <worktree / branch>, <uncommitted, LOCAL ONLY or pushed>, <what is left>
-- Learned: <facts the next session needs that are not in CLAUDE.md>
+## Unfinished
+- <repo>: <worktree / branch>, <uncommitted, LOCAL ONLY, or committed but not merged>, <what is left>
 ```
+
+No "done" list and no diary: what landed is in git and the closed issues; lessons go to `notes/lessons.md`.
 
 Keep it under about 60 lines. If something needs more space, it belongs in a topic note with a link from here.
