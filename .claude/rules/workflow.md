@@ -14,9 +14,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `.claude/ground-truth.conf`) and loads the handoff. The first reply opens with the brief (`/session-start` steps 2
   to 5). The handoff is a claim, the script is the fact: report a contradiction first.
 - **Handoff:** `notes/handoff.md` holds only Next (in order), Waiting for the user and Unfinished (work on one disk
-  only, or committed but not merged). No diary; this overrides the `/handoff` template. After a reply,
-  `.claude/hooks/handoff-check.sh` sends Claude back to update and push it when pushed code on the work branch is
-  newer. `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) to the work branch, unasked.
+  only, or committed but not merged). No diary. After a reply, `.claude/hooks/handoff-check.sh` sends Claude back
+  to update it (pushed commits newer than it, 4 messages of talk, the context past 150k: then tell the user to start
+  a new session). `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) unasked.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps, and every brief repeats them until done: the user may have missed it.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
