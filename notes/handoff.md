@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-01 (#41: handoff check also on talk, docs commits and context size)
+Updated: 2026-11-01 (short brief left out Next and Waiting: fix proposed, lesson in notes/lessons.md)
 
 ## Next
 
@@ -19,6 +19,9 @@ Updated: 2026-11-01 (#41: handoff check also on talk, docs commits and context s
   Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
   report has a test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
 
+- Short brief fix: say yes in the chat and Claude makes the brief keep the Waiting items even when your first
+  message is a task (about 5 min, nothing to click).
+
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 
 - Delete the old merged branches in the 3 Kol-Lab repos, if not done yet (about 1 min each): on the repo's page,
@@ -35,5 +38,4 @@ All of these are also in issue https://github.com/furythestunner/workflows/issue
 
 ## Unfinished
 
-- Pull request for #41 and #17 (dev-test to main): open until its checks pass, then merged.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.

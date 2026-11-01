@@ -8,5 +8,9 @@
 
 ## Hook candidates
 
-None open. Time estimates (2026-10-26) became `.claude/hooks/estimate-check.mjs`, replaced the same day by
+- 2026-11-01, first correction: the short brief (first message is a task: "3 lines", `session-start.sh` line 13,
+  `cloud/setup-script.sh`) left out Next and Waiting for Balázs, against workflow.md (every brief repeats the open
+  steps). Balázs could not do his #41 check. At a second time: a check that the brief names the Waiting items.
+
+Earlier: time estimates (2026-10-26) became `.claude/hooks/estimate-check.mjs`, replaced the same day by
 `.claude/hooks/round-timer.mjs`, which measures each round into `notes/rounds.md` (the check fired on every time).

@@ -70,7 +70,7 @@ open that already shipped, "done" items whose code changed since).
      and setting), never "see README" or another file. Repeat them every session until done: the user may have
      missed them.
    - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
-     command and when to use it, a few words each. In the 3-line brief before a specific task, one line naming them.
+     command and when to use it, a few words each. In the short brief before a specific task, one line naming them.
    - End by recommending one task and asking which to start.
 5. **Wait for the user's choice** before long work or anything outward (push, PR, merge, release, comments,
    messages). Reading and checking are fine. The user decides the day's priorities, and the handoff can be stale.

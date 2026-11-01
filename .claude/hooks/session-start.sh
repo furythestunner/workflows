@@ -10,7 +10,8 @@ excl=(); for d in $DOCS; do excl+=(":(exclude)$d"); done
 echo "AUTOMATIC SESSION START (hook .claude/hooks/session-start.sh). Step 1 of /session-start is done below."
 echo "Your FIRST reply in this session, whatever the user writes, begins with the brief: follow steps 2 to 5 of"
 echo ".claude/skills/session-start/SKILL.md, using the ground truth and handoff below (do not run the script again)."
-echo "If the first message is a specific task, keep the brief to 3 lines (contradictions, anything due) and then do the task."
+echo "If the first message is a specific task, keep the brief short (contradictions, anything due), but still list every"
+echo "item of the handoff's Next and Waiting for the user, Waiting with its steps written out; then do the task."
 echo
 
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then
