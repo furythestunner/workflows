@@ -39,9 +39,10 @@ t talk-4-messages block 'user 4'
 t talk-before-handoff allow 'user 6 2000'
 t talk-asked-once allow 'user 4; run block talk-asked-once/first'
 t talk-asked-again-at-8 block 'user 4; run block talk-again/first; user 4'
-now() { sleep 1; date -u +%Y-%m-%dT%H:%M:%S; }  # a typed message from this second, between two handoff commits
-t talk-new-handoff-recount allow 'user 4 "$(now)"; run block talk-recount/first; sleep 1; c notes/handoff.md; g push -q; user 3'
-t talk-new-handoff-4-more block 'user 4 "$(now)"; run block talk-recount2/first; sleep 1; c notes/handoff.md; g push -q; user 4'
+# Messages from 2050, then a handoff commit dated 2060: only the messages after it count again.
+late() { GIT_COMMITTER_DATE=2060-01-01T00:00:00Z c notes/handoff.md; g push -q; }
+t talk-new-handoff-recount allow 'user 4 2050; run block talk-recount/first; late; user 3'
+t talk-new-handoff-4-more block 'user 4 2050; run block talk-recount2/first; late; user 4'
 t talk-unpushed allow 'user 4; c app.sh'
 # Context size.
 t ctx-below allow 'ctx 149000'
@@ -49,7 +50,9 @@ t ctx-150k block 'ctx 151000'
 t ctx-150k-once allow 'ctx 151000; run block ctx-once/first; ctx 160000'
 t ctx-200k-again block 'ctx 151000; run block ctx-again/first; ctx 201000'
 t ctx-after-compaction block 'ctx 151000; run block ctx-compact/first; ctx 90000; run allow ctx-compact/compacted; ctx 152000'
+t ctx-unpushed block 'c app.sh; ctx 151000'
 t ctx-other-branch block 'g checkout -q -b other; ctx 151000'
 t ctx-own-level allow 'echo CONTEXT_WARN=300000 >>$r/.claude/ground-truth.conf; ctx 250000'
+t path-with-space block 'tx="$tmp/a b.jsonl"; user 4'
 t no-transcript-file allow 'tx=$tmp/missing.jsonl'
 exit $fail

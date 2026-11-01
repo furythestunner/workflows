@@ -20,7 +20,7 @@ state=$(git rev-parse --git-path handoff-check.state)
 ctx_tx="" ctx_level=0 talk_tx="" talk_n=0
 [ -f "$state" ] && . "$state"
 save() { printf 'ctx_tx=%q ctx_level=%q talk_tx=%q talk_n=%q\n' "$ctx_tx" "$ctx_level" "$talk_tx" "$talk_n" >"$state"; }
-block() { printf '{"decision":"block","reason":"%s"}\n' "$1"; exit 0; }
+block() { local r=${1//\\/\\\\}; printf '{"decision":"block","reason":"%s"}\n' "${r//\"/\\\"}"; exit 0; }
 on_branch=0; [ "$(git branch --show-current 2>/dev/null)" = "$WORK_BRANCH" ] && on_branch=1
 h=$(git log -1 --format=%H -- "$HANDOFF" 2>/dev/null)
 since=0; [ -n "$h" ] && since=$(git log -1 --format=%ct "$h")
@@ -28,10 +28,10 @@ since=0; [ -n "$h" ] && since=$(git log -1 --format=%ct "$h")
 # From the transcript: the context size of the last reply, and the user's messages after the handoff's commit.
 tx="" tokens=0 turns=0
 if command -v node >/dev/null; then
-  read -r tx tokens turns < <(printf '%s' "$input" | SINCE=$since node -e '
+  read -r tokens turns tx < <(printf '%s' "$input" | SINCE=$since node -e '
     const fs = require("fs");
     let i; try { i = JSON.parse(fs.readFileSync(0, "utf8") || "{}"); } catch { process.exit(0); }
-    const p = i.transcript_path; if (!p || /\s/.test(p)) process.exit(0);
+    const p = i.transcript_path; if (!p) process.exit(0);
     let es; try { es = fs.readFileSync(p, "utf8").split("\n").filter(Boolean).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean); } catch { process.exit(0); }
     const typed = e => { const c = e.message?.content; return typeof c === "string" ? c.trim() !== "" :
       Array.isArray(c) && c.some(b => b.type === "image" || (b.type === "text" && b.text.trim())); };
@@ -40,7 +40,7 @@ if command -v node >/dev/null; then
     const last = [...es].reverse().find(e => e.type === "assistant" && !e.isSidechain && e.message?.usage);
     const u = last?.message.usage || {};
     const tokens = (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0);
-    console.log(p, tokens, turns);' 2>/dev/null)
+    console.log(tokens, turns, p);  // the path last: it may hold spaces' 2>/dev/null)
 fi
 tokens=${tokens:-0} turns=${turns:-0}
 case "$tokens$turns" in *[!0-9]*) tokens=0 turns=0 ;; esac
@@ -51,7 +51,9 @@ if [ -n "$tx" ]; then
   level=0; [ "$tokens" -ge "$CONTEXT_WARN" ] && level=$(( (tokens - CONTEXT_WARN) / STEP + 1 ))
   if [ "$level" -gt "$ctx_level" ]; then
     ctx_level=$level; save; k=$(( tokens / 1000 ))
-    if [ "$on_branch" = 1 ]; then
+    if [ "$on_branch" = 1 ] && [ "$(git rev-list --count '@{u}..HEAD' 2>/dev/null)" != "0" ]; then
+      block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. $WORK_BRANCH has unpushed commits, so do not push half-done work: finish this step first (checks pass), then bring $HANDOFF up to date (Next, Waiting for $USER_NAME, Unfinished), commit and push it to $WORK_BRANCH. If the step cannot be finished now, tell $USER_NAME in one line what is unpushed and that a new session should start after it is pushed."
+    elif [ "$on_branch" = 1 ]; then
       block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. Bring $HANDOFF up to date now: Next, Waiting for $USER_NAME, Unfinished (.claude/rules/workflow.md, Sessions and trackers); only what changed, and the date line. Commit and push it to $WORK_BRANCH (handoff rule: no need to ask). Then tell $USER_NAME in one line: the handoff is saved, the context is about ${k}k, start a new session for the next task."
     fi
     block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. This checkout is not on $WORK_BRANCH, so do not write the handoff here. Tell $USER_NAME in one line: the context is about ${k}k; finish this step, then type /handoff and start a new session."
