@@ -15,3 +15,4 @@ message that started the turn to the end of the reply. Size Claude's own work fr
 - 2026-11-01 18:03 UTC: 3 min, 1 commit: Short brief keeps Next and Waiting when the first message is a task
 - 2026-11-02 19:50 UTC: 4 min, 1 commit: New-session reminder at 300k tokens by default; one block per topic in replies
 - 2026-11-02 19:57 UTC: 4 min, 1 commit: Brief after the answer, Waiting as one yellow line each; multiple choice through the picker
+- 2026-11-02 20:12 UTC: 4 min, 1 commit: Shared lessons: move the 2 collected lessons into their sections

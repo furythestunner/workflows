@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-02 (lesson collector works again: Actions may open pull requests; #48 merged)
+Updated: 2026-11-02 (lesson collector works again, #48 merged; #49 moves the 2 lessons into their sections)
 
 ## Next
 
