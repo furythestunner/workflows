@@ -21,11 +21,11 @@ for d in "$root"/*/; do [ -f "$d.claude/hooks/session-start.sh" ] && repos+=("${
 names=(); for r in "${repos[@]}"; do names+=("$(basename "$r")"); done
 echo "MULTI-REPO SESSION START (user hook ~/.claude/hooks/multi-repo-start.sh): ${#repos[@]} repos, ${names[*]}."
 echo "The session opened in $root, outside the repos, so each repo's own start-up ran from here; its output follows."
-echo "Your FIRST reply begins with the brief: one short section per repo (steps 2 to 5 of its session-start skill,"
+echo "Your FIRST reply carries the brief: one short section per repo (steps 2 to 5 of its session-start skill,"
 echo "a few lines each: contradictions, anything due, the proposed task), then \"Your skills\" ONCE at the end,"
-echo "each skill listed once even when several repos have it. If the first message is a specific task, keep it short"
-echo "per repo, but still list Next and Waiting (with full steps), then do the task. Per-repo rules (branches,"
-echo "trackers) come from each repo's CLAUDE.md."
+echo "each skill listed once even when several repos have it. If the first message is a task or a question, answer"
+echo "or do it first, then a horizontal line (---), then the brief, short per repo: Next, and Waiting as one 🟡 line"
+echo "each (full steps only for new items). Per-repo rules (branches, trackers) come from each repo's CLAUDE.md."
 last="${repos[${#repos[@]}-1]}"
 for r in "${repos[@]}"; do
   echo

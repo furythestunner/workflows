@@ -53,7 +53,8 @@ open that already shipped, "done" items whose code changed since).
      sessions.
    - **Is the work branch up to date with `main`?** If `main` has commits the work branch lacks, merging `main` in
      comes before new work (CLAUDE.md, Git workflow).
-4. **Brief the user** in under about 20 lines:
+4. **Brief the user** in under about 20 lines. When the first message is a task or a question, the answer comes
+   first, then a horizontal line (`---`), then the brief: the user should not scroll past it to reach the answer.
    - **Stale facts** first, if any: what each says and that it is re-checked before use.
    - **Since last session:** what finished or changed (jobs, CI, merged PRs), contradictions first.
    - **Today:** at most 3 items, time-sensitive first. Each with its repo or area, its verified current state, one
@@ -66,9 +67,10 @@ open that already shipped, "done" items whose code changed since).
    - **Waiting for you:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
      what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
      `Status: Review` issues to test and merge, and the `Status: Blocked` ones, each with the link to its question.
-     Then every item of the handoff's "Waiting for the user", each with its steps written out in full (every click
-     and setting), never "see README" or another file. Repeat them every session until done: the user may have
-     missed them.
+     Then every item of the handoff's "Waiting for the user", one line each starting with 🟡: what to do and about
+     how long. Only items added at the handoff's latest update (their `added` date is its `Updated` date) get their
+     steps written out in full (every click and setting), never "see README" or another file; for an older one, the
+     user asks ("steps for ...") and gets them in full.
    - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
      command and when to use it, a few words each. In the short brief before a specific task, one line naming them.
    - End by recommending one task and asking which to start.

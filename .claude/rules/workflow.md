@@ -18,7 +18,7 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   to update it (pushed commits newer than it, 4 messages of talk, the context past 300k: then tell the user to start
   a new session). `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) unasked.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
-  file. Each Waiting item keeps its full steps, and every brief repeats them until done: the user may have missed it.
+  file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
   open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
   an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.

@@ -8,10 +8,10 @@ WORK_BRANCH="" HANDOFF="notes/handoff.md" DOCS="notes BACKLOG.md questions.md CL
 excl=(); for d in $DOCS; do excl+=(":(exclude)$d"); done
 
 echo "AUTOMATIC SESSION START (hook .claude/hooks/session-start.sh). Step 1 of /session-start is done below."
-echo "Your FIRST reply in this session, whatever the user writes, begins with the brief: follow steps 2 to 5 of"
-echo ".claude/skills/session-start/SKILL.md, using the ground truth and handoff below (do not run the script again)."
-echo "If the first message is a specific task, keep the brief short (contradictions, anything due), but still list every"
-echo "item of the handoff's Next and Waiting for the user, Waiting with its steps written out; then do the task."
+echo "Your FIRST reply in this session carries the brief: follow steps 2 to 5 of .claude/skills/session-start/SKILL.md,"
+echo "using the ground truth and handoff below (do not run the script again). If the first message is a task or a"
+echo "question, answer or do it first, then a horizontal line (---), then a short brief (contradictions, anything due,"
+echo "every item of Next, every Waiting item as one 🟡 line; full steps only for items added at the last update)."
 echo
 
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then

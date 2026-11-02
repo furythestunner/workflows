@@ -51,8 +51,12 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 ## Working with the user
 
 - Steps the user has to do go in the chat, written out click by click, never "see README" or another file: opening
-  the file is a hassle and the steps get missed. Repeat open ones in every brief until done (Balázs, 2026-10-27,
-  workflows; a hook candidate, first correction).
+  the file is a hassle and the steps get missed (Balázs, 2026-10-27, workflows; a hook candidate, first correction).
+  Replaced 2026-11-02: the brief repeats open ones as one line each, full steps only when new or asked for; a long
+  repeated list buried the answer.
+- Every step the user has to do starts with 🟡, in any reply, so they can scan for their part (Balázs, 2026-11-02).
+- Multiple-choice questions go through the AskUserQuestion tool (the user taps an option, and "Other" lets them
+  type), never as a lettered list in the chat (Balázs, 2026-11-02, workflows).
 - "Improve X" is not "replace X": asked to make a colour legend clearer, Claude moved it to a new tab and removed it
   from where it was; the user wanted it kept (KolLab.extension, 2026-10-26; a hook candidate, first correction).
   Keep what exists unless removal was asked; when an option removes something, say so in the question.
