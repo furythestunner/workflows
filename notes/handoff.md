@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-02 (#45: brief after the answer, Waiting as one 🟡 line each; #46 merged: 300k reminder)
+Updated: 2026-11-02 (lesson collector fails every day: Actions may not open pull requests here)
 
 ## Next
 
@@ -10,6 +10,10 @@ Updated: 2026-11-02 (#45: brief after the answer, Waiting as one 🟡 line each;
 
 ## Waiting for Balázs
 
+- 🟡 Let the lesson collector open its pull request (added 2026-11-02, about 1 min): on
+  github.com/furythestunner/workflows, Settings tab, left menu Actions, General, scroll to "Workflow permissions",
+  tick "Allow GitHub Actions to create and approve pull requests", Save. Then Actions tab, collect-lessons, "Run
+  workflow". Every daily run since 2026-10-29 failed on this; the `lessons-collect` branch holds the 2 lessons.
 - 🟡 Check the new brief, #45 (added 2026-11-02, about 2 min): start a new session on `dev-test` with a question as
   your first message. The answer comes first, then a horizontal line, then the open items as one 🟡 line each. If
   not, say so in the chat.
