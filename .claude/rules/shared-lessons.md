@@ -63,3 +63,13 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 - A message with several topics (or several quoted lines of an earlier reply) gets one block per topic, in the
   user's order, with a horizontal line (`---`) between them, like the line after the brief (Balázs, 2026-11-02,
   workflows).
+
+## New from the repos (move each into its section)
+- The Microsoft 365 connector's SharePoint upload takes at most 1 MB per file and needs the whole file inline in
+  the call, so a Word or PDF guide with screenshots cannot be uploaded by Claude: create the folder with the
+  connector, put the files in Downloads, and the user drags them in (27 Oct 2026, intranet user guides).
+  (check by 2027-01-27)
+- One question, one decision: an extra feature folded into a recommended option gets picked without being seen.
+  Claude put "Excel also saves a PDF" inside the recommended header option; Balázs picked it and later said he
+  never asked for a PDF (KolLab.extension, 2026-10-30, first time; a hook candidate). Ask each extra as its own
+  question.
