@@ -1,6 +1,7 @@
 # Handoff
 
-Updated: 2026-11-02 (Balázs: new brief works (#45), old Kol-Lab branches deleted; speed options under discussion)
+Updated: 2026-11-02 (new brief works, old branches and the old drift task deleted; speed options and project check
+commands under discussion: no project has GitHub test runs, none sets CHECK or MERGE_MODE)
 
 ## Next
 
@@ -17,12 +18,11 @@ Updated: 2026-11-02 (Balázs: new brief works (#45), old Kol-Lab branches delete
   merge by themselves.
 - 🟡 Optional: say in the chat which command checks each project (added 2026-10-27, about 2 min): the one its CI
   runs; Claude adds it, pushes there and waits for it to pass.
-- 🟡 Say whether Claude may delete the switched-off "Workflow drift check" scheduled task (added 2026-10-23, about
-  1 min): Claude made it on 2026-10-23 without repos, so it could not read the private repos; the one from the
-  claude.ai page replaced it.
 
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 
 ## Unfinished
 
+- `dev-test` has a shared lesson (fast mode cost) and a README ruling not on `main` yet: they go with the next
+  pull request.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
