@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-02 (lesson collector works again, #48 merged; #49 moves the 2 lessons into their sections)
+Updated: 2026-11-02 (Balázs: new brief works (#45), old Kol-Lab branches deleted; speed options under discussion)
 
 ## Next
 
@@ -10,15 +10,9 @@ Updated: 2026-11-02 (lesson collector works again, #48 merged; #49 moves the 2 l
 
 ## Waiting for Balázs
 
-- 🟡 Check the new brief, #45 (added 2026-11-02, about 2 min): start a new session on `dev-test` with a question as
-  your first message. The answer comes first, then a horizontal line, then the open items as one 🟡 line each. If
-  not, say so in the chat.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
-- 🟡 Delete the old merged branches in the 3 Kol-Lab repos (added 2026-10-27, about 1 min each): on the repo's page,
-  Code tab, "branches" link, bin icon on each old branch. Keep `main` and the work branch (intranet `intra-test`,
-  KolLab.extension `extension-test`, website `website-test`).
 - 🟡 Say in the chat which projects are before v1.0 (added 2026-10-26, about 1 min): their pull requests then all
   merge by themselves.
 - 🟡 Optional: say in the chat which command checks each project (added 2026-10-27, about 2 min): the one its CI
