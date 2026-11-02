@@ -1,7 +1,7 @@
 #!/bin/bash
 # Stop hook: keeps the handoff current without anyone typing /handoff (the user forgets it, and doing it later, on a
 # cold cache, re-reads the whole conversation). After each reply, the first that applies sends Claude back once:
-# 1. Context size: the conversation passed CONTEXT_WARN tokens (default 150000; a cloud session starts at about
+# 1. Context size: the conversation passed CONTEXT_WARN tokens (default 300000; a cloud session starts at about
 #    77k), then every further 50k. Claude saves the handoff and tells the user to start a new session.
 # 2. Pushed commits on WORK_BRANCH (code or docs; not the handoff or notes/rounds.md) newer than the handoff.
 # 3. Talk: TALK_TURNS (4) messages from the user since the handoff was last committed, and nothing in 2. Asked once
@@ -11,7 +11,7 @@
 input=$(cat)
 case "$input" in *'"stop_hook_active":true'*|*'"stop_hook_active": true'*) exit 0 ;; esac
 cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
-WORK_BRANCH="" HANDOFF="notes/handoff.md" USER_NAME="the user" CONTEXT_WARN=150000
+WORK_BRANCH="" HANDOFF="notes/handoff.md" USER_NAME="the user" CONTEXT_WARN=300000
 [ -f .claude/ground-truth.conf ] && . .claude/ground-truth.conf
 [ -n "$WORK_BRANCH" ] || exit 0
 STEP=50000 TALK_TURNS=4

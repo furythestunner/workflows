@@ -53,6 +53,8 @@ t ctx-after-compaction block 'ctx 151000; run block ctx-compact/first; ctx 90000
 t ctx-unpushed block 'c app.sh; ctx 151000'
 t ctx-other-branch block 'g checkout -q -b other; ctx 151000'
 t ctx-own-level allow 'echo CONTEXT_WARN=300000 >>$r/.claude/ground-truth.conf; ctx 250000'
+t ctx-default-300k allow 'sed -i s/CONTEXT_WARN=150000// $r/.claude/ground-truth.conf; ctx 299000'
+t ctx-default-300k-past block 'sed -i s/CONTEXT_WARN=150000// $r/.claude/ground-truth.conf; ctx 301000'
 t path-with-space block 'tx="$tmp/a b.jsonl"; user 4'
 t no-transcript-file allow 'tx=$tmp/missing.jsonl'
 exit $fail
