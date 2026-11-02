@@ -26,6 +26,4 @@ All of these are also in issue https://github.com/furythestunner/workflows/issue
 
 ## Unfinished
 
-- `dev-test`: review guard for notes-only pull requests, the Next and Waiting rename, the same-commit handoff rule
-  and 2 shared lessons; pull request to `main` opening now.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
