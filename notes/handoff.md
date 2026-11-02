@@ -10,6 +10,9 @@ Updated: 2026-11-02 (#45: brief after the answer, Waiting as one 🟡 line each;
 
 ## Waiting for Balázs
 
+- 🟡 Check the new brief, #45 (added 2026-11-02, about 2 min): start a new session on `dev-test` with a question as
+  your first message. The answer comes first, then a horizontal line, then the open items as one 🟡 line each. If
+  not, say so in the chat.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
