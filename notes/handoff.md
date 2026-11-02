@@ -5,9 +5,8 @@ renamed so Next reads as Claude's work; handoff goes in the same commit as the w
 
 ## Next (Claude's own work, nothing for you)
 
-1. Upload checks in the projects (Balázs said yes to all 4, 2026-11-02). Done: intranet (`npm test`, 27 tests) and
-   website (syntax check), pushed to their work branches. Left: KolLab.extension, after Balázs says how Python
-   starts on his PC; claude-mods, where 20 tests fail (2 mods) and one mod takes 50 s: ask him before adding it.
+1. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods is left: 20 of its tests
+   fail (2 mods) and one mod takes 50 s, so Balázs decides first.
 
 ## Waiting for Balázs (your steps)
 
@@ -15,9 +14,6 @@ renamed so Next reads as Claude's work; handoff goes in the same commit as the w
   pick the repo (intranet, then KolLab.extension, then website), set the branch to its work branch (`intra-test`,
   `extension-test`, `website-test`) and send a short question. The reply should open with the answer, then a line,
   then the open items as one 🟡 line each. If not, say which repo in the chat.
-- 🟡 Say how Python starts on your PC, for the KolLab.extension check (added 2026-11-02, about 1 min): Start menu,
-  type `Git Bash`, open it, type `python3 --version` and press Enter, then `python --version` and Enter. Paste
-  what both print into the chat.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.

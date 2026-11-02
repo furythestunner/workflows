@@ -55,6 +55,10 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
   2026-10-13): an unsigned .ps1 run from the O: network drive fails even with `-ExecutionPolicy Bypass`. Start a
   local copy of the script instead. (check by 2027-01-26)
 
+- Python is not installed on the user's home PC (DESKTOP-FURY): `python3` there is the Microsoft Store
+  placeholder, so a check that needs Python skips itself where `python3 -c ''` fails (seen 2026-11-02).
+  (check by 2027-02-02)
+
 ## Working with the user
 
 - Steps the user has to do go in the chat, written out click by click, never "see README" or another file: opening
