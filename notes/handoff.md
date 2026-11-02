@@ -5,11 +5,14 @@ commands under discussion: no project has GitHub test runs, none sets CHECK or M
 
 ## Next
 
-1. Check the brief in a new session on each work branch (intra-test, extension-test, website-test): all three got
-   the synced workflow on 2026-10-23 (intranet#68, KolLab.extension#30, website#10 merged).
-2. The drift check reads `main` of each repo, so it lists them as behind until each work branch is merged to `main`.
+Nothing of Claude's own: everything open waits for Balázs (Next holds only Claude's work, Waiting only the user's).
 
 ## Waiting for Balázs
+
+- 🟡 Check the brief in each project (added 2026-11-02, about 2 min each): on claude.ai/code start a new session,
+  pick the repo (intranet, then KolLab.extension, then website), set the branch to its work branch (`intra-test`,
+  `extension-test`, `website-test`) and send a short question. The reply should open with the answer, then a line,
+  then the open items as one 🟡 line each. If not, say which repo in the chat.
 
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
