@@ -19,7 +19,14 @@ if (!opens || !input.transcript_path) process.exit(0);
 const flag = (re) => (cmd.match(re) || [])[1];
 const base = String(input.tool_input?.base ?? flag(/(?:-B|--base)[ =]["']?([\w./-]+)/) ?? 'main');
 const head = input.tool_input?.head ?? flag(/(?:-H|--head)[ =]["']?([\w./-]+)/);
+const git = (args) => execFileSync('git', args,
+  { cwd: process.env.CLAUDE_PROJECT_DIR || '.', encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
 try {
+  // Only when the pull request is for this clone's repo: another repo's diff is not here to read.
+  const want = input.tool_input?.repo;
+  if (/\s(-R|--repo)[ =]/.test(cmd)) throw 0;
+  if (want && !new RegExp(`/${want.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\.git)?/?$`, 'i')
+    .test(git(['remote', 'get-url', 'origin']).trim())) throw 0;
   const files = execFileSync('git', ['diff', '--name-only', `origin/${base}...${head ? `origin/${head}` : 'HEAD'}`],
     { cwd: process.env.CLAUDE_PROJECT_DIR || '.', encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
     .split('\n').filter(Boolean);

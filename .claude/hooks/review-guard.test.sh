@@ -39,6 +39,10 @@ cd - >/dev/null || exit 1
 export CLAUDE_PROJECT_DIR="$repo"
 t allow "$none" $pr '{"title":"x","base":"main"}'
 t allow "$none" Bash '{"command":"gh pr create -B main -t x -b y"}'
+(cd "$repo" && git remote add origin https://github.com/o/repo)
+t allow "$none" $pr '{"title":"x","base":"main","owner":"o","repo":"repo"}'
+t block "$none" $pr '{"title":"x","base":"main","owner":"o","repo":"other"}'
+t block "$none" Bash '{"command":"gh pr create -R o/other -B main -t x -b y"}'
 (cd "$repo" && echo b >>README.md && git commit -qam code)
 t block "$none" $pr '{"title":"x","base":"main"}'
 t block "$none" $pr '{"title":"x","base":"nosuchbranch"}'
