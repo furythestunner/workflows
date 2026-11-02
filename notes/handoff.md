@@ -5,9 +5,9 @@ renamed so Next reads as Claude's work; handoff goes in the same commit as the w
 
 ## Next (Claude's own work, nothing for you)
 
-1. Upload checks in the projects (Balázs said yes to all 4, 2026-11-02): intranet `npm test`, website syntax check of
-   `src/worker.js`, claude-mods validate and test each mod, as `CHECK` in each `.claude/ground-truth.conf`.
-   KolLab.extension after Balázs says how Python starts on his PC.
+1. Upload checks in the projects (Balázs said yes to all 4, 2026-11-02). Done: intranet (`npm test`, 27 tests) and
+   website (syntax check), pushed to their work branches. Left: KolLab.extension, after Balázs says how Python
+   starts on his PC; claude-mods, where 20 tests fail (2 mods) and one mod takes 50 s: ask him before adding it.
 
 ## Waiting for Balázs (your steps)
 
