@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-02 (lesson collector fails every day: Actions may not open pull requests here)
+Updated: 2026-11-02 (lesson collector works again: Actions may open pull requests; #48 merged)
 
 ## Next
 
@@ -10,10 +10,6 @@ Updated: 2026-11-02 (lesson collector fails every day: Actions may not open pull
 
 ## Waiting for Balázs
 
-- 🟡 Let the lesson collector open its pull request (added 2026-11-02, about 1 min): the checkbox "Allow GitHub
-  Actions to create and approve pull requests" was not under Settings, Actions, General, "Workflow permissions" when
-  Balázs looked. Send a screenshot of that section in the chat. Every daily run since 2026-10-29 failed on this;
-  the `lessons-collect` branch holds the 2 lessons.
 - 🟡 Check the new brief, #45 (added 2026-11-02, about 2 min): start a new session on `dev-test` with a question as
   your first message. The answer comes first, then a horizontal line, then the open items as one 🟡 line each. If
   not, say so in the chat.
