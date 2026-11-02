@@ -11,7 +11,8 @@ echo "AUTOMATIC SESSION START (hook .claude/hooks/session-start.sh). Step 1 of /
 echo "Your FIRST reply in this session carries the brief: follow steps 2 to 5 of .claude/skills/session-start/SKILL.md,"
 echo "using the ground truth and handoff below (do not run the script again). If the first message is a task or a"
 echo "question, answer or do it first, then a horizontal line (---), then a short brief (contradictions, anything due,"
-echo "every item of Next, every Waiting item as one 🟡 line; full steps only for items added at the last update)."
+echo "\"Claude does next (nothing for you)\" with every Next item, then \"Your steps\" with every Waiting item as one"
+echo "🟡 line; full steps only for items added at the last update)."
 echo
 
 if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then

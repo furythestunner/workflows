@@ -5,6 +5,7 @@ cd "$(dirname "$0")" || exit 1
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
 command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
+export CLAUDE_PROJECT_DIR="$tmp" # not a git repo: the notes-only check cannot tell, so a review is needed
 none='{"type":"user","message":{"content":"open the PR"}}'
 skill='{"type":"assistant","message":{"content":[{"type":"tool_use","name":"Skill","input":{"skill":"code-review","args":"main...HEAD"}}]}}'
 typed='{"type":"user","message":{"content":"<command-name>/code-review</command-name>"}}'
@@ -29,6 +30,22 @@ now='{"type":"assistant","message":{"content":[{"type":"tool_use","id":"t2","nam
 t block "$skill"$'\n'"$opened" $pr '{"title":"second"}'
 t allow "$skill"$'\n'"$opened"$'\n'"$skill" $pr '{"title":"second"}'
 t allow "$skill"$'\n'"$now" $pr '{"title":"second"}'
+# Notes only: a clone whose branch changes only notes/ against origin/main opens without a review.
+repo="$tmp/repo"; git init -q -b main "$repo" && cd "$repo" || exit 1
+git config user.email t@t && git config user.name t
+echo a >README.md && git add . && git commit -qm base && git update-ref refs/remotes/origin/main HEAD
+git checkout -qb work && mkdir notes && echo n >notes/handoff.md && git add . && git commit -qm notes
+cd - >/dev/null || exit 1
+export CLAUDE_PROJECT_DIR="$repo"
+t allow "$none" $pr '{"title":"x","base":"main"}'
+t allow "$none" Bash '{"command":"gh pr create -B main -t x -b y"}'
+(cd "$repo" && git remote add origin https://github.com/o/repo)
+t allow "$none" $pr '{"title":"x","base":"main","owner":"o","repo":"repo"}'
+t block "$none" $pr '{"title":"x","base":"main","owner":"o","repo":"other"}'
+t block "$none" Bash '{"command":"gh pr create -R o/other -B main -t x -b y"}'
+(cd "$repo" && echo b >>README.md && git commit -qam code)
+t block "$none" $pr '{"title":"x","base":"main"}'
+t block "$none" $pr '{"title":"x","base":"nosuchbranch"}'
 out=$(printf '{bad' | node review-guard.mjs 2>&1); code=$?
 if [ $code -eq 0 ] && [ -z "$out" ]; then echo "ok    bad input: silent, exit 0"; else echo "FAIL  bad input: exit $code: $out"; fail=1; fi
 exit $fail

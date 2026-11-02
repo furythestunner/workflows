@@ -24,8 +24,9 @@ echo "The session opened in $root, outside the repos, so each repo's own start-u
 echo "Your FIRST reply carries the brief: one short section per repo (steps 2 to 5 of its session-start skill,"
 echo "a few lines each: contradictions, anything due, the proposed task), then \"Your skills\" ONCE at the end,"
 echo "each skill listed once even when several repos have it. If the first message is a task or a question, answer"
-echo "or do it first, then a horizontal line (---), then the brief, short per repo: Next, and Waiting as one 🟡 line"
-echo "each (full steps only for new items). Per-repo rules (branches, trackers) come from each repo's CLAUDE.md."
+echo "or do it first, then a horizontal line (---), then the brief, short per repo: \"Claude does next\" (Next),"
+echo "then \"Your steps\" (Waiting, one 🟡 line each; full steps only for new items). Per-repo rules (branches,"
+echo "trackers) come from each repo's CLAUDE.md."
 last="${repos[${#repos[@]}-1]}"
 for r in "${repos[@]}"; do
   echo

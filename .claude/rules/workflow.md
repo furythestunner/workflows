@@ -13,10 +13,10 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   session to the work branch, runs `.claude/skills/session-start/ground-truth.sh` (configured in
   `.claude/ground-truth.conf`) and loads the handoff. The first reply opens with the brief (`/session-start` steps 2
   to 5). The handoff is a claim, the script is the fact: report a contradiction first.
-- **Handoff:** `notes/handoff.md` holds only Next (in order), Waiting for the user and Unfinished (work on one disk
-  only, or committed but not merged). No diary. After a reply, `.claude/hooks/handoff-check.sh` sends Claude back
-  to update it (pushed commits newer than it, 4 messages of talk, the context past 300k: then tell the user to start
-  a new session). `/handoff` and that check commit and push the docs (handoff, trackers, `notes/`) unasked.
+- **Handoff:** `notes/handoff.md` holds only Next (Claude's own work, in order, never a 🟡), Waiting (the user's
+  steps, each 🟡) and Unfinished (on one disk only, or not merged). No diary. It goes in the same commit as the work
+  that changes it; `.claude/hooks/handoff-check.sh` sends Claude back when it is behind (pushed commits, 4 messages,
+  the context past 300k: then a new session). `/handoff` and that check push the docs (`notes/`, trackers) unasked.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
@@ -36,7 +36,7 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 - **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues and Blocked
   ones the user answered; every question goes on the issue; a run never merges and never turns on auto-merge.
 - **Pull requests:** before opening one, run `/code-review` on the diff against `main` (`.claude/hooks/review-guard.mjs`
-  blocks it otherwise) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
+  blocks it otherwise; not needed when only `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
   after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
   checks and review comments until it is merged or closed. A review on a pull request always goes through `/verify`.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with

@@ -1,34 +1,31 @@
 # Handoff
 
-Updated: 2026-11-02 (lesson collector works again, #48 merged; #49 moves the 2 lessons into their sections)
+Updated: 2026-11-02 (all 4 projects stay released; notes-only pull requests skip the review; Next and Waiting
+renamed so Next reads as Claude's work; handoff goes in the same commit as the work)
 
-## Next
+## Next (Claude's own work, nothing for you)
 
-1. Check the brief in a new session on each work branch (intra-test, extension-test, website-test): all three got
-   the synced workflow on 2026-10-23 (intranet#68, KolLab.extension#30, website#10 merged).
-2. The drift check reads `main` of each repo, so it lists them as behind until each work branch is merged to `main`.
+1. Upload checks in the projects (Balázs said yes to all 4, 2026-11-02). Done: intranet (`npm test`, 27 tests) and
+   website (syntax check), pushed to their work branches. Left: KolLab.extension, after Balázs says how Python
+   starts on his PC; claude-mods, where 20 tests fail (2 mods) and one mod takes 50 s: ask him before adding it.
 
-## Waiting for Balázs
+## Waiting for Balázs (your steps)
 
-- 🟡 Check the new brief, #45 (added 2026-11-02, about 2 min): start a new session on `dev-test` with a question as
-  your first message. The answer comes first, then a horizontal line, then the open items as one 🟡 line each. If
-  not, say so in the chat.
+- 🟡 Check the brief in each project (added 2026-11-02, about 2 min each): on claude.ai/code start a new session,
+  pick the repo (intranet, then KolLab.extension, then website), set the branch to its work branch (`intra-test`,
+  `extension-test`, `website-test`) and send a short question. The reply should open with the answer, then a line,
+  then the open items as one 🟡 line each. If not, say which repo in the chat.
+- 🟡 Say how Python starts on your PC, for the KolLab.extension check (added 2026-11-02, about 1 min): Start menu,
+  type `Git Bash`, open it, type `python3 --version` and press Enter, then `python --version` and Enter. Paste
+  what both print into the chat.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
-- 🟡 Delete the old merged branches in the 3 Kol-Lab repos (added 2026-10-27, about 1 min each): on the repo's page,
-  Code tab, "branches" link, bin icon on each old branch. Keep `main` and the work branch (intranet `intra-test`,
-  KolLab.extension `extension-test`, website `website-test`).
-- 🟡 Say in the chat which projects are before v1.0 (added 2026-10-26, about 1 min): their pull requests then all
-  merge by themselves.
-- 🟡 Optional: say in the chat which command checks each project (added 2026-10-27, about 2 min): the one its CI
-  runs; Claude adds it, pushes there and waits for it to pass.
-- 🟡 Say whether Claude may delete the switched-off "Workflow drift check" scheduled task (added 2026-10-23, about
-  1 min): Claude made it on 2026-10-23 without repos, so it could not read the private repos; the one from the
-  claude.ai page replaced it.
 
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 
 ## Unfinished
 
+- `dev-test`: review guard for notes-only pull requests, the Next and Waiting rename, the same-commit handoff rule
+  and 2 shared lessons; pull request to `main` opening now.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.

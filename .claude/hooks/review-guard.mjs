@@ -2,7 +2,10 @@
 // Blocks opening a pull request (the GitHub tools' create_pull_request, or gh pr create) until /code-review has run
 // since the session's last pull request (or its start): Claude called the code-review skill, or the user typed
 // /code-review. A guard against mistakes: it cannot tell whether the review covered the latest diff.
+// A pull request that changes only files under notes/ needs no review (Balázs, 2026-11-02): the diff is read from
+// the local clone, origin/<base>...origin/<head> (or HEAD); when git cannot tell, the review is still required.
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
 let input;
 try { input = JSON.parse(readFileSync(0, 'utf8') || '{}'); } catch { process.exit(0); }
@@ -11,6 +14,24 @@ const cmd = String(input.tool_input?.command ?? '');
 const opens = /^mcp__.*github.*create_pull_request$/i.test(tool) ||
   (tool === 'Bash' && /(^|[;&|(\n]|\$\()\s*gh\s+pr\s+create\b/.test(cmd));
 if (!opens || !input.transcript_path) process.exit(0);
+
+// Notes only: no review needed. MCP calls name base and head; gh pr create may name them with -B/--base, -H/--head.
+const flag = (re) => (cmd.match(re) || [])[1];
+const base = String(input.tool_input?.base ?? flag(/(?:-B|--base)[ =]["']?([\w./-]+)/) ?? 'main');
+const head = input.tool_input?.head ?? flag(/(?:-H|--head)[ =]["']?([\w./-]+)/);
+const git = (args) => execFileSync('git', args,
+  { cwd: process.env.CLAUDE_PROJECT_DIR || '.', encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] });
+try {
+  // Only when the pull request is for this clone's repo: another repo's diff is not here to read.
+  const want = input.tool_input?.repo;
+  if (/\s(-R|--repo)[ =]/.test(cmd)) throw 0;
+  if (want && !new RegExp(`/${want.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(\\.git)?/?$`, 'i')
+    .test(git(['remote', 'get-url', 'origin']).trim())) throw 0;
+  const files = execFileSync('git', ['diff', '--name-only', `origin/${base}...${head ? `origin/${head}` : 'HEAD'}`],
+    { cwd: process.env.CLAUDE_PROJECT_DIR || '.', encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] })
+    .split('\n').filter(Boolean);
+  if (files.length && files.every(f => f.startsWith('notes/'))) process.exit(0);
+} catch {}
 
 let entries;
 try {

@@ -59,6 +59,7 @@ update it in the same commit when a skill is added, renamed or changes what it i
   `<work branch>-<topic>` or `workflow-sync`.
 - `push-check.mjs`: before every git push, runs the repo's checks (`CHECK` in `ground-truth.conf`); a failure stops it.
 - `secret-guard.mjs`: stops a commit or push that holds a password, token or key file.
-- `review-guard.mjs`: stops a pull request from opening before `/code-review` has run.
+- `review-guard.mjs`: stops a pull request from opening before `/code-review` has run (not when only `notes/`
+  changed).
 - `synced-guard.mjs`: in a project repo, stops edits to files that come from the master copy.
 - `dash-check.mjs`: when CLAUDE.md says no em dashes and the last reply had one, reminds Claude.
