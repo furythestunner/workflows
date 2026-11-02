@@ -17,3 +17,4 @@ message that started the turn to the end of the reply. Size Claude's own work fr
 - 2026-11-02 19:57 UTC: 4 min, 1 commit: Brief after the answer, Waiting as one yellow line each; multiple choice through the picker
 - 2026-11-02 20:12 UTC: 4 min, 1 commit: Shared lessons: move the 2 collected lessons into their sections
 - 2026-11-02 20:29 UTC: 15 min, 3 commits: Fast mode cost lesson; review stays on every pull request; old drift task deleted; Notes-only pull requests skip the review; Next and Wai...
+- 2026-11-02 20:48 UTC: 4 min, 1 commit: KolLab.extension check on; lesson: no Python on the home PC
