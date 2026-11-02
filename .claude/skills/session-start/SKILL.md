@@ -64,7 +64,9 @@ open that already shipped, "done" items whose code changed since).
      `Status: Backlog` issue is proposed for the user to approve.
      Items in different repos or areas can run side by side (one session or worktree each). An item
      marked ⚠ cross-repo runs alone, in its order (producer first, then each consumer).
-   - **Waiting for you:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
+   - **Claude does next (nothing for you):** the handoff's Next items, one line each, no 🟡; "nothing" when empty.
+     Kept apart from the user's steps below, so the two never read as one list.
+   - **🟡 Your steps:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
      what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
      `Status: Review` issues to test and merge, and the `Status: Blocked` ones, each with the link to its question.
      Then every item of the handoff's "Waiting for the user", one line each starting with 🟡: what to do and about

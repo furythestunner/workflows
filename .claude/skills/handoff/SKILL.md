@@ -90,10 +90,11 @@ session can find out what happened and why.
 
 Read by /session-start. Open work: the GitHub issues. Decisions and rulings: `questions.md`. Rewritten at each /handoff.
 
-## Next (task of the day, in order)
+## Next (Claude's own work, nothing for the user; in order)
+<only work Claude does itself; a step the user must take goes under Waiting. Empty: "Nothing of Claude's own.">
 1. [<repo or area>] <task>: <why now>, <where to start: file, branch, command>, <done when ...>
 
-## Waiting for the user
+## Waiting for the user (the user's steps)
 <the `questions.md` §1 titles that block the Next list; a new question goes into questions.md first>
 - 🟡 <each thing only the user can do> (added YYYY-MM-DD, about N min): <its full steps, every click and setting,
   never "see README">. Keep the `added` date when rewriting; the brief writes out only the newest items in full.

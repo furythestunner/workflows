@@ -11,6 +11,10 @@
 
 ## Hook candidates
 
+- 2026-11-02, first correction: Balázs answered "3 ok" to a numbered list where Claude had advised dropping item
+  3; Claude read it as "ok, drop it" and recorded the opposite ruling. At a second time: a check that a short
+  numbered answer against a recommendation is confirmed through the picker before it is recorded.
+
 - 2026-11-01, first correction: the short brief (first message is a task: "3 lines", `session-start.sh` line 13,
   `cloud/setup-script.sh`) left out Next and Waiting for Balázs, against workflow.md (every brief repeats the open
   steps). Balázs could not do his #41 check. At a second time: a check that the brief names the Waiting items.

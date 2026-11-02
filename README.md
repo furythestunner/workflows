@@ -218,8 +218,11 @@ GitLab.
   ("Automatically delete head branches", 2026-10-26), with a ruleset that protects `main` and the work branch from
   deletion (README.md, "Delete merged branches by themselves"); a cloud session cannot delete branches (GitHub
   answers 403).
-- Every pull request gets `/code-review`, notes-only ones too (Balázs, 2026-11-02): skipping it for docs was
-  dropped, because here the rules and skills are text files too, and notes already ride along with other work.
+- A pull request that changes only `notes/` skips `/code-review` (Balázs, 2026-11-02; replaced 2026-11-02, same
+  day: Claude first recorded the opposite after misreading "3 ok"). Rules, skills, CLAUDE.md and README still get
+  the review: they are text files that change how Claude works.
+- All 4 project repos stay `released`, none is before v1.0 (Balázs, 2026-11-02): intranet and website go live on a
+  merge, KolLab.extension's `main` is the colleagues' release, claude-mods is the only one used by Balázs alone.
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
   docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo.
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo

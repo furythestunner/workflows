@@ -70,6 +70,9 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
 - A message with several topics (or several quoted lines of an earlier reply) gets one block per topic, in the
   user's order, with a horizontal line (`---`) between them, like the line after the brief (Balázs, 2026-11-02,
   workflows).
+- A short answer like "3 ok" to a numbered list means "do item 3", even when Claude advised against it; when the
+  answer and Claude's advice differ, ask through the picker before recording a ruling (Balázs, 2026-11-02,
+  workflows; a hook candidate, first correction).
 - One question, one decision: an extra feature folded into a recommended option gets picked without being seen.
   Claude put "Excel also saves a PDF" inside the recommended header option; Balázs picked it and later said he
   never asked for a PDF (KolLab.extension, 2026-10-30, first time; a hook candidate). Ask each extra as its own
