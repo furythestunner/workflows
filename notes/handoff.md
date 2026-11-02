@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-02 (new-session reminder at 300k; #41 and #43 checked; SYNC_TOKEN date recorded; #45 opened)
+Updated: 2026-11-02 (#45: brief after the answer, Waiting as one 🟡 line each; #46 merged: 300k reminder)
 
 ## Next
 
@@ -10,19 +10,19 @@ Updated: 2026-11-02 (new-session reminder at 300k; #41 and #43 checked; SYNC_TOK
 
 ## Waiting for Balázs
 
-- Answer the 3 questions of issue #45 in the chat (brief shorter, answer first, which icon marks your steps;
-  about 2 min).
-- Issue #39 (/crew additions, merged in #40): try one short `/crew` round (about 10 min). In a project repo with a
-  Ready issue, after the sync pull request is merged: type `/crew`, approve the brief, and at the end check that the
-  report has a test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
-- Delete the old merged branches in the 3 Kol-Lab repos, if not done yet (about 1 min each): on the repo's page,
+- 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
+  after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
+  test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
+- 🟡 Delete the old merged branches in the 3 Kol-Lab repos (added 2026-10-27, about 1 min each): on the repo's page,
   Code tab, "branches" link, bin icon on each old branch. Keep `main` and the work branch (intranet `intra-test`,
   KolLab.extension `extension-test`, website `website-test`).
-- Say in the chat which projects are before v1.0 (their pull requests then all merge by themselves).
-- Optional: say in the chat which command checks each project (the one CI runs); Claude adds it, and pushes there
-  then wait for it to pass.
-- Drift check: say whether Claude may delete the switched-off "Workflow drift check" task (made by Claude on
-  2026-10-23 without repos, so it could not read the private repos; the one from the claude.ai page replaced it).
+- 🟡 Say in the chat which projects are before v1.0 (added 2026-10-26, about 1 min): their pull requests then all
+  merge by themselves.
+- 🟡 Optional: say in the chat which command checks each project (added 2026-10-27, about 2 min): the one its CI
+  runs; Claude adds it, pushes there and waits for it to pass.
+- 🟡 Say whether Claude may delete the switched-off "Workflow drift check" scheduled task (added 2026-10-23, about
+  1 min): Claude made it on 2026-10-23 without repos, so it could not read the private repos; the one from the
+  claude.ai page replaced it.
 
 All of these are also in issue https://github.com/furythestunner/workflows/issues/35 (tick them off there).
 

@@ -95,7 +95,8 @@ Read by /session-start. Open work: the GitHub issues. Decisions and rulings: `qu
 
 ## Waiting for the user
 <the `questions.md` §1 titles that block the Next list; a new question goes into questions.md first>
-<each thing only the user can do, with its full steps (every click and setting), never "see README">
+- 🟡 <each thing only the user can do> (added YYYY-MM-DD, about N min): <its full steps, every click and setting,
+  never "see README">. Keep the `added` date when rewriting; the brief writes out only the newest items in full.
 
 ## Unfinished
 - <repo>: <worktree / branch>, <uncommitted, LOCAL ONLY, or committed but not merged>, <what is left>
