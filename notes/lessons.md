@@ -5,6 +5,9 @@
 
 - `SYNC_TOKEN_OWN` (fine-grained token "workflows sync own", furythestunner, claude-mods only) expires 2027-10-25:
   renew it and update the secret before then (verified by the user, 2026-10-26) (check by 2027-10-18)
+- `SYNC_TOKEN` (fine-grained token for the sync to the Kol-Lab-Design-Kft repos) expires 2027-10-24: renew it and
+  update the secret before then; the check-by date is the week-before reminder (verified by the user, 2026-11-02)
+  (check by 2027-10-17)
 
 ## Hook candidates
 

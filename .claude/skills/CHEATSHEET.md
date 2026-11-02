@@ -43,7 +43,7 @@ update it in the same commit when a skill is added, renamed or changes what it i
 - `cloud/setup-script.sh`: pasted once into the cloud environment's Setup script, so a session with several repos
   also opens with the brief (one per repo, this list once).
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff: after pushed commits, after
-  4 of your messages (only if something changed), and when the conversation passes 150k tokens (then it tells you
+  4 of your messages (only if something changed), and when the conversation passes 300k tokens (then it tells you
   to start a new session). So you never need to type `/handoff` before closing a session.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
 - `skill-nudge.mjs`: on every message you send, names the skill that fits (English and Hungarian phrases), so
