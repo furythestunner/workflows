@@ -4,6 +4,7 @@
 # Usage: bash .claude/hooks/handoff-check.test.sh   (exit 0 = all pass)
 hook=$(cd "$(dirname "$0")" && pwd)/handoff-check.sh
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
+command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
 g() { git -C "$r" -c user.name=t -c user.email=t@t "$@"; }
 c() { mkdir -p "$r/$(dirname "$1")"; echo x >>"$r/$1"; g add -A; g commit -qm "$1"; }  # <file>: one commit
