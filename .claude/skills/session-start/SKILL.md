@@ -73,8 +73,8 @@ open that already shipped, "done" items whose code changed since).
      how long. Only items added at the handoff's latest update (their `added` date is its `Updated` date) get their
      steps written out in full (every click and setting), never "see README" or another file; for an older one, the
      user asks ("steps for ...") and gets them in full.
-   - **Your skills:** from `.claude/skills/CHEATSHEET.md` (the hook prints it), one short line per skill: the
-     command and when to use it, a few words each. In the short brief before a specific task, one line naming them.
+   - No skills list in the brief: the user's own mod shows the skills. The cheat sheet the hook prints is for
+     Claude, to pick the skill that fits.
    - End by recommending one task and asking which to start.
 5. **Wait for the user's choice** before long work or anything outward (push, PR, merge, release, comments,
    messages). Reading and checking are fine. The user decides the day's priorities, and the handoff can be stale.

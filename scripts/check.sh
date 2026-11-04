@@ -36,7 +36,7 @@ for f in .claude/hooks/*.test.sh .claude/skills/*/*.test.sh; do
   else bad "$(basename "$f")"; echo "$out" | grep FAIL; fi
 done
 
-# 5. The cheat sheet names every skill (the brief's "Your skills" list comes from it).
+# 5. The cheat sheet names every skill (Claude picks skills from it).
 for d in .claude/skills/*/; do
   n=$(basename "$d")
   if grep -q "\`/$n\`" .claude/skills/CHEATSHEET.md; then ok "CHEATSHEET.md lists /$n"
