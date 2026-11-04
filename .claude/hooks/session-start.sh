@@ -84,12 +84,12 @@ head -80 "$HANDOFF" 2>/dev/null || echo "(missing)"
 # start cuts for all but the last repo.
 if [ -f .claude/skills/CHEATSHEET.project.md ]; then
   echo
-  echo "===== .claude/skills/CHEATSHEET.project.md (this repo's own skills; add them to \"Your skills\") ====="
+  echo "===== .claude/skills/CHEATSHEET.project.md (this repo's own skills; for Claude, not listed in the brief) ====="
   sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.project.md | head -20
 fi
 if [ -f .claude/skills/CHEATSHEET.md ]; then
   echo
-  echo "===== .claude/skills/CHEATSHEET.md (the brief ends with \"Your skills\": one short line per skill) ====="
+  echo "===== .claude/skills/CHEATSHEET.md (for Claude to pick the skill that fits; not listed in the brief) ====="
   sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | head -60
 fi
 exit 0
