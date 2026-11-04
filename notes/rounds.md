@@ -18,3 +18,4 @@ message that started the turn to the end of the reply. Size Claude's own work fr
 - 2026-11-02 20:12 UTC: 4 min, 1 commit: Shared lessons: move the 2 collected lessons into their sections
 - 2026-11-02 20:29 UTC: 15 min, 3 commits: Fast mode cost lesson; review stays on every pull request; old drift task deleted; Notes-only pull requests skip the review; Next and Wai...
 - 2026-11-02 20:48 UTC: 4 min, 1 commit: KolLab.extension check on; lesson: no Python on the home PC
+- 2026-11-04 14:27 UTC: 13 min, 2 commits: Brief: no skills list (the user's mod shows the skills); Handoff check test passes on Windows: temp path converted for node
