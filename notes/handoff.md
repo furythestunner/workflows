@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-02 (all 4 projects stay released; notes-only pull requests skip the review; Next and Waiting
-renamed so Next reads as Claude's work; handoff goes in the same commit as the work)
+Updated: 2026-11-05 (no change to Next, Waiting or Unfinished; the 2026-11-04 Windows test fix and the
+brief without a skills list are on main)
 
 ## Next (Claude's own work, nothing for you)
 
