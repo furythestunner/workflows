@@ -224,7 +224,10 @@ GitLab.
 - All 4 project repos stay `released`, none is before v1.0 (Balázs, 2026-11-02): intranet and website go live on a
   merge, KolLab.extension's `main` is the colleagues' release, claude-mods is the only one used by Balázs alone.
 - Plugins stay out: plugins a repo's `.claude/settings.json` declares do not load in cloud sessions (Claude Code
-  docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo.
+  docs, "Settings in cloud sessions", checked 2026-10-23), so the files live in each repo. Confirmed by Balázs on
+  2026-11-05, asked whether projects could load the workflow as a plugin or a second repo instead of the sync (a
+  second attached repo's rules, skills and hooks do not load either): keep the sync, look again when the cloud
+  plugin fact in `.claude/rules/shared-lessons.md` is due (2027-01-23).
 - No hand copying (Balázs, 2026-10-23): a GitHub Action syncs the files to the repos as a pull request; each repo
   follows the latest version (merged by the sync itself since 2026-10-26). The shared rules moved out of each CLAUDE.md into
   `.claude/rules/workflow.md`; a project's CLAUDE.md only adds to them. This repo stays on Balázs's personal account.

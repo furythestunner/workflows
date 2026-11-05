@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-05 (no change to Next, Waiting or Unfinished; the 2026-11-04 Windows test fix and the
-brief without a skills list are on main)
+Updated: 2026-11-05 (sync stays, no plugin; new Backlog issues #52 skills list, #53 narrow facts; the
+2026-11-04 Windows test fix and the brief without a skills list are on main)
 
 ## Next (Claude's own work, nothing for you)
 
