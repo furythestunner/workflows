@@ -11,4 +11,4 @@ Write what the user notices, not the file names. Lines are never edited later: a
 
 - 2026-11-08 New: `/grill-me` also asks about the odd cases of a feature (nothing there yet, errors, very long or very many entries, people without rights, month and year ends), each with a recommended answer.
 - 2026-11-08 New: `/plain` can walk you through how an existing page or feature works, from your side. Ask "how does X work?" or "walk me through X".
-- 2026-11-08 New: the "Workflow update" pull request in each repo opens with what is new, what is fixed and what changes for you, from this list.
+- 2026-11-08 New: The "Workflow update" pull request in each repo opens with what is new, what is fixed and what changes for you, from this list.

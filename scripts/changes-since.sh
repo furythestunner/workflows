@@ -6,7 +6,7 @@ set -uo pipefail
 old=${1:?usage: bash scripts/changes-since.sh <old commit> [repo dir]}
 dir=${2:-$(cd "$(dirname "$0")/.." && pwd)}
 
-added=$(git -C "$dir" diff --no-color "$old" HEAD -- CHANGES.md 2>/dev/null |
+added=$(git -C "$dir" diff --no-color "$old" HEAD -- CHANGES.md 2>/dev/null | tr -d '\r' |
   sed -n 's/^+- [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\} //p')
 [ -n "$added" ] || exit 0
 

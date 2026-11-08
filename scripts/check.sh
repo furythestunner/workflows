@@ -62,12 +62,12 @@ else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
 rm -rf "$tmp"
 
 # 7b. The sync pull request's plain-words part: CHANGES.md lines added since a commit, grouped by their start.
-tmp=$(mktemp -d)
+tmp=$(mktemp -d); out=
 if git -C "$tmp" init -q && printf '# x\n\n- 2026-01-01 New: old line\n' >"$tmp/CHANGES.md" &&
-   git -C "$tmp" add CHANGES.md && git -C "$tmp" -c user.name=t -c user.email=t@t commit -qm a &&
+   git -C "$tmp" add CHANGES.md && git -C "$tmp" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qm a &&
    first=$(git -C "$tmp" rev-parse HEAD) &&
    printf '# x\n\n- 2026-02-02 For you: step\n- 2026-02-01 Fixed: bug\n- 2026-01-01 New: old line\n' >"$tmp/CHANGES.md" &&
-   git -C "$tmp" -c user.name=t -c user.email=t@t commit -qam b &&
+   git -C "$tmp" -c user.name=t -c user.email=t@t -c commit.gpgsign=false commit -qam b &&
    out=$(bash scripts/changes-since.sh "$first" "$tmp") &&
    [ "$out" = "$(printf '### Changes for you\n- step\n\n### Fixed\n- bug')" ] &&
    [ -z "$(bash scripts/changes-since.sh HEAD "$tmp")" ]
