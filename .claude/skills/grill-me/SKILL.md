@@ -32,6 +32,19 @@ decision opens the decisions that hang off it.
 **Q2. <title>**: ...
 ```
 
+## Odd cases
+
+For a feature, the tree has a branch for the odd cases. Once the feature's shape is settled, ask about the ones that
+apply, in plain words and each with a recommended answer:
+
+- **Empty:** nothing there yet (first use, a new month, a filter that finds nothing).
+- **Errors:** a save that fails, a file that will not read, no connection.
+- **Limits:** a very long name, very many rows, a narrow window or a phone.
+- **People:** someone without the right, someone on leave or who has left, two people editing at once.
+- **Dates and numbers:** month and year ends, a time zone, a zero, a negative, a rounding.
+
+Look up first what the existing pages or files already do in that case and offer it as the recommendation.
+
 ## Facts are yours, decisions are the user's
 
 Never ask the user for something you can look up (files, code, the ground truth, the trackers): look it up, or

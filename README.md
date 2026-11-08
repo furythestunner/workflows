@@ -58,6 +58,7 @@ Only in this master copy (not copied to the repos):
 |---|---|---|
 | `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, the issue guard's tests pass, the cheat sheet lists every skill. |
 | `.github/workflows/sync.yml`, `scripts/sync-all.sh` | every push to `main` that changes the workflow; by hand from the Actions tab | Runs `scripts/check.sh`, then opens or updates the "Workflow update" pull request in each repo of `sync/repos.txt` and merges it when it needs no step by hand. |
+| `CHANGES.md`, `scripts/changes-since.sh` | read by the sync | What changed, in plain words, one line per change. The sync pull request opens with the lines added since that repo's last sync, grouped into "Changes for you", "New" and "Fixed"; the commits follow, folded. |
 | `scripts/sync.sh`, `scripts/sync-settings.mjs` | inside the sync; by hand to try a change | Brings one checkout up to this copy (README.md, "How the sync works"). |
 | `sync/repos.txt` | read by the sync | The repos that get the workflow, one `owner/repo` per line. |
 | `.github/workflows/collect-lessons.yml`, `scripts/collect-lessons.sh` | daily 06:17 UTC; by hand from the Actions tab | Collects the "## Shared" lessons of every repo in `sync/repos.txt` into `.claude/rules/shared-lessons.md` and opens or updates one "Shared lessons from the repos" pull request to `main` (README, "Shared lessons"). `DRY_RUN=1` tries it without a pull request. |

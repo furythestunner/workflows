@@ -61,6 +61,20 @@ then ok "scripts/sync.sh into an empty repo"
 else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
 rm -rf "$tmp"
 
+# 7b. The sync pull request's plain-words part: CHANGES.md lines added since a commit, grouped by their start.
+tmp=$(mktemp -d)
+if git -C "$tmp" init -q && printf '# x\n\n- 2026-01-01 New: old line\n' >"$tmp/CHANGES.md" &&
+   git -C "$tmp" add CHANGES.md && git -C "$tmp" -c user.name=t -c user.email=t@t commit -qm a &&
+   first=$(git -C "$tmp" rev-parse HEAD) &&
+   printf '# x\n\n- 2026-02-02 For you: step\n- 2026-02-01 Fixed: bug\n- 2026-01-01 New: old line\n' >"$tmp/CHANGES.md" &&
+   git -C "$tmp" -c user.name=t -c user.email=t@t commit -qam b &&
+   out=$(bash scripts/changes-since.sh "$first" "$tmp") &&
+   [ "$out" = "$(printf '### Changes for you\n- step\n\n### Fixed\n- bug')" ] &&
+   [ -z "$(bash scripts/changes-since.sh HEAD "$tmp")" ]
+then ok "scripts/changes-since.sh groups the new CHANGES.md lines"
+else bad "scripts/changes-since.sh: got: ${out:-nothing}"; fi
+rm -rf "$tmp"
+
 # 8. Files loaded into every session, or read whole by a skill, stay short. A warning, not a failure: /distill
 #    shortens one without losing a rule.
 long() { # <file> <max lines>

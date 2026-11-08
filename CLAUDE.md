@@ -20,6 +20,8 @@ No em dashes.
 - A hook change: start a new cloud session on dev-test; the first reply must open with the brief.
 - A change to what is synced (a new file, a removed one): run `bash scripts/sync.sh` against a scratch clone of a
   project repo and read the result.
+- A change that reaches the project repos (anything under `.claude/` or `cloud/`): one line in `CHANGES.md`, starting
+  with `New:`, `Fixed:` or `For you:`, saying what the user notices. The sync pull request shows it.
 
 ## Ask before
 

@@ -26,8 +26,8 @@ update it in the same commit when a skill is added, renamed or changes what it i
   to review any branch or pull request by hand.
 - `/never-again`: turns a mistake that happened twice, or a slow or error-filled session, into a hook, a check or a
   rule so it does not happen again. Starts when you correct Claude a second time, and at `/handoff`.
-- `/plain`: explains a change or pull request in plain words, ready to paste. Every pull request description gets an
-  "In plain words" section from it; type it, or ask "what changed?".
+- `/plain`: explains a change or pull request in plain words, ready to paste, or walks you through how a page or
+  feature works ("how does X work?"). Every pull request description gets an "In plain words" section from it.
 - `/verify`: checks each review comment against the code before acting on it, then fixes it or answers with a
   reason. Runs by itself when a review arrives on a pull request.
 - `/distill`: shortens a long text and checks item by item that nothing important was lost. Use it when a rules
