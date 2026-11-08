@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-05 (sync stays, no plugin; new Backlog issues #52 skills list, #53 narrow facts; shared lesson:
-web pages are read by a web fetch subagent)
+Updated: 2026-11-08 (prompt library round merged as #58: /grill-me odd cases, /plain walk-through, CHANGES.md
+in sync pull requests; every change that is synced now adds a CHANGES.md line)
 
 ## Next (Claude's own work, nothing for you)
 
