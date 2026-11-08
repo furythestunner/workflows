@@ -71,7 +71,14 @@ for repo in "${repos[@]}"; do
     echo
     echo "## What changed in the workflow"
     if [ -n "$old" ] && git -C "$master" merge-base --is-ancestor "$old" HEAD 2>/dev/null; then
-      git -C "$master" log --no-merges --format='- %s (`%h`)' "$old..HEAD" -- .claude cloud | head -40
+      changes=$(bash "$master/scripts/changes-since.sh" "$old" "$master")
+      commits=$(git -C "$master" log --no-merges --format='- %s (`%h`)' "$old..HEAD" -- .claude cloud | head -40)
+      if [ -n "$changes" ]; then
+        # In plain words from CHANGES.md first; the commits stay below, folded.
+        printf '%s\n\n<details><summary>Commits</summary>\n\n%s\n\n</details>\n' "$changes" "$commits"
+      else
+        echo "$commits"
+      fi
     else
       echo "- First sync (the repo was on \`${old:-no version}\`): every shared file is replaced by the master copy."
     fi

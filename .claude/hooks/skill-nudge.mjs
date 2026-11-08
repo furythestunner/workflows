@@ -16,8 +16,8 @@ const REVIEW_EVENT = /<event[^>]*source="github"[^>]*kind="[^"]*review[^"]*"/i;
 const TABLE = [
   ['never-again', /\b((did|doing|done|made) (it|that|this|the same \w+) again|same mistake|i (already )?(said|told you)|told you (before|already)|not what i (asked|said|meant)|stop doing|you forgot|keeps happening|never again)\b|már mondtam|már megint|megint (rossz|elrontottad|ugyanaz)|nem ezt kértem|elfelejtetted|soha többé/i,
     'this may be a correction. Check "Hook candidates" in notes/lessons.md: the first time, add one line there; if it is already listed, run /never-again and propose a hook'],
-  ['plain', /\bwhat (has )?changed\b|\bwhat does (this|that|the) (pr|pull request|change|commit) do\b|\b(explain|say) it (simply|plainly)\b|\bin plain words\b|mi változott|mit csinál (ez|a)|magyarázd el egyszerűen/i,
-    'the user wants a change explained in plain words'],
+  ['plain', /\bwhat (has )?changed\b|\bwhat does (this|that|the) (pr|pull request|change|commit) do\b|\b(explain|say) it (simply|plainly)\b|\bin plain words\b|\bhow does (the |this |that |a |an )?[\p{L}\d ›>-]{1,40} work\b|\bwalk me through\b|mi változott|mit csinál (ez|a)|magyarázd el egyszerűen|hogyan működik/iu,
+    'the user wants a change, or how something works, explained in plain words (/plain, shape walk for how it works)'],
   ['distill', /\btoo long\b|\bshorten\b|\bmake it shorter\b|\bcondense\b|túl hosszú|rövidíts|rövidebb/i,
     'the user wants a text shorter without losing anything'],
   ['wait-what', /\bwait,? what\b|\bi don'?t (understand|get it)\b|\bwhat does (that|this) mean\b|nem értem|ez mit jelent/i,

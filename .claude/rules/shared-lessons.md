@@ -41,6 +41,10 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
   connector, put the files in Downloads, and the user drags them in (27 Oct 2026, intranet user guides).
   (check by 2027-01-27)
 
+- Reading a web page now runs as a small "web fetch" subagent on Haiku (seen 2026-11-05 in a workflows cloud
+  session and the intranet desktop session): the session gets the agent's summary, not the page. That is Claude
+  Code's own change, not `/crew` and not this workflow. (check by 2027-02-05)
+
 - Fast mode (`/fast`) is paid from usage credits only, never from the subscription's included usage, and in a
   cloud session it lasts that session only (Claude Code docs, fast mode page) (check by 2027-02-02)
 

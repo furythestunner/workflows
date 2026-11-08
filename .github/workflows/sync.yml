@@ -6,7 +6,7 @@ name: sync
 on:
   push:
     branches: [main]
-    paths: ['.claude/**', 'cloud/**', 'scripts/sync*', 'sync/**']
+    paths: ['.claude/**', 'cloud/**', 'scripts/sync*', 'scripts/changes-since.sh', 'CHANGES.md', 'sync/**']
   workflow_dispatch:
     inputs:
       repo:

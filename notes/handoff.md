@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-02 (all 4 projects stay released; notes-only pull requests skip the review; Next and Waiting
-renamed so Next reads as Claude's work; handoff goes in the same commit as the work)
+Updated: 2026-11-05 (sync stays, no plugin; new Backlog issues #52 skills list, #53 narrow facts; shared lesson:
+web pages are read by a web fetch subagent)
 
 ## Next (Claude's own work, nothing for you)
 
