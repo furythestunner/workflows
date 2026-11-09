@@ -85,3 +85,14 @@ from there (README, "Shared lessons"). Project-only lessons stay in `notes/lesso
   Claude put "Excel also saves a PDF" inside the recommended header option; Balázs picked it and later said he
   never asked for a PDF (KolLab.extension, 2026-10-30, first time; a hook candidate). Ask each extra as its own
   question.
+
+## New from the repos (move each into its section)
+- The handoff's Waiting list holds only steps the user clicks or checks himself. "Tell X" (a colleague, the owner)
+  goes once into the chat message after a merge, never into Waiting: 20 such small items piled up there and the
+  user did not know why (Balázs, 2026-11-04, intranet; first correction, a hook candidate).
+- Full-size pictures of a page on the Windows PCs: headless Edge (`msedge.exe --headless=new --screenshot=<file>
+  --window-size=1440,1000 <url>`, one `--user-data-dir` per shot, run with `Start-Process -Wait`). The desktop app's
+  browser pane only returns small screenshots and cannot capture files outside the project. Edge will not go below
+  about 500 px wide, so a phone view goes in a 390 px iframe (intranet, 2026-11-05).
+- While the desktop app's browser pane is hidden (`tabs_context` says so), requestAnimationFrame never fires there:
+  a page step that waits on it hangs in a test. Call the step directly or ask for the pane (intranet, 2026-11-06).
