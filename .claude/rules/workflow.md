@@ -59,8 +59,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `.claude/hooks/lesson-check.mjs` asks for both after a reply.
 - **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
   the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
-- **Time estimates:** a round of Claude's own work (change, checks, commit) takes 1 to 15 min, measured over 18
-  rounds; feel ran 4 to 6 times too high. Say a time in that range, and give the user's part separately.
+- **Time estimates:** one round of Claude's own work (one change, its checks, the commit) took 1 to 15 min in 18
+  measured rounds; feel ran 4 to 6 times too high. Size from that: a change across many files is several rounds,
+  so say how many. Give the user's part separately.
 - **Use the skill that fits** even when not called, and say so in one line ("Used `/plain` for this"). A review on
   a pull request always goes through `/verify`.
 - **Off switch:** when the session start says WORKFLOW OFF (the user created `.claude/workflow-off` on GitHub), no

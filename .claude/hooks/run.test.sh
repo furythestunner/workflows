@@ -31,6 +31,9 @@ t "Write to the off switch" block synced-guard.mjs "{\"tool_name\":\"Write\",\"t
 t "touch the off switch" block issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"touch $off\"}}"
 t "redirect into the off switch" block issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cd x && date > $off\"}}"
 t "a commit message that names it" allow issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"git commit -m 'Docs: $off turns the hooks off'\"}}"
+t "copy onto the off switch" block issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"cp /dev/null $off\"}}"
+t "echo that only names it" allow issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"echo 'the off switch is $off' >> notes/x.md\"}}"
+t "moving it away" allow issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"mv $off /tmp/x\"}}"
 t "reading it" allow issue-guard.mjs "{\"tool_name\":\"Bash\",\"tool_input\":{\"command\":\"ls -la $off\"}}"
 t "Write to another file" allow synced-guard.mjs "{\"tool_name\":\"Write\",\"tool_input\":{\"file_path\":\"$r/notes/x.md\",\"content\":\"$off\"}}"
 
@@ -38,12 +41,14 @@ t "Write to another file" allow synced-guard.mjs "{\"tool_name\":\"Write\",\"too
 printf '%s' '{"prompt":"/handoff now"}' | run dash-check.mjs >/dev/null
 printf '%s' '{"tool_name":"Skill","tool_input":{"skill":"plain"}}' | run --skill >/dev/null
 printf '%s' '{"prompt":"what is /handoff?"}' | run dash-check.mjs >/dev/null
+printf '%s' '{"prompt":"/tmp/report.txt is empty"}' | run dash-check.mjs >/dev/null
 
 # The counts so far: one line per fire (the 4 blocks above came from 1 hook and 3 times the runner itself).
 log=$(git -C "$r" rev-parse --git-path workflow-usage.log); case $log in /*|?:*) ;; *) log="$r/$log" ;; esac
 is "log: the guard's block" "$(grep -c 'issue-guard$' "$log")" 1
 is "log: typed skill" "$(grep -c 'skill handoff$' "$log")" 1
 is "log: Skill tool" "$(grep -c 'skill plain$' "$log")" 1
+is "log: a path is not a skill" "$(grep -c 'skill tmp' "$log")" 0
 
 # --fold: the log goes into notes/usage.md and is emptied; a second fold adds up.
 run --fold

@@ -57,6 +57,14 @@ else
 fi
 
 echo "Branch: $(git branch --show-current)"
+# The off switch (.claude/hooks/run.mjs) is usually created on the work branch: a cloud session sees it only now.
+if [ -e .claude/workflow-off ]; then
+  echo
+  echo "WORKFLOW OFF: the file .claude/workflow-off exists, so no workflow hook runs in this repo from here on (no"
+  echo "guards, no handoff check). Say this first in your reply, instead of the brief. To turn the hooks back on, the"
+  echo "user deletes that file on GitHub and starts a new session."
+  exit 0
+fi
 echo
 timeout 60 bash .claude/skills/session-start/ground-truth.sh 2>&1 | head -150
 echo

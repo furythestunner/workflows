@@ -196,7 +196,9 @@ The sync merges itself into every repo, so a broken hook reaches all of them. Tw
 
 - **Turn the hooks off in one repo** (about 1 min): on GitHub open the repo, pick its work branch, Add file, Create
   new file, name it `.claude/workflow-off` (empty), Commit changes. Start a new session: its first reply says
-  WORKFLOW OFF, and no hook runs. Delete the file to turn them back on. Claude cannot create this file.
+  WORKFLOW OFF, and no hook runs. Delete the file to turn them back on. Claude cannot create this file. If the
+  first reply still shows no WORKFLOW OFF line (the session start itself is broken), create the same file in
+  `main` too. Sessions with several repos need the current `cloud/setup-script.sh` in the environment.
 - **Take the change back everywhere:** here, revert the pull request that broke it (the pull request's page,
   Revert, then merge that one). The sync then brings the old files to every repo.
 
@@ -204,7 +206,9 @@ The sync merges itself into every repo, so a broken hook reaches all of them. Tw
 
 `notes/usage.md` in each repo counts how often each hook fired and each skill was used, with the first and last
 day. `.claude/hooks/run.mjs` writes it; it goes into the handoff's commit. A hook or skill with no row never
-fired there. Read it before cutting or keeping something: the count decides, not a guess.
+fired there. Read it before cutting or keeping something: the count decides, not a guess. It is a count, not a
+ledger: a cloud session that ends without a handoff commit loses its lines, and two machines that both changed a
+row give a merge conflict (take either side).
 
 ## Rules of this setup
 

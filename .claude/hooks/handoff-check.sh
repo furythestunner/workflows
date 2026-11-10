@@ -20,10 +20,11 @@ state=$(git rev-parse --git-path handoff-check.state)
 ctx_tx="" ctx_level=0 talk_tx="" talk_n=0
 [ -f "$state" ] && . "$state"
 save() { printf 'ctx_tx=%q ctx_level=%q talk_tx=%q talk_n=%q\n' "$ctx_tx" "$ctx_level" "$talk_tx" "$talk_n" >"$state"; }
-# Before Claude is sent back, the hook and skill counts of this session go into usage.md next to the handoff
-# (.claude/hooks/run.mjs --fold), so they travel in the handoff's commit.
-block() { command -v node >/dev/null && node "$(dirname "$0")/run.mjs" --fold 2>/dev/null
-  local r=${1//\\/\\\\}; printf '{"decision":"block","reason":"%s"}\n' "${r//\"/\\\"}"; exit 0; }
+# fold: where Claude is sent back to commit the handoff, the hook and skill counts of this session go into usage.md
+# next to it first (.claude/hooks/run.mjs --fold), so they travel in that commit. Not where Claude may stop
+# without a commit: the file would stay uncommitted.
+fold() { command -v node >/dev/null && node "$(dirname "$0")/run.mjs" --fold 2>/dev/null; }
+block() { local r=${1//\\/\\\\}; printf '{"decision":"block","reason":"%s"}\n' "${r//\"/\\\"}"; exit 0; }
 on_branch=0; [ "$(git branch --show-current 2>/dev/null)" = "$WORK_BRANCH" ] && on_branch=1
 h=$(git log -1 --format=%H -- "$HANDOFF" 2>/dev/null)
 since=0; [ -n "$h" ] && since=$(git log -1 --format=%ct "$h")
@@ -57,6 +58,7 @@ if [ -n "$tx" ]; then
     if [ "$on_branch" = 1 ] && [ "$(git rev-list --count '@{u}..HEAD' 2>/dev/null)" != "0" ]; then
       block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. $WORK_BRANCH has unpushed commits, so do not push half-done work: finish this step first (checks pass), then bring $HANDOFF up to date (Next, Waiting for $USER_NAME, Unfinished), commit and push it to $WORK_BRANCH. If the step cannot be finished now, tell $USER_NAME in one line what is unpushed and that a new session should start after it is pushed."
     elif [ "$on_branch" = 1 ]; then
+      fold
       block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. Bring $HANDOFF up to date now: Next, Waiting for $USER_NAME, Unfinished (.claude/rules/workflow.md, Sessions and trackers); only what changed, and the date line. Commit and push it (with usage.md next to it, if it changed) to $WORK_BRANCH (handoff rule: no need to ask). Then tell $USER_NAME in one line: the handoff is saved, the context is about ${k}k, start a new session for the next task."
     fi
     block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. This checkout is not on $WORK_BRANCH, so do not write the handoff here. Tell $USER_NAME in one line: the context is about ${k}k; finish this step, then type /handoff and start a new session."
@@ -71,6 +73,7 @@ git rev-parse -q --verify '@{u}' >/dev/null 2>&1 || exit 0
 # 2. Pushed commits newer than the handoff.
 n=$(git rev-list --count --no-merges "$h"..HEAD -- . ":(exclude)$HANDOFF")
 if [ "$n" -gt 0 ]; then
+  fold
   block "Handoff is behind: $n pushed commit(s) on $WORK_BRANCH are newer than $HANDOFF. Before stopping, bring its three sections up to date (.claude/rules/workflow.md, Sessions and trackers): Next, Waiting for $USER_NAME, Unfinished; drop items that landed (their issues close when the pull request merges). If nothing in them changed, update only the date line. Then stage only those files (and the usage counts next to it, usage.md, if they changed), commit and push to $WORK_BRANCH (handoff rule: no need to ask). One line to $USER_NAME that the handoff was updated."
 fi
 
@@ -79,7 +82,7 @@ if [ -n "$tx" ] && [ "$turns" -ge "$TALK_TURNS" ]; then
   [ "$talk_tx" = "$tx|$h" ] || { talk_tx="$tx|$h" talk_n=0; }  # a new handoff commit starts the count again
   if [ $(( turns - talk_n )) -ge "$TALK_TURNS" ]; then
     talk_n=$turns; save
-    block "$turns messages from $USER_NAME since $HANDOFF was last committed. If this talk changed Next, Waiting for $USER_NAME or Unfinished (a plan for later, a step only $USER_NAME can do, with its full steps, work left half done), update only those lines and the date line, commit (with usage.md next to it, if it changed) and push to $WORK_BRANCH (handoff rule: no need to ask), and say so in one line. Decisions go to their trackers, not here. If nothing there changed, stop without any text."
+    block "$turns messages from $USER_NAME since $HANDOFF was last committed. If this talk changed Next, Waiting for $USER_NAME or Unfinished (a plan for later, a step only $USER_NAME can do, with its full steps, work left half done), update only those lines and the date line, commit and push to $WORK_BRANCH (handoff rule: no need to ask), and say so in one line. Decisions go to their trackers, not here. If nothing there changed, stop without any text."
   fi
 fi
 exit 0

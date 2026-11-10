@@ -6,7 +6,8 @@
 // 2. The usage record: a hook that fires (blocks a call, sends Claude back or adds a note) and every skill that
 //    is used gets one line in the git folder (workflow-usage.log, never committed). --fold adds those lines to the
 //    counts in notes/usage.md, which goes into the next handoff commit (.claude/hooks/handoff-check.sh, /handoff).
-//    So "is this hook or skill ever used?" has a count, not a guess.
+//    So "is this hook or skill ever used?" has a count, not a guess. A count, not a ledger: lines of a cloud
+//    session that ends without a handoff commit are lost with its container.
 // A hook's output and exit code pass through unchanged. Anything the runner itself cannot do is skipped.
 import { readFileSync, existsSync, appendFileSync, writeFileSync, mkdirSync } from 'node:fs';
 import { spawnSync } from 'node:child_process';
@@ -82,8 +83,10 @@ const args = input.tool_input || {};
 const target = String(args.file_path ?? args.path ?? '').replace(/\\/g, '/');
 const cmd = input.tool_name === 'Bash' ? String(args.command ?? '') : '';
 if (/(^|\/)\.claude\/workflow-off$/.test(target) && /^(Write|Edit|MultiEdit|mcp__)/.test(input.tool_name || '') ||
-    /(^|[;&|(\n]|\$\()\s*(touch|tee|cp|mv|ln|install|echo|printf|:)\b[^;&|\n]*\.claude\/workflow-off\b/.test(cmd) ||
-    />\s*["']?[^;&|\s]*\.claude\/workflow-off\b/.test(cmd)) {
+    // Bash: only what creates the file (touch, tee, a copy or move onto it, a redirect into it), not text that names it.
+    /(^|[;&|(\n]|\$\()\s*(touch|tee)\b[^;&|\n]*\.claude\/workflow-off\b/.test(cmd) ||
+    /(^|[;&|(\n]|\$\()\s*(cp|mv|ln|install)\b[^;&|\n]*\s["']?[^;&|\s]*\.claude\/workflow-off["']?\s*($|[;&|)\n])/.test(cmd) ||
+    />\s*["']?[^;&|\s"']*\.claude\/workflow-off["']?\s*($|[;&|)\n])/.test(cmd)) {
   console.log(JSON.stringify({ hookSpecificOutput: { hookEventName: 'PreToolUse', permissionDecision: 'deny',
     permissionDecisionReason: 'Off switch: only the user creates ' + OFF + ', on GitHub (it turns off every ' +
       'workflow hook in this repo). Tell the user what is broken and write out the steps: on GitHub open ' +
@@ -93,7 +96,7 @@ if (/(^|\/)\.claude\/workflow-off$/.test(target) && /^(Write|Edit|MultiEdit|mcp_
 }
 
 // Skills used: a typed /name, or the Skill tool.
-const typed = String(input.prompt || '').match(/^\s*\/([a-z][\w:-]*)/i);
+const typed = String(input.prompt || '').match(/^\s*\/([a-z][\w:-]*)(?=\s|$)/i);
 if (typed) record('skill ' + typed[1]);
 if (input.tool_name === 'Skill' && args.skill) record('skill ' + String(args.skill));
 if (name === '--skill' || !name) process.exit(0);
@@ -103,6 +106,10 @@ if (!/^[\w.-]+$/.test(name) || !existsSync(file)) process.exit(0);
 const r = spawnSync(name.endsWith('.sh') ? 'bash' : process.execPath, [file], {
   input: raw, encoding: 'utf8', env: { ...process.env, CLAUDE_PROJECT_DIR: root }, maxBuffer: 16 * 1024 * 1024,
 });
+if (r.error) {  // the hook could not start (bash or node not found): say so instead of looking like "allowed"
+  console.error('Workflow hook ' + name + ' could not start: ' + r.error.message);
+  process.exit(1);
+}
 if (r.stdout) process.stdout.write(r.stdout);
 if (r.stderr) process.stderr.write(r.stderr);
 const status = r.status ?? 0;

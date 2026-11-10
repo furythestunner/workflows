@@ -18,7 +18,7 @@ mkdir -p "$tmp/bin"
 cat >"$tmp/bin/gh" <<'GH'
 #!/bin/bash
 case "$*" in
-  *"/issues?"*) printf 'ready\tbug\t1\tApproved one\nin-progress\tfeature\t2\tBeing built\nbacklog\tdocs\t3\tLater\nblocked\tbug\t4\tOld status\n\tbug\t5\tNo status\n' ;;
+  *"/issues?"*) printf 'ready\tbug\t1\tApproved one\nin-progress\tfeature\t2\tBeing built\nbacklog\tdocs\t3\tLater\nblocked\tbug\t4\tOld status\ndone\tbug\t6\tGone status\n\tbug\t5\tNo status\n' ;;
 esac
 exit 0
 GH
@@ -50,8 +50,9 @@ has "clean checkout" ". [main]: = origin/main"
 # 3. Issues: three statuses in order, an old or missing status asks for a label.
 has "in progress first" "in-progress (1):"
 has "ready listed" "#1 [bug] Approved one"
-has "backlog listed" "backlog (1):"
-has "old status needs a label" "#4 [bug] Old status (status: blocked)"
+has "backlog listed, with the old Blocked one" "backlog (2):"
+has "old Blocked shown as backlog" "#4 [bug] Old status (label is still Status: Blocked"
+has "old Done needs a label" "#6 [bug] Gone status (status: done)"
 has "no status needs a label" "#5 [bug] No status (status: none)"
 hasnot "no merge mode line" "MERGE MODE"
 
@@ -76,4 +77,9 @@ hasnot "start: no rounds" "rounds.md"
 echo z >"$r/more.sh"; g add -A; g commit -qm "more code"; g push -q origin work 2>/dev/null
 out=$(ss)
 has "start: stale handoff called out" "STALE HANDOFF"
+# The off switch on the work branch: a session that starts on another branch still says so, and stops there.
+: >"$r/.claude/workflow-off"; g add -A; g commit -qm off; g push -q origin work 2>/dev/null; g checkout -q claude/x
+out=$(ss)
+has "start: off switch seen after the move" "WORKFLOW OFF"
+hasnot "start: off, no ground truth" "GROUND TRUTH"
 exit $fail

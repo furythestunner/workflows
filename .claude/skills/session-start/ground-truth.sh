@@ -265,10 +265,13 @@ for spec in "${REPOS[@]}"; do
         echo "  open issues ($gh_repo): none"
       else
         echo "  open issues ($gh_repo):"
-        awk -F'\t' '
+        awk -F'\t' -v OFS='\t' '
           BEGIN { n = split("in-progress ready backlog", order, " ")
                   for (i = 1; i <= n; i++) valid[order[i]] = 1
                   split("feature bug config docs", t, " "); for (i in t) types[t[i]] = 1 }
+          # Statuses dropped on 10 Nov 2026, until labels.sh has moved the issue: shown where they belong now.
+          $1 == "blocked" { $1 = "backlog"; $4 = $4 " (label is still Status: Blocked: a question waits on it)" }
+          $1 == "review" { $1 = "in-progress"; $4 = $4 " (label is still Status: Review)" }
           { line = "      #" $3 " [" ($2 == "" ? "no type" : $2) "] " $4
             if (($1 in valid) && ($2 in types)) { count[$1]++; item[$1, count[$1]] = line }
             else { bad++; badline[bad] = line " (status: " ($1 == "" ? "none" : $1) ")" } }

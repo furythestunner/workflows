@@ -35,6 +35,10 @@ mode, 3 statuses; new: off switch, usage record, narrow facts file, tests for th
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
+- 🟡 Paste the setup script again (added 2026-11-10, about 2 min, after the merge): open
+  https://github.com/furythestunner/workflows/blob/main/cloud/setup-script.sh, click the copy icon ("Copy raw
+  file"). On claude.ai/code open a session, click the environment name in the title bar, Edit, select all text in
+  the "Setup script" box, paste, Save. Only sessions with several repos need it (the off switch there).
 - 🟡 Close issue #35 (added 2026-11-10, about 1 min): it repeats this list. Open
   https://github.com/furythestunner/workflows/issues/35, scroll down, click "Close issue". Or write "close #35".
 
