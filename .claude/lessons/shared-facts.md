@@ -50,3 +50,10 @@ comes from the workflow master copy with the sync: do not edit it in a project r
 - Python is not installed on the user's home PC (DESKTOP-FURY): `python3` there is the Microsoft Store
   placeholder, so a check that needs Python skips itself where `python3 -c ''` fails (seen 2026-11-02).
   (check by 2027-02-02)
+- Full-size pictures of a page on the Windows PCs: headless Edge (`msedge.exe --headless=new --screenshot=<file>
+  --window-size=1440,1000 <url>`, one `--user-data-dir` per shot, run with `Start-Process -Wait`). The desktop app's
+  browser pane only returns small screenshots and cannot capture files outside the project. Edge will not go below
+  about 500 px wide, so a phone view goes in a 390 px iframe (intranet, 2026-11-05). (check by 2027-02-10)
+- While the desktop app's browser pane is hidden (`tabs_context` says so), requestAnimationFrame never fires there:
+  a page step that waits on it hangs in a test. Call the step directly or ask for the pane (intranet, 2026-11-06).
+  (check by 2027-02-10)

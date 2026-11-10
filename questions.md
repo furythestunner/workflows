@@ -2,8 +2,7 @@
 
 ## §1 Open questions (only Balázs can answer)
 
-- Shared-lessons pipeline (asked 2026-11-10): keep it, or cut it and write shared lessons in the master copy by
-  hand? Claude recommends cutting it. It stays until Balázs decides.
+None.
 
 ## §2 Rulings
 
@@ -92,8 +91,9 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
     the skills list at session start (#52), the round timer, "building" merge mode, the statuses Blocked, Review
     and Done.
   - Keep: `/crew` and its 3 agents.
-  - Open: the shared-lessons pipeline (daily collector, `lesson-check.mjs`). He asked for a fuller explanation
-    first; it stays until he decides.
+  - Cut too, after a fuller explanation (picker answer, same day): the shared-lessons pipeline (the daily
+    collector job and `lesson-check.mjs`). Shared lessons are written in the master copy by hand; the 3 lessons
+    waiting in pull request #54 were brought in that way.
   - Narrow shared facts moved to `.claude/lessons/shared-facts.md`, read only when needed (#53).
   - An off switch (`.claude/workflow-off`, created by Balázs on GitHub, never by Claude) and a usage record
     (`notes/usage.md`), both in `.claude/hooks/run.mjs`. Tests for `ground-truth.sh` and `session-start.sh`.
@@ -101,5 +101,5 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
     fact check by its count in `notes/usage.md` and by how many of its send-backs were false alarms).
 - The freeze (Balázs, 2026-11-10): no new hook and no new skill until intranet, KolLab.extension and website are
   on the current workflow and Balázs has checked the brief in each (#44). `scripts/check.sh` enforces the count
-  (13 hooks, 13 skills). After the freeze the count stays: a new hook or skill means an old one goes, and raising
+  (12 hook files, 13 skills). After the freeze the count stays: a new hook or skill means an old one goes, and raising
   the number needs his OK in the chat.

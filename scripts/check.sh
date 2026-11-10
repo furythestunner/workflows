@@ -48,7 +48,7 @@ done
 
 # 5b. The freeze (Balázs, 2026-11-10; questions.md §2): no more hooks or skills than on that day. A new one
 #     means an old one goes; raising a number here needs his OK in the chat.
-MAX_HOOKS=13 MAX_SKILLS=13
+MAX_HOOKS=12 MAX_SKILLS=13
 n=$(git ls-files '.claude/hooks/*.mjs' '.claude/hooks/*.sh' | grep -vc '\.test\.sh$')
 if [ "$n" -le "$MAX_HOOKS" ]; then ok "hooks: $n of at most $MAX_HOOKS"
 else bad "hooks: $n files in .claude/hooks, the freeze allows $MAX_HOOKS (remove one, or ask Balázs)"; fi

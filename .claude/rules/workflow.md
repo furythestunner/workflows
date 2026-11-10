@@ -54,9 +54,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   worked out. The brief lists due facts first (STALE FACTS); re-check them before relying on them.
 - **Project or shared:** a lesson only about this project goes in `notes/lessons.md`; one true in any repo (Claude
   Code, the PCs and tools, working with the user, a first correction) goes under `## Shared (goes to every repo)` at
-  its end. A daily job in the master copy collects those into `.claude/rules/shared-lessons.md` (synced, loaded by
-  itself); then delete it from the Shared section. In the master copy, write it straight into that file.
-  `.claude/hooks/lesson-check.mjs` asks for both after a reply.
+  its end, and Claude says so in the chat. Nothing collects it by itself: in a master copy session it is written
+  into `.claude/rules/shared-lessons.md` (an everyday rule) or `.claude/lessons/shared-facts.md` (a narrow fact),
+  and the sync brings it to every repo; then delete it from the Shared section.
 - **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
   the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
 - **Time estimates:** one round of Claude's own work (one change, its checks, the commit) took 1 to 15 min in 18

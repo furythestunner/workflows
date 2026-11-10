@@ -49,8 +49,6 @@ prints this file. Update it in the same commit when a skill is added, renamed or
   4 of your messages (only if something changed), and when the conversation passes 300k tokens (then it tells you
   to start a new session). So you never need to type `/handoff` before closing a session.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
-- `lesson-check.mjs`: after a reply that added a lesson, has Claude sort it: only this project, or shared (it then
-  reaches every repo through the master copy, `.claude/rules/shared-lessons.md`).
 - `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or closing it;
   only you do that, on GitHub. Back to Backlog is allowed. `labels.sh` creates the issue labels.
 - `branch-guard.mjs`: before every git push or new branch, blocks any branch name other than the work branch,

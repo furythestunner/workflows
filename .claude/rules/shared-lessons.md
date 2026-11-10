@@ -2,8 +2,8 @@
 
 Lessons that hold in every repo: tools, PCs, Claude Code, how Claude works with the user. Claude Code loads this
 file by itself. It comes from the workflow master copy with the sync: do not edit it in a project repo. A new shared
-lesson goes under "## Shared (goes to every repo)" in the project's `notes/lessons.md`; the master copy collects it
-from there (README, "Shared lessons"). Project-only lessons stay in `notes/lessons.md`. Only everyday rules belong
+lesson goes under "## Shared (goes to every repo)" in the project's `notes/lessons.md`; a session in the master
+copy writes it here by hand. Project-only lessons stay in `notes/lessons.md`. Only everyday rules belong
 here; a narrow fact (one tool, one PC, one limit) goes to `.claude/lessons/shared-facts.md`. Stale-able facts end
 in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
 
@@ -18,7 +18,8 @@ in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
 - Narrow facts are in `.claude/lessons/shared-facts.md`, which does not load by itself. Read it before work on:
   what a cloud session can reach (repos, plugins, uploaded skills, claude.ai Projects), scheduled tasks,
   GitHub rulesets and auto-merge on the free plan, SharePoint uploads, web pages read by a subagent, fast
-  mode, file size advice, and the user's Windows PCs (Git Bash paths, heredocs, PowerShell policy, Python).
+  mode, file size advice, and the user's Windows PCs (Git Bash paths, heredocs, PowerShell policy, Python,
+  screenshots of a page, the desktop app's browser pane).
 
 ## Working with the user
 
@@ -26,6 +27,9 @@ in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
   the file is a hassle and the steps get missed (Balázs, 2026-10-27, workflows; a hook candidate, first correction).
   Replaced 2026-11-02: the brief repeats open ones as one line each, full steps only when new or asked for; a long
   repeated list buried the answer.
+- The handoff's Waiting list holds only steps the user clicks or checks himself. "Tell X" (a colleague, the owner)
+  goes once into the chat message after a merge, never into Waiting: 20 such small items piled up there and the
+  user did not know why (Balázs, 2026-11-04, intranet; first correction, a hook candidate).
 - Every step the user has to do starts with 🟡, in any reply, so they can scan for their part (Balázs, 2026-11-02).
 - Multiple-choice questions go through the AskUserQuestion tool (the user taps an option, and "Other" lets them
   type), never as a lettered list in the chat (Balázs, 2026-11-02, workflows).

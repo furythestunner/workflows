@@ -60,7 +60,7 @@ session can find out what happened and why.
    facts, confirmed preferences. Check the index for an existing memory first. Route each one by how far it holds:
    - a rule every session needs (a tool quirk, a git habit, a verification rule, a way of working with the owner)
      → one line in `notes/lessons.md`; if it holds in any repo (Claude Code, the PCs, tools, how Claude works with
-     the user), under its `## Shared (goes to every repo)` section, from where the master copy brings it to every
+     the user), under its `## Shared (goes to every repo)` section, from where a master copy session brings it to every
      repo (`.claude/rules/shared-lessons.md`). Merge, don't append. Once a lesson is there, delete the memories it
      fully covers;
    - a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) → `notes/lessons.md`,

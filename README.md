@@ -20,8 +20,7 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo. In a one-repo session it does nothing. |
 | `.claude/hooks/handoff-check.sh` | after every reply | Keeps the handoff current while the cache is warm, so nobody has to type `/handoff`. Sends Claude back once to update and push it when: the conversation passes `CONTEXT_WARN` tokens (default 300000; a cloud session starts at about 77k) and again every further 50k, and then Claude tells the user to start a new session; pushed commits on `WORK_BRANCH` (code or docs) are newer than the handoff; 4 of the user's messages came after the handoff's last commit (asked once per 4; Claude stops without text when nothing changed). Unpushed work is left alone. What it already asked is kept in `.git/handoff-check.state`. Before it sends Claude back it adds the session's hook and skill counts to `notes/usage.md`, which goes into the same commit. `handoff-check.test.sh` tests it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. `README.md` and `.claude/rules/` count as trackers; plain "decision" or "szabály" in a sentence does not count as deciding. `decision-check.test.sh` tests it. |
-| `.claude/hooks/lesson-check.mjs` | after every reply | If Claude added a lesson to `notes/lessons.md` this turn outside its "## Shared" section, sends Claude back once to sort it (only this project, or shared). If a lesson in that section already arrived in `.claude/rules/shared-lessons.md`, has Claude delete the copy. `lesson-check.test.sh` next to it tests it. |
-| `.claude/rules/shared-lessons.md` | every session (loaded by itself, like the rules) | Everyday lessons that hold in every repo, collected from the repos (README, "Shared lessons"). Edited only here. |
+| `.claude/rules/shared-lessons.md` | every session (loaded by itself, like the rules) | Everyday lessons that hold in every repo (README, "Shared lessons"). Edited only here. |
 | `.claude/lessons/shared-facts.md` | when the topic comes up | Narrow facts that hold in every repo (one tool, one PC, one limit). Not loaded by itself: the shared lessons name its topics, and Claude reads it then. Its check-by dates are in the brief like the others. |
 | `.claude/hooks/issue-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from setting `Status: Ready`, from closing an issue, and from opening one outside `Status: Backlog`. `issue-guard.test.sh` next to it tests it (`bash .claude/hooks/issue-guard.test.sh`). |
 | `.claude/hooks/branch-guard.mjs` | before every Bash or GitHub tool call | Blocks Claude from creating or pushing a branch named other than `WORK_BRANCH`, `WORK_BRANCH-<topic>` (1 to 4 lowercase words) or the sync's `workflow-sync`; a cloud session's own `claude/...` branch included. Deleting is never blocked. `branch-guard.test.sh` next to it tests it. |
@@ -62,32 +61,23 @@ Only in this master copy (not copied to the repos):
 | `CHANGES.md`, `scripts/changes-since.sh` | read by the sync | What changed, in plain words, one line per change. The sync pull request opens with the lines added since that repo's last sync, grouped into "Changes for you", "New" and "Fixed"; the commits follow, folded. |
 | `scripts/sync.sh`, `scripts/sync-settings.mjs` | inside the sync; by hand to try a change | Brings one checkout up to this copy (README.md, "How the sync works"). |
 | `sync/repos.txt` | read by the sync | The repos that get the workflow, one `owner/repo` per line. |
-| `.github/workflows/collect-lessons.yml`, `scripts/collect-lessons.sh` | daily 06:17 UTC; by hand from the Actions tab | Collects the "## Shared" lessons of every repo in `sync/repos.txt` into `.claude/rules/shared-lessons.md` and opens or updates one "Shared lessons from the repos" pull request to `main` (README, "Shared lessons"). `DRY_RUN=1` tries it without a pull request. |
 | `scripts/drift-check.sh` | Mondays 07:43 Budapest, scheduled task "Workflow drift check" | Compares each repo's `.claude/workflow-version` with `main` here and lists the workflow commits it is missing. The task opens or updates one Backlog issue here when a repo is behind. |
 
 ## Shared lessons
 
-A lesson that holds in every repo (Claude Code, the PCs and tools, how Claude works with the user) should not stay in
-the one repo that learned it. The way it travels, without anyone having to notice:
+A lesson that holds in every repo (Claude Code, the PCs and tools, how Claude works with the user) is written here,
+by hand: an everyday rule into `.claude/rules/shared-lessons.md` (loaded in every session), a narrow fact (one
+tool, one PC, one limit) into `.claude/lessons/shared-facts.md` (read only when its topic comes up). The sync
+brings both to every repo. Their stale-able facts are checked like `notes/lessons.md`: `ground-truth.sh` always
+reads both files too.
 
-1. A session writes it under `## Shared (goes to every repo)` at the end of its repo's `notes/lessons.md`, on the
-   work branch. `.claude/hooks/lesson-check.mjs` asks Claude to sort every new lesson, so this does not depend on
-   the user catching it. (Cloud sessions cannot push to this repo, so the lesson waits in its own repo.)
-2. Every day `scripts/collect-lessons.sh` reads those sections (with the sync's token), appends the new ones to
-   `.claude/rules/shared-lessons.md` under "New from the repos" and opens or updates one pull request to `main`.
-3. Balázs merges it (moving each line into its section first, or leaving that to the next session here; a narrow
-   fact goes to `.claude/lessons/shared-facts.md` instead, which loads only when its topic comes up). The sync
-   then brings the file to every repo; Claude Code loads it by itself.
-4. In each repo the lesson check sees the lesson in the shared file and has Claude delete the copy from
-   `notes/lessons.md`, so it loads once.
+A session in a project repo cannot write here. It puts the lesson under `## Shared (goes to every repo)` at the
+end of its `notes/lessons.md` and says so in the chat; a session here copies it over when Balázs asks ("collect
+the shared lessons"), and the project deletes its copy after the next sync.
 
-In this repo a shared lesson goes straight into `.claude/rules/shared-lessons.md` (an everyday rule) or
-`.claude/lessons/shared-facts.md` (a narrow fact). Their stale-able facts are checked like `notes/lessons.md`:
-`ground-truth.sh` always reads both files too.
-
-The collector's pull request is opened with the Actions token, so its checks do not run by themselves; the sync
-runs `scripts/check.sh` after the merge. The repository setting "Allow GitHub Actions to create and approve pull
-requests" must be on (Settings, Actions, General, Workflow permissions).
+Until 2026-11-10 a daily job collected those sections into a pull request and a check after every reply sorted the
+lessons. Cut (`questions.md` §2): for 4 repos and one user it cost a weekly pull request without checks and an
+extra turn after replies, to move about one lesson a week.
 
 ## How the sync works
 

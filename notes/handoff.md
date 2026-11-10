@@ -1,13 +1,14 @@
 # Handoff
 
 Updated: 2026-11-10 (critical review of the setup, then the cuts: 2 hooks, the skills list at start, building
-mode, 3 statuses; new: off switch, usage record, narrow facts file, tests for the ground truth; the freeze)
+mode, 3 statuses, the shared-lessons pipeline; new: off switch, usage record, narrow facts file, tests for the ground truth; the freeze)
 
 ## Next (Claude's own work, nothing for you)
 
 1. The review's pull request (dev-test to `main`): merge it only after Balázs's new-session test below passes.
    It is the first change where every hook starts through `.claude/hooks/run.mjs`.
-2. Shared-lessons pipeline (`questions.md` §1): explained in the chat on 2026-11-10; cut or keep when Balázs says.
+2. Shared lessons are collected by hand now: when Balázs says "collect the shared lessons", read the "## Shared"
+   section of each project repo's `notes/lessons.md` and write them into the two shared files here.
 3. Around 2026-11-17, ask Balázs about the two trials. Simple language (this repo's CLAUDE.md): yes, move the
    lines to `.claude/rules/workflow.md` (76 of 80 lines); no, remove them. Fact check (`fact-check.mjs`): read its
    count in `notes/usage.md` and how many send-backs were false alarms; keep or cut.
@@ -39,6 +40,8 @@ mode, 3 statuses; new: off switch, usage record, narrow facts file, tests for th
   https://github.com/furythestunner/workflows/blob/main/cloud/setup-script.sh, click the copy icon ("Copy raw
   file"). On claude.ai/code open a session, click the environment name in the title bar, Edit, select all text in
   the "Setup script" box, paste, Save. Only sessions with several repos need it (the off switch there).
+- 🟡 Close pull request #54 (added 2026-11-10, about 1 min): its 3 lessons are in the files now. Open
+  https://github.com/furythestunner/workflows/pull/54, scroll down, click "Close pull request".
 - 🟡 Close issue #35 (added 2026-11-10, about 1 min): it repeats this list. Open
   https://github.com/furythestunner/workflows/issues/35, scroll down, click "Close issue". Or write "close #35".
 

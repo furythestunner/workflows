@@ -79,11 +79,6 @@
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" lesson-check.mjs",
-            "timeout": 30
-          },
-          {
-            "type": "command",
             "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" fact-check.mjs",
             "timeout": 10
           }
