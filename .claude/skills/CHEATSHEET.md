@@ -53,8 +53,7 @@ update it in the same commit when a skill is added, renamed or changes what it i
 - `lesson-check.mjs`: after a reply that added a lesson, has Claude sort it: only this project, or shared (it then
   reaches every repo through the master copy, `.claude/rules/shared-lessons.md`).
 - `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or Done or closing it;
-  only you do that, on GitHub. Moving one back to Backlog or Blocked is allowed. `labels.sh` (next to the ground
-  truth) creates the issue labels.
+  only you do that, on GitHub. Back to Backlog or Blocked is allowed. `labels.sh` creates the issue labels.
 - `branch-guard.mjs`: before every git push or new branch, blocks any branch name other than the work branch,
   `<work branch>-<topic>` or `workflow-sync`.
 - `push-check.mjs`: before every git push, runs the repo's checks (`CHECK` in `ground-truth.conf`); a failure stops it.
@@ -62,4 +61,5 @@ update it in the same commit when a skill is added, renamed or changes what it i
 - `review-guard.mjs`: stops a pull request from opening before `/code-review` has run (not when only `notes/`
   changed).
 - `synced-guard.mjs`: in a project repo, stops edits to files that come from the master copy.
+- `fact-check.mjs`: when a reply says the repo has or lacks something unchecked, sends Claude back to look.
 - `dash-check.mjs`: when CLAUDE.md says no em dashes and the last reply had one, reminds Claude.

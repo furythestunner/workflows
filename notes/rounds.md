@@ -20,3 +20,4 @@ message that started the turn to the end of the reply. Size Claude's own work fr
 - 2026-11-02 20:48 UTC: 4 min, 1 commit: KolLab.extension check on; lesson: no Python on the home PC
 - 2026-11-04 14:27 UTC: 13 min, 2 commits: Brief: no skills list (the user's mod shows the skills); Handoff check test passes on Windows: temp path converted for node
 - 2026-11-05 09:34 UTC: 1 min, 1 commit: Shared lesson: web pages are read by a web fetch subagent
+- 2026-11-10 07:46 UTC: 10 min, 2 commits: Brief back at the top of the first reply, about 8 lines; simple-language trial; Fact-check hook: a claim about the repo needs a file open...
