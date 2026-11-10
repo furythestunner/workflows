@@ -1,13 +1,16 @@
 # Handoff
 
-Updated: 2026-11-08 (prompt library round merged as #58: /grill-me odd cases, /plain walk-through, CHANGES.md
-in sync pull requests; every change that is synced now adds a CHANGES.md line)
+Updated: 2026-11-10 (brief back at the top of the first reply, about 8 lines; simple-language trial in this
+repo's CLAUDE.md)
 
 ## Next (Claude's own work, nothing for you)
 
 1. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods waits for the PC test run
    below: in the cloud 20 tests fail in cache-clock and skill-picker, all built around Windows paths (C:/...);
    if they pass on the PC, the cloud is the cause and the check needs a cloud skip.
+2. Simple-language trial (this repo's CLAUDE.md, "Simple language", since 2026-11-10): about 2026-11-17 ask
+   Balázs whether replies read easier. Yes: move the lines to `.claude/rules/workflow.md` (every repo; it is at 80
+   of 80 lines, so shorten it first). No: remove them.
 
 ## Waiting for Balázs (your steps)
 

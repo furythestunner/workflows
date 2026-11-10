@@ -239,9 +239,11 @@ GitLab.
   is gone; `round-timer.mjs` writes each work round to `notes/rounds.md` and the brief shows the latest.
 - The user's steps go in the chat (Balázs, 2026-10-27): written out in full, never "see README"; the handoff's
   "Waiting for the user" keeps each item's steps. The README sections stay as the reference Claude copies from.
-  Replaced 2026-11-02 (#45): the brief comes after the answer to the first message, below a line; each Waiting
-  item is one line starting with 🟡, with full steps only for items added at the last handoff update or when asked.
-  The old rule (full steps every brief) buried the answer under a page of ignored items.
+  Replaced 2026-11-02 (#45): each Waiting item is one line starting with 🟡, with full steps only for items added
+  at the last handoff update or when asked; the old rule (full steps every brief) buried the answer under a page of
+  ignored items. Replaced 2026-11-10: the brief opens the first reply again, at most about 8 short lines (wrong or
+  due, Claude next, one 🟡 line each, one proposed task), then a line, then the answer. Balázs: a brief at the end
+  meant scrolling up, and it was still too long.
 - Five more guards (Balázs, 2026-10-26: "do all improvements and hook suggestions"): checks before a push,
   secrets, a review before a pull request, synced files in project repos, em dashes. `CHECK` stays optional.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like

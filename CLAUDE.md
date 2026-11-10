@@ -14,6 +14,14 @@ action per step.
 Name what Balázs sees (a command, a file, a GitHub page), not internal code names. Concrete times ("about 15 min").
 No em dashes.
 
+Simple language (trial since 2026-11-10, after Simplified Technical English, ASD-STE100, which is made for readers
+whose first language is not English):
+- Short sentences: at most about 20 words, one idea each. A step is one sentence with one action.
+- Active voice, present tense: "The hook stops the push", not "The push will be stopped by the hook".
+- One name per thing: once it is "the sync pull request", it stays that in the whole reply.
+- Common words: "use", not "leverage"; "important", not "load-bearing" or "critical path".
+- Say what is happening, not what you will do: "Checking the tests", not "Now I'll run the tests to check".
+
 ## Before saying a change is done
 
 - `bash scripts/check.sh` prints no FAIL (CI runs the same on every pull request).

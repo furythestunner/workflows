@@ -9,6 +9,7 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-10 For you: The brief is back at the top of the first reply in a session, and short (about 8 lines): what is wrong or due, what Claude does next, your open steps (one 🟡 line each) and one proposed task. The answer comes below it, after a line.
 - 2026-11-08 New: `/grill-me` also asks about the odd cases of a feature (nothing there yet, errors, very long or very many entries, people without rights, month and year ends), each with a recommended answer.
 - 2026-11-08 New: `/plain` can walk you through how an existing page or feature works, from your side. Ask "how does X work?" or "walk me through X".
 - 2026-11-08 New: The "Workflow update" pull request in each repo opens with what is new, what is fixed and what changes for you, from this list.
