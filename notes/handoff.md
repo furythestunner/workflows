@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-10 (README cleanup, pull request #64: origin, credit and history references removed; nothing else changed)
+Updated: 2026-11-10 (README cleanup merged, pull request #64; the lists below did not change)
 
 ## Next (Claude's own work, nothing for you)
 
