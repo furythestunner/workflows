@@ -28,6 +28,7 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | `.claude/hooks/secret-guard.mjs` | before every `git commit`, `git push` and GitHub file write | Blocks when what would go out has a secrets file (`.env`, `*.pem`, `*.key`, `credentials.json`, ...) or a line that looks like a GitHub, Anthropic, AWS or Slack token or a private key. Names the file, never the secret. `secret-guard.test.sh` tests it. |
 | `.claude/hooks/review-guard.mjs` | before opening a pull request | Blocks until `/code-review` has run in the session (Claude called it or the user typed it). `review-guard.test.sh` tests it. |
 | `.claude/hooks/synced-guard.mjs` | before every Edit or Write | In a project repo, blocks edits to a file listed in `.claude/workflow-manifest` (the next sync would undo them), except on the sync's `workflow-sync` branch. Does nothing here. `synced-guard.test.sh` tests it. |
+| `.claude/hooks/fact-check.mjs` | after every reply | If the reply says the repo has or lacks something ("already has", "there is no") and Claude opened no file that turn, sends Claude back once to check the file, cite it and correct a wrong claim. `fact-check.test.sh` tests it. |
 | `.claude/hooks/dash-check.mjs` | every message the user sends | If CLAUDE.md says "no em dashes" and Claude's previous reply had one, reminds Claude before it answers. No extra turn. `dash-check.test.sh` tests it. |
 | `.claude/rules/workflow.md` | every session (Claude Code loads it like CLAUDE.md) | The shared session and tracker rules, the same in every repo. A project's CLAUDE.md only adds to them. |
 | `.claude/skills/CHEATSHEET.md` | every session start | One line per skill and hook: what it does, when to use it. The hook prints it for Claude, to pick the skill that fits; the brief does not list the skills (the user's mod shows them). Update it with any skill change. |
@@ -244,6 +245,10 @@ GitLab.
   ignored items. Replaced 2026-11-10: the brief opens the first reply again, at most about 8 short lines (wrong or
   due, Claude next, one 🟡 line each, one proposed task), then a line, then the answer. Balázs: a brief at the end
   meant scrolling up, and it was still too long.
+- Claims about the repo are checked (Balázs, 2026-11-10, from a Reddit idea: "cite file:line"): a hook, not a line
+  in the rules, because a wrong claim about the code is hard for him to catch. The other ideas from that thread
+  were dropped (name the files first, a queue for messages, a weekly proposal run): Claude Code or `/handoff`
+  already covers them.
 - Five more guards (Balázs, 2026-10-26: "do all improvements and hook suggestions"): checks before a push,
   secrets, a review before a pull request, synced files in project repos, em dashes. `CHECK` stays optional.
 - claude-mods joins the sync (Balázs, 2026-10-26): it is an active code project, and its skills come from here like
