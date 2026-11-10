@@ -5,8 +5,9 @@ mode, 3 statuses, the shared-lessons pipeline; new: off switch, usage record, na
 
 ## Next (Claude's own work, nothing for you)
 
-1. The review's pull request (dev-test to `main`): merge it only after Balázs's new-session test below passes.
-   It is the first change where every hook starts through `.claude/hooks/run.mjs`.
+1. After the merge of the review's pull request (#61, merged 2026-11-10 after Balázs's "brief ok"): the sync opens
+   a pull request in each of the 4 project repos. Check that all 4 exist and give Balázs the links (they are not
+   visible from a workflows cloud session: ask him to paste what he sees if one is missing).
 2. Shared lessons are collected by hand now: when Balázs says "collect the shared lessons", read the "## Shared"
    section of each project repo's `notes/lessons.md` and write them into the two shared files here.
 3. Around 2026-11-17, ask Balázs about the two trials. Simple language (this repo's CLAUDE.md): yes, move the
@@ -21,11 +22,12 @@ mode, 3 statuses, the shared-lessons pipeline; new: off switch, usage record, na
 
 ## Waiting for Balázs (your steps)
 
-- 🟡 Test the new session start (added 2026-11-10, about 2 min): on claude.ai/code start a new session, pick the
-  repo `workflows`, set the branch to `dev-test`, send "where are we?". The reply must open with the brief (about
-  8 lines), then a line, then the answer. Say "brief ok" or paste what came instead. Claude merges the pull request
-  after that.
-- 🟡 Check the brief in each project (added 2026-11-02, about 2 min each; do it after the step above and the merge):
+- 🟡 Merge the 4 sync pull requests (added 2026-11-10, about 1 min each): they wait for a click this time, because
+  they remove files. For each repo open its pull request list: https://github.com/Kol-Lab-Design-Kft/intranet/pulls,
+  https://github.com/Kol-Lab-Design-Kft/KolLab.extension/pulls, https://github.com/Kol-Lab-Design-Kft/website/pulls,
+  https://github.com/furythestunner/claude-mods/pulls. Click the pull request from the branch `workflow-sync`,
+  scroll down, click "Merge pull request", then "Confirm merge". Nothing else to do under "Do before merging".
+- 🟡 Check the brief in each project (added 2026-11-02, about 2 min each; do it after the step above):
   on claude.ai/code start a new session, pick the repo (intranet, then KolLab.extension, then website), set the
   branch to its work branch (`intra-test`, `extension-test`, `website-test`) and send a short question. The reply
   should open with the brief (about 8 lines, your open steps as one 🟡 line each), then a line, then the answer. If
