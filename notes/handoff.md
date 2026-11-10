@@ -1,7 +1,6 @@
 # Handoff
 
-Updated: 2026-11-10 (critical review of the setup, then the cuts: 2 hooks, the skills list at start, building
-mode, 3 statuses, the shared-lessons pipeline; new: off switch, usage record, narrow facts file, tests for the ground truth; the freeze)
+Updated: 2026-11-10 (README cleanup, pull request #64: origin, credit and history references removed; nothing else changed)
 
 ## Next (Claude's own work, nothing for you)
 
