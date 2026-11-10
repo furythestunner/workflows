@@ -1,7 +1,7 @@
 # Handoff
 
 Updated: 2026-11-10 (brief back at the top of the first reply, about 8 lines; simple-language trial in this
-repo's CLAUDE.md)
+repo's CLAUDE.md; new fact-check hook; tested in a new cloud session: brief first, 8 lines; pull request #59)
 
 ## Next (Claude's own work, nothing for you)
 
