@@ -30,11 +30,6 @@ mode, 3 statuses, the shared-lessons pipeline; new: off switch, usage record, na
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
-- 🟡 Paste the setup script again (added 2026-11-10, about 2 min; better on the PC, on the phone the dialog
-  offered only "Add environment"): open
-  https://github.com/furythestunner/workflows/blob/main/cloud/setup-script.sh, click the copy icon ("Copy raw
-  file"). On claude.ai/code open a session, click the environment name in the title bar, Edit, select all text in
-  the "Setup script" box, paste, Save. Only sessions with several repos need it (the off switch there).
 
 ## Unfinished
 
