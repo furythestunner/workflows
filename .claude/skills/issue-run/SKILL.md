@@ -18,13 +18,13 @@ Mode is the argument: `check` or `build`. Without one, `check`.
 ## What a run may take
 
 - **Ready** issues (the user approved them) and **In progress** ones a run started earlier (its comment says so).
-- **Blocked** issues whose last comment is the user's, answering the question (the user replied).
-- Never Backlog, never an issue whose title starts with ⏸️, never Review or Done. A **Ready** issue whose title
-  starts with ⏸️ is on hold, not approved work: set it to **Backlog** with a comment naming the trigger (the user
-  sets it back to Ready when the time comes). Anything not Ready is the user's signal to look.
+- Never Backlog, never an issue whose title starts with ⏸️, never an In progress issue with an open pull request.
+  A **Ready** issue whose title starts with ⏸️ is on hold, not approved work: set it to **Backlog** with a comment
+  naming the trigger (the user sets it back to Ready when the time comes). Anything not Ready is the user's signal
+  to look.
 - Never anything on the repo CLAUDE.md's "Ask before" list (schema changes, `--remote` commands, DNS, Microsoft 365,
   credentials, new outside services or libraries, release folders...), however clear it looks: post the question,
-  set Blocked.
+  set Backlog.
 - Skip the whole repo when a chat session is mid-work: an open round in `notes/crew/`, or a commit on the work
   branch in the last hour that no run made. Say so in the final message.
 
@@ -33,11 +33,12 @@ Mode is the argument: `check` or `build`. Without one, `check`.
 1. Read the open issues (ground truth, or the GitHub tools) and, for each issue a run may take, its comments.
 2. For each one, decide: can it be built from what is written, with no guess? If not, post **all** the questions at
    once, each as a short multiple choice with a recommendation, in the user's plain language (CLAUDE.md, "How to
-   explain things"), and set it to **Blocked**.
+   explain things"), and set it to **Backlog**. The last line of the comment says: "Answer here, then set the issue
+   back to Status: Ready."
 3. An issue that turns out to be on hold (it waits for something else): say what it waits for in a comment, put ⏸️
    and the trigger at the start of the title, set it to **Backlog**.
-4. A Blocked issue the user answered completely: comment "Thanks, building tonight." and leave it Blocked (the build
-   picks it up). Answered only in part: ask the rest.
+4. A Backlog issue the user answered but did not set back to Ready: if the answer is complete, comment one line
+   asking to set it to Ready; if not, ask the rest. Never build it: Ready is the only approval.
 5. Write nothing to the repo. No commit, no push.
 
 ## Build (after midnight)
@@ -45,16 +46,17 @@ Mode is the argument: `check` or `build`. Without one, `check`.
 1. Run the check steps first, so nothing unclear gets built.
 2. Bring the work branch up to date with `main` (merge, never rebase). Check the pull request from the work branch:
    if the last one was merged, the next commits need a new one.
-3. Take at most 3 issues per repo per night, Blocked-and-answered first, then Ready, oldest first. For each:
+3. Take at most 3 issues per repo per night, oldest first. For each:
    - Set it to **In progress** and comment "Started by the night run."
    - Build it. Run every check in the repo CLAUDE.md's "Before saying a change is done" that runs here (no Revit,
      no remote database). A check that cannot run here is named in the pull request as untested.
-   - A check fails and the fix is not clear: undo this issue's changes, comment what failed, set **Blocked**.
+   - A check fails and the fix is not clear: undo this issue's changes, comment what failed, set **Backlog**.
    - Commit (stage only the paths changed) and push to the work branch.
 4. One pull request work branch → `main` (pr-body skill). First run `/code-review` on the diff against `main` and
    fix what it finds (a finding left as is gets a line in the description saying why). Open it, or add to the open
    one; its description says "Closes #<n>" for each issue built. Subscribe to its activity, so failing checks and
-   review comments are handled. Set those issues to **Review**. Never merge and never turn on auto-merge.
+   review comments are handled. Those issues stay **In progress** until the merge closes them. Never merge and never
+   turn on auto-merge.
 5. Update `notes/handoff.md` (Waiting for the user: the pull request to test and merge) and push.
 
 ## Final message

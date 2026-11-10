@@ -3,7 +3,7 @@
 # cold cache, re-reads the whole conversation). After each reply, the first that applies sends Claude back once:
 # 1. Context size: the conversation passed CONTEXT_WARN tokens (default 300000; a cloud session starts at about
 #    77k), then every further 50k. Claude saves the handoff and tells the user to start a new session.
-# 2. Pushed commits on WORK_BRANCH (code or docs; not the handoff or notes/rounds.md) newer than the handoff.
+# 2. Pushed commits on WORK_BRANCH (code or docs; not the handoff) newer than the handoff.
 # 3. Talk: TALK_TURNS (4) messages from the user since the handoff was last committed, and nothing in 2. Asked once
 #    per 4 messages; "nothing to hand off" is a valid answer (Claude stops without text).
 # Unpushed commits are left alone (work in progress). What was already asked is kept in the git folder
@@ -20,6 +20,10 @@ state=$(git rev-parse --git-path handoff-check.state)
 ctx_tx="" ctx_level=0 talk_tx="" talk_n=0
 [ -f "$state" ] && . "$state"
 save() { printf 'ctx_tx=%q ctx_level=%q talk_tx=%q talk_n=%q\n' "$ctx_tx" "$ctx_level" "$talk_tx" "$talk_n" >"$state"; }
+# fold: where Claude is sent back to commit the handoff, the hook and skill counts of this session go into usage.md
+# next to it first (.claude/hooks/run.mjs --fold), so they travel in that commit. Not where Claude may stop
+# without a commit: the file would stay uncommitted.
+fold() { command -v node >/dev/null && node "$(dirname "$0")/run.mjs" --fold 2>/dev/null; }
 block() { local r=${1//\\/\\\\}; printf '{"decision":"block","reason":"%s"}\n' "${r//\"/\\\"}"; exit 0; }
 on_branch=0; [ "$(git branch --show-current 2>/dev/null)" = "$WORK_BRANCH" ] && on_branch=1
 h=$(git log -1 --format=%H -- "$HANDOFF" 2>/dev/null)
@@ -54,7 +58,8 @@ if [ -n "$tx" ]; then
     if [ "$on_branch" = 1 ] && [ "$(git rev-list --count '@{u}..HEAD' 2>/dev/null)" != "0" ]; then
       block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. $WORK_BRANCH has unpushed commits, so do not push half-done work: finish this step first (checks pass), then bring $HANDOFF up to date (Next, Waiting for $USER_NAME, Unfinished), commit and push it to $WORK_BRANCH. If the step cannot be finished now, tell $USER_NAME in one line what is unpushed and that a new session should start after it is pushed."
     elif [ "$on_branch" = 1 ]; then
-      block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. Bring $HANDOFF up to date now: Next, Waiting for $USER_NAME, Unfinished (.claude/rules/workflow.md, Sessions and trackers); only what changed, and the date line. Commit and push it to $WORK_BRANCH (handoff rule: no need to ask). Then tell $USER_NAME in one line: the handoff is saved, the context is about ${k}k, start a new session for the next task."
+      fold
+      block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. Bring $HANDOFF up to date now: Next, Waiting for $USER_NAME, Unfinished (.claude/rules/workflow.md, Sessions and trackers); only what changed, and the date line. Commit and push it (with usage.md next to it, if it changed) to $WORK_BRANCH (handoff rule: no need to ask). Then tell $USER_NAME in one line: the handoff is saved, the context is about ${k}k, start a new session for the next task."
     fi
     block "Context is at about ${k}k tokens: from here answers get less reliable and every reply re-reads all of it. This checkout is not on $WORK_BRANCH, so do not write the handoff here. Tell $USER_NAME in one line: the context is about ${k}k; finish this step, then type /handoff and start a new session."
   fi
@@ -66,9 +71,10 @@ git rev-parse -q --verify '@{u}' >/dev/null 2>&1 || exit 0
 [ "$(git rev-list --count '@{u}..HEAD')" = "0" ] || exit 0
 
 # 2. Pushed commits newer than the handoff.
-n=$(git rev-list --count --no-merges "$h"..HEAD -- . ":(exclude)$HANDOFF" ":(exclude)notes/rounds.md")
+n=$(git rev-list --count --no-merges "$h"..HEAD -- . ":(exclude)$HANDOFF")
 if [ "$n" -gt 0 ]; then
-  block "Handoff is behind: $n pushed commit(s) on $WORK_BRANCH are newer than $HANDOFF. Before stopping, bring its three sections up to date (.claude/rules/workflow.md, Sessions and trackers): Next, Waiting for $USER_NAME, Unfinished; drop items that landed (their issues close when the pull request merges). If nothing in them changed, update only the date line. Then stage only those files (and notes/rounds.md if it changed), commit and push to $WORK_BRANCH (handoff rule: no need to ask). One line to $USER_NAME that the handoff was updated."
+  fold
+  block "Handoff is behind: $n pushed commit(s) on $WORK_BRANCH are newer than $HANDOFF. Before stopping, bring its three sections up to date (.claude/rules/workflow.md, Sessions and trackers): Next, Waiting for $USER_NAME, Unfinished; drop items that landed (their issues close when the pull request merges). If nothing in them changed, update only the date line. Then stage only those files (and the usage counts next to it, usage.md, if they changed), commit and push to $WORK_BRANCH (handoff rule: no need to ask). One line to $USER_NAME that the handoff was updated."
 fi
 
 # 3. Talk since the handoff.

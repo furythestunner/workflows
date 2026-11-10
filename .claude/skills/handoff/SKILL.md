@@ -46,11 +46,11 @@ session can find out what happened and why.
      header), word for word.
    - **Write the new file** with the template below. Absolute dates, times with their zone. Name exact paths,
      branches, units and commands, so the next session can act without searching.
-3. **Update the trackers.** Issues: an item in an open pull request is `Status: Review` (the pull request says
-   "Closes #n"); a question that stops an item is posted on the issue, and the issue set to `Status: Blocked`;
+3. **Update the trackers.** Issues: an item in an open pull request stays `Status: In progress` (the pull request
+   says "Closes #n"); a question that stops an item is posted on the issue, and the issue set to `Status: Backlog`;
    what was found and not fixed becomes a new issue in `Status: Backlog` with one `Type:` label (⚠ cross-repo if
-   it needs two repos); fix any issue the session proved wrong with a comment. Never set `Status: Ready` or
-   `Status: Done` and never close an issue: the user does that (the issue guard blocks it). `questions.md`: add new
+   it needs two repos); fix any issue the session proved wrong with a comment. Never set `Status: Ready`
+   and never close an issue: the user does that (the issue guard blocks it). `questions.md`: add new
    questions to §1 with a recommendation; move a question the user answered to §2 as 🟢 with their words (or delete
    it if nothing is left to guard). `CLAUDE.md` only when a rule, a how-to or the long-term state changed. Keep all
    three short.
@@ -60,7 +60,7 @@ session can find out what happened and why.
    facts, confirmed preferences. Check the index for an existing memory first. Route each one by how far it holds:
    - a rule every session needs (a tool quirk, a git habit, a verification rule, a way of working with the owner)
      → one line in `notes/lessons.md`; if it holds in any repo (Claude Code, the PCs, tools, how Claude works with
-     the user), under its `## Shared (goes to every repo)` section, from where the master copy brings it to every
+     the user), under its `## Shared (goes to every repo)` section, from where a master copy session brings it to every
      repo (`.claude/rules/shared-lessons.md`). Merge, don't append. Once a lesson is there, delete the memories it
      fully covers;
    - a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) → `notes/lessons.md`,
@@ -77,7 +77,9 @@ session can find out what happened and why.
      the workflow repo in its own commit (README, "Improve the workflow"). Never a lesson.
 6. **Background work:** stop anything that should not keep running; ask the user if unsure. Anything left running
    that the next session must check goes under "Next" as a step (what to check, how to stop it).
-7. **Commit and push the docs** (handoff, trackers, notes) per the project's handoff rule. Then verify that the
+7. **Commit and push the docs** (handoff, trackers, notes) per the project's handoff rule. First run
+   `node .claude/hooks/run.mjs --fold` (the session's hook and skill counts go into `notes/usage.md`) and commit
+   that file with them. Then verify that the
    remote has the tip (`git log origin/<branch> -1`, or run the ground truth again): a push that failed is a
    handoff that did not happen. Never commit secrets: if a secret is needed, write THAT it is needed, never its
    value.

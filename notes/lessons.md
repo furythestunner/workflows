@@ -20,4 +20,5 @@
   steps). Balázs could not do his #41 check. At a second time: a check that the brief names the Waiting items.
 
 Earlier: time estimates (2026-10-26) became `.claude/hooks/estimate-check.mjs`, replaced the same day by
-`.claude/hooks/round-timer.mjs`, which measures each round into `notes/rounds.md` (the check fired on every time).
+`.claude/hooks/round-timer.mjs` (the check fired on every time). The timer was cut on 2026-11-10: its 18 measured
+rounds took 1 to 15 min each, which is now a line in `.claude/rules/workflow.md`.

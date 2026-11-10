@@ -30,7 +30,6 @@ t() { # <name> <block|allow> <setup commands> [stop_hook_active]
 t code-pushed-after-handoff block 'c app.sh; g push -q'
 t docs-pushed-after-handoff block 'c notes/x.md; g push -q'
 t code-not-pushed allow 'c app.sh'
-t rounds-only-after-handoff allow 'c notes/rounds.md; g push -q'
 t handoff-newer allow 'c app.sh; c notes/handoff.md; g push -q'
 t other-branch allow 'g checkout -q -b other; c app.sh; g push -q -u origin other 2>/dev/null'
 t second-stop allow 'c app.sh; g push -q' true

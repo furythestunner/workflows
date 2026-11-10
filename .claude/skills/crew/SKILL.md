@@ -54,7 +54,8 @@ Why: the expensive model spends its tokens on judgment, the cheaper models on vo
      send-backs; after that, stop and ask the user.
 7. **Commit, push, pull request.** Stage the changed paths by name, read `git diff --cached --name-only`, commit to
    the work branch, push, and open or update the one pull request from it to `main` (a migration or other manual step
-   is named at the top; the body says "Closes #<n>"), then set the issue to `Status: Review`. Never merge.
+   is named at the top; the body says "Closes #<n>"); the issue stays `Status: In progress` until the merge closes
+   it. Never merge.
 8. **Report** to the user per CLAUDE.md: what changed for the people who use it, how it was checked, and the smoke
    list: every step of "Done when", each marked `[x] Claude: <step>, saw <what>` (what a worker or you ran and saw)
    or `[ ] You: <step>, expect <what>` (clicks written out). Put it in the chat, the round record and the pull

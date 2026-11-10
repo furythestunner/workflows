@@ -23,15 +23,16 @@ echo "MULTI-REPO SESSION START (user hook ~/.claude/hooks/multi-repo-start.sh): 
 echo "The session opened in $root, outside the repos, so each repo's own start-up ran from here; its output follows."
 echo "Your FIRST reply OPENS with the brief: a few short lines per repo (steps 2 to 5 of its session-start skill):"
 echo "anything wrong or due, \"Claude next\" (Next, one line), one 🟡 line per Waiting item (full steps only for new"
-echo "items), one recommended task. No skills list: the user's own mod shows them. Then a horizontal line (---), then"
+echo "items), one recommended task. No skills list. Then a horizontal line (---), then"
 echo "the answer to the first message. Per-repo rules (branches, trackers) come from each repo's CLAUDE.md."
-last="${repos[${#repos[@]}-1]}"
 for r in "${repos[@]}"; do
   echo
   echo "################ REPO $(basename "$r") ($r) ################"
-  # The skills cheat sheet is printed only by the last repo, so the list comes once.
-  if [ "$r" = "$last" ]; then cut=''; else cut='/^===== .claude\/skills\/CHEATSHEET.md/,$d'; fi
-  (cd "$r" && CLAUDE_PROJECT_DIR="$r" timeout 120 bash .claude/hooks/session-start.sh 2>&1) | sed "$cut"
+  if [ -f "$r/.claude/hooks/run.mjs" ]; then  # the runner holds the off switch (.claude/workflow-off)
+    (cd "$r" && CLAUDE_PROJECT_DIR="$r" timeout 120 node .claude/hooks/run.mjs session-start.sh 2>&1 </dev/null)
+  else
+    (cd "$r" && CLAUDE_PROJECT_DIR="$r" timeout 120 bash .claude/hooks/session-start.sh 2>&1)
+  fi
 done
 exit 0
 HOOK

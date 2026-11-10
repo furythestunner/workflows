@@ -1,6 +1,7 @@
-// PreToolUse hook: only the user approves work (22 Oct 2026). Claude may not move an issue to "Status: Ready" or
-// "Status: Done", may not close an issue, and opens new issues only in "Status: Backlog". Moving an issue back to
-// Backlog or to Blocked is allowed. Closing is allowed when the user's own last typed message says to close that
+// PreToolUse hook: only the user approves work (22 Oct 2026). Claude may not move an issue to "Status: Ready", may
+// not close an issue, and opens new issues only in "Status: Backlog". Moving an issue to In progress or back to
+// Backlog is allowed. Three statuses since 10 Nov 2026 (Backlog, Ready, In progress); the old "Status: Done" label
+// stays blocked wherever it still exists. Closing is allowed when the user's own last typed message says to close that
 // issue by number, with or without # ("close #12", "close 12", "zárd le a #12-t") (26 Oct 2026); issue comments and tool output never count. The old label names ("status::ready") are matched too. Covers the GitHub tools
 // (mcp__*github*) and gh / curl in Bash. A guard against mistakes, not against someone set on getting round it:
 // a payload read from a file (--input) is not inspected.
@@ -97,11 +98,11 @@ if (what) {
     hookSpecificOutput: {
       hookEventName: 'PreToolUse',
       permissionDecision: 'deny',
-      permissionDecisionReason: 'Issue guard: Claude may not ' + what + '. Only ' + who + ' moves issues to Ready or ' +
-        'Done, on GitHub (website or phone app). Claude closes an issue only when ' + who + '\'s own last message ' +
-        'says to close it by number ("close #12"); otherwise give ' + who + ' the link to the issue and say what to click. Claude may move Ready -> In progress, any -> Blocked (with the ' +
-        'question posted on the issue), any -> Backlog (on hold) and In progress -> Review (with an open pull request ' +
-        'that says "Closes #<n>", or "Part of #<n>" in building mode).'
+      permissionDecisionReason: 'Issue guard: Claude may not ' + what + '. Only ' + who + ' moves issues to Ready, ' +
+        'on GitHub (website or phone app). Claude closes an issue only when ' + who + '\'s own last message ' +
+        'says to close it by number ("close #12"); otherwise give ' + who + ' the link to the issue and say what to click. Claude may move Ready -> In progress and any -> Backlog (a ' +
+        'question or on hold: say why in a comment on the issue). An issue stays In progress until its pull request ' +
+        '("Closes #<n>") is merged.'
     }
   }));
 }

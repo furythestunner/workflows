@@ -24,8 +24,11 @@ if node -e '
   for (const groups of Object.values(s.hooks || {}))
     for (const g of groups)
       for (const h of g.hooks || []) {
-        const m = (h.command || "").match(/\$CLAUDE_PROJECT_DIR\/([^"\s]+)/);
-        if (m && !require("fs").existsSync(m[1])) missing.push(m[1]);
+        const m = (h.command || "").match(/\$CLAUDE_PROJECT_DIR\/([^"\s]+)"?\s*(\S*)/);
+        if (!m) continue;
+        if (!require("fs").existsSync(m[1])) missing.push(m[1]);
+        // The runner (run.mjs) takes the hook file as its argument: that file must be there too.
+        if (m[2] && !m[2].startsWith("--") && !require("fs").existsSync(".claude/hooks/" + m[2])) missing.push(".claude/hooks/" + m[2]);
       }
   if (missing.length) { console.error("missing: " + missing.join(", ")); process.exit(1); }
 ' 2>"$err"; then ok ".claude/settings.json: valid, hook files exist"; else bad ".claude/settings.json: $(cat "$err")"; fi
@@ -36,15 +39,22 @@ for f in .claude/hooks/*.test.sh .claude/skills/*/*.test.sh; do
   else bad "$(basename "$f")"; echo "$out" | grep FAIL; fi
 done
 
-# 5. The cheat sheet names every skill (Claude picks skills from it).
+# 5. The cheat sheet (the user's list of skills and hooks) names every skill.
 for d in .claude/skills/*/; do
   n=$(basename "$d")
   if grep -q "\`/$n\`" .claude/skills/CHEATSHEET.md; then ok "CHEATSHEET.md lists /$n"
   else bad "CHEATSHEET.md does not list /$n"; fi
 done
-n=$(sed -n '/^## Skills/,$p' .claude/skills/CHEATSHEET.md | wc -l)
-if [ "$n" -le 60 ]; then ok "CHEATSHEET.md fits what session-start.sh prints ($n of 60 lines)"
-else bad "CHEATSHEET.md: $n lines from \"## Skills\"; session-start.sh prints only 60"; fi
+
+# 5b. The freeze (Balázs, 2026-11-10; questions.md §2): no more hooks or skills than on that day. A new one
+#     means an old one goes; raising a number here needs his OK in the chat.
+MAX_HOOKS=12 MAX_SKILLS=13
+n=$(git ls-files '.claude/hooks/*.mjs' '.claude/hooks/*.sh' | grep -vc '\.test\.sh$')
+if [ "$n" -le "$MAX_HOOKS" ]; then ok "hooks: $n of at most $MAX_HOOKS"
+else bad "hooks: $n files in .claude/hooks, the freeze allows $MAX_HOOKS (remove one, or ask Balázs)"; fi
+n=$(git ls-files '.claude/skills/*/SKILL.md' | wc -l)
+if [ "$n" -le "$MAX_SKILLS" ]; then ok "skills: $n of at most $MAX_SKILLS"
+else bad "skills: $n, the freeze allows $MAX_SKILLS (remove one, or ask Balázs)"; fi
 
 # 6. The shared rules file is there and holds no project values (every repo gets it as it is).
 if [ ! -f .claude/rules/workflow.md ]; then bad ".claude/rules/workflow.md is missing"
@@ -56,6 +66,7 @@ else ok ".claude/rules/workflow.md: shared, no project values"; fi
 tmp=$(mktemp -d)
 if git init -q "$tmp" && bash scripts/sync.sh "$tmp" >"$err" 2>&1 &&
    [ -f "$tmp/.claude/rules/workflow.md" ] && [ -s "$tmp/.claude/workflow-manifest" ] &&
+   [ -f "$tmp/.claude/hooks/run.mjs" ] && [ -f "$tmp/.claude/lessons/shared-facts.md" ] &&
    node -e 'const s=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); if(!s.hooks||!s.hooks.SessionStart) process.exit(1)' "$tmp/.claude/settings.json"
 then ok "scripts/sync.sh into an empty repo"
 else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
