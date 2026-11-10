@@ -53,29 +53,26 @@ open that already shipped, "done" items whose code changed since).
      sessions.
    - **Is the work branch up to date with `main`?** If `main` has commits the work branch lacks, merging `main` in
      comes before new work (CLAUDE.md, Git workflow).
-4. **Brief the user** in under about 20 lines. When the first message is a task or a question, the answer comes
-   first, then a horizontal line (`---`), then the brief: the user should not scroll past it to reach the answer.
-   - **Stale facts** first, if any: what each says and that it is re-checked before use.
-   - **Since last session:** what finished or changed (jobs, CI, merged PRs), contradictions first.
-   - **Today:** at most 3 items, time-sensitive first. Each with its repo or area, its verified current state, one
-     line on why now, and what "done" looks like. Default order when the user has no preference: work in flight,
-     bugs users hit, decided-but-not-done (🟢), then deferred work. Only `Status: Ready` issues (the user approved
-     them), `Status: In progress` ones, or a Backlog issue the user hands out in the chat are started; any other
-     `Status: Backlog` issue is proposed for the user to approve.
-     Items in different repos or areas can run side by side (one session or worktree each). An item
-     marked ⚠ cross-repo runs alone, in its order (producer first, then each consumer).
-   - **Claude does next (nothing for you):** the handoff's Next items, one line each, no 🟡; "nothing" when empty.
-     Kept apart from the user's steps below, so the two never read as one list.
-   - **🟡 Your steps:** the `questions.md` §1 items that block today's work, each with a recommendation, named by
-     what the user sees (a screen's title, a command), not by a code name. These are never self-serve. Also the
-     `Status: Review` issues to test and merge, and the `Status: Blocked` ones, each with the link to its question.
-     Then every item of the handoff's "Waiting for the user", one line each starting with 🟡: what to do and about
-     how long. Only items added at the handoff's latest update (their `added` date is its `Updated` date) get their
-     steps written out in full (every click and setting), never "see README" or another file; for an older one, the
-     user asks ("steps for ...") and gets them in full.
-   - No skills list in the brief: the user's own mod shows the skills. The cheat sheet the hook prints is for
-     Claude, to pick the skill that fits.
-   - End by recommending one task and asking which to start.
+4. **Brief the user at the top of the first reply, in at most about 8 short lines**, then a horizontal line (`---`),
+   then the answer to the first message, if it is a task or a question. The user reads from the top: a brief at the
+   end of the reply meant scrolling up, and a long brief went unread. One short sentence per line, no explanations;
+   details come when the user asks.
+   - **Wrong or due**, one line each, only when there is one: stale facts (what each says; re-check it before use),
+     contradictions between the handoff and the ground truth (first), failing checks, deadlines within a day,
+     issues that need a label. When there is none: "Nothing wrong or due."
+   - **Claude next:** the handoff's Next items, a few words each, on one line; "nothing" when empty. Never a 🟡.
+   - **🟡 lines**, one per thing the user has to do, a few words and about how long: each Waiting item of the
+     handoff, the `questions.md` §1 items that block today's work, `Status: Review` issues to test, `Status:
+     Blocked` issues (with the link to the question). Named by what the user sees, not by a code name. Full steps
+     (every click and setting, never "see README" or another file) only for items added at the handoff's latest
+     update (their `added` date is its `Updated` date); for an older one, the user asks ("steps for ...").
+   - **Today:** one recommended task, with its link, and "or name another". Order: work in flight, bugs users hit,
+     decided but not done, then deferred work; an item marked ⚠ cross-repo runs alone. Only `Status: Ready` or
+     `Status: In progress` issues, or a Backlog issue the user hands out in the chat, are started; another Backlog
+     issue is proposed for approval. Leave this line out when the first message already is the task.
+   - Not in the brief: the skills list (the user's own mod shows them; the cheat sheet the hook prints is for
+     Claude), the lists of Ready and Backlog issues, open pull requests with green checks, and what finished since
+     last time unless it changes today's work.
 5. **Wait for the user's choice** before long work or anything outward (push, PR, merge, release, comments,
    messages). Reading and checking are fine. The user decides the day's priorities, and the handoff can be stale.
 6. **Rename the chat once the topic is clear.** A chat started with this command is named after it, so the list of

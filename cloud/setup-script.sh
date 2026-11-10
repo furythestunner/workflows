@@ -21,12 +21,10 @@ for d in "$root"/*/; do [ -f "$d.claude/hooks/session-start.sh" ] && repos+=("${
 names=(); for r in "${repos[@]}"; do names+=("$(basename "$r")"); done
 echo "MULTI-REPO SESSION START (user hook ~/.claude/hooks/multi-repo-start.sh): ${#repos[@]} repos, ${names[*]}."
 echo "The session opened in $root, outside the repos, so each repo's own start-up ran from here; its output follows."
-echo "Your FIRST reply carries the brief: one short section per repo (steps 2 to 5 of its session-start skill,"
-echo "a few lines each: contradictions, anything due, the proposed task). No skills list: the user's own mod shows them."
-echo "If the first message is a task or a question, answer"
-echo "or do it first, then a horizontal line (---), then the brief, short per repo: \"Claude does next\" (Next),"
-echo "then \"Your steps\" (Waiting, one 🟡 line each; full steps only for new items). Per-repo rules (branches,"
-echo "trackers) come from each repo's CLAUDE.md."
+echo "Your FIRST reply OPENS with the brief: a few short lines per repo (steps 2 to 5 of its session-start skill):"
+echo "anything wrong or due, \"Claude next\" (Next, one line), one 🟡 line per Waiting item (full steps only for new"
+echo "items), one recommended task. No skills list: the user's own mod shows them. Then a horizontal line (---), then"
+echo "the answer to the first message. Per-repo rules (branches, trackers) come from each repo's CLAUDE.md."
 last="${repos[${#repos[@]}-1]}"
 for r in "${repos[@]}"; do
   echo
