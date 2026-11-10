@@ -1,7 +1,6 @@
 # Claude Code session workflow
 
 Automatic session start, a short handoff and a decision check for Claude Code, in every repo.
-Started from github.com/truongfelix/workflow (6d2623c, 2026-10-10).
 
 ## Why every repo has its own copy, and why you never copy it
 
@@ -46,17 +45,13 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | `.claude/skills/verify/` | `/verify`, a review on a pull request | Checks each review comment against the code, then fixes it or answers with a reason. |
 | `.claude/skills/distill/` | `/distill`, "too long", a length warning from `scripts/check.sh` | Shortens a text and checks item by item that nothing needed was lost. |
 
-`grill-me`, `questionnaire`, `wait-what`, `pr-body` and `diagnosing-bugs` are adapted from github.com/mattpocock/skills
-(MIT); `never-again`, `plain`, `verify` and `distill` from github.com/integralist/agent-skills. Both in
-`.claude/skills/THIRD-PARTY.md`.
-
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
 Only in this master copy (not copied to the repos):
 
 | File | When | What |
 |---|---|---|
-| `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, every hook's tests pass, the cheat sheet lists every skill, and the freeze holds (no more hooks or skills than on 2026-11-10). |
+| `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, every hook's tests pass, the cheat sheet lists every skill, and the freeze holds (no more hooks or skills than the set limit). |
 | `.github/workflows/sync.yml`, `scripts/sync-all.sh` | every push to `main` that changes the workflow; by hand from the Actions tab | Runs `scripts/check.sh`, then opens or updates the "Workflow update" pull request in each repo of `sync/repos.txt` and merges it when it needs no step by hand. |
 | `CHANGES.md`, `scripts/changes-since.sh` | read by the sync | What changed, in plain words, one line per change. The sync pull request opens with the lines added since that repo's last sync, grouped into "Changes for you", "New" and "Fixed"; the commits follow, folded. |
 | `scripts/sync.sh`, `scripts/sync-settings.mjs` | inside the sync; by hand to try a change | Brings one checkout up to this copy (README.md, "How the sync works"). |
@@ -74,10 +69,6 @@ reads both files too.
 A session in a project repo cannot write here. It puts the lesson under `## Shared (goes to every repo)` at the
 end of its `notes/lessons.md` and says so in the chat; a session here copies it over when Balázs asks ("collect
 the shared lessons"), and the project deletes its copy after the next sync.
-
-Until 2026-11-10 a daily job collected those sections into a pull request and a check after every reply sorted the
-lessons. Cut (`questions.md` §2): for 4 repos and one user it cost a weekly pull request without checks and an
-extra turn after replies, to move about one lesson a week.
 
 ## How the sync works
 
@@ -105,7 +96,7 @@ change updates it. The version reaches `main` with the next work branch to `main
 check, which reads `main`, may still list the repo as behind.
 
 **Latest or pinned.** Every repo follows the latest version. The sync merges its own pull request right away
-(Balázs, 2026-10-26: the change was already checked and merged here), except one with a "Do before merging" list or
+except one with a "Do before merging" list or
 with hand commits on `workflow-sync`: that one waits for the user. If the merge fails (e.g. the repo allows no merge
 commits), the pull request stays open with a warning in the Actions log.
 
@@ -119,7 +110,7 @@ secret `SYNC_TOKEN`:
 4. This repo, Settings, Secrets and variables, Actions, New repository secret: name `SYNC_TOKEN`, the token as value.
 5. Actions tab, "sync", Run workflow: one pull request per repo, or "already current".
 
-A fine-grained token reaches one owner only. Repos of this repo's own owner (furythestunner, e.g. claude-mods) use a
+A fine-grained token reaches one owner only. Repos of this repo's own owner (furythestunner) use a
 second token in the secret `SYNC_TOKEN_OWN`: the same steps with Resource owner furythestunner, only those repos, and
 the secret named `SYNC_TOKEN_OWN`.
 
@@ -150,9 +141,8 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
 
 ## Delete merged branches by themselves
 
-Only for a public repo, or a repo on a paid GitHub plan. Today that is this repo alone: the 4 project repos are
-private on the free plan, where GitHub does not enforce rulesets (`.claude/lessons/shared-facts.md`). There,
-leave "Automatically delete head branches" off, or the work branch is deleted at its next merge to `main`.
+Only for a public repo, or a repo on a paid GitHub plan. Private repos on the free plan do not enforce rulesets
+(`.claude/lessons/shared-facts.md`). There, leave "Automatically delete head branches" off, or the work branch is deleted at its next merge to `main`.
 
 Once per repo that qualifies (about 2 min). Do step 1 first: without it, GitHub would delete the work branch when
 it is merged to `main`.
@@ -168,7 +158,7 @@ The branches already merged stay: delete those once on the Branches page (the bi
 
 ## Merge by itself
 
-Only for a public repo, or a repo on a paid GitHub plan (today: this repo alone). In a private repo on the free
+Only for a public repo, or a repo on a paid GitHub plan. In a private repo on the free
 plan "Allow auto-merge" is greyed out; there Claude merges by hand once the checks pass.
 
 Once per repo that qualifies (about 2 min), so Claude can turn on auto-merge and GitHub waits for the checks
@@ -199,7 +189,3 @@ day. `.claude/hooks/run.mjs` writes it; it goes into the handoff's commit. A hoo
 fired there. Read it before cutting or keeping something: the count decides, not a guess. It is a count, not a
 ledger: a cloud session that ends without a handoff commit loses its lines, and two machines that both changed a
 row give a merge conflict (take either side).
-
-## Rules of this setup
-
-The rulings on the workflow itself are in `questions.md` §2, as in every repo (moved there on 2026-11-10).
