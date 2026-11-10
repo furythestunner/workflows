@@ -1,4 +1,4 @@
-# Runs scripts/check.sh (script syntax, settings.json, the issue guard's tests, the cheat sheet) on every pull
+# Runs scripts/check.sh (script syntax, settings.json, the hooks' tests, the cheat sheet, the freeze) on every pull
 # request and on pushes to main.
 name: check
 on:

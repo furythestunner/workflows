@@ -1,6 +1,6 @@
 // Stop hook: decisions made in the chat go into the trackers, not only into the chat (20 Oct 2026).
 // If this turn the user answered a multiple-choice question or used decision words, and Claude did not touch
-// a tracker (questions.md, BACKLOG.md, CLAUDE.md, notes/lessons.md, .claude/rules/; README.md in the master copy, which
+// a tracker (questions.md, BACKLOG.md, CLAUDE.md, notes/lessons.md, .claude/rules/; README.md in the master copy too, which
 // keeps its rulings there) and opened no GitHub issue, Claude is sent back once to record it. A nudge, not a
 // guarantee: it cannot tell a ruling from a choice for the task at hand, so Claude decides and may skip.
 import { readFileSync, existsSync } from 'node:fs';

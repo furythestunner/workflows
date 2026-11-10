@@ -62,16 +62,15 @@ open that already shipped, "done" items whose code changed since).
      issues that need a label. When there is none: "Nothing wrong or due."
    - **Claude next:** the handoff's Next items, a few words each, on one line; "nothing" when empty. Never a 🟡.
    - **🟡 lines**, one per thing the user has to do, a few words and about how long: each Waiting item of the
-     handoff, the `questions.md` §1 items that block today's work, `Status: Review` issues to test, `Status:
-     Blocked` issues (with the link to the question). Named by what the user sees, not by a code name. Full steps
+     handoff, the `questions.md` §1 items that block today's work, open pull requests to test, Backlog
+     issues that hold a question for the user (with the link). Named by what the user sees, not by a code name. Full steps
      (every click and setting, never "see README" or another file) only for items added at the handoff's latest
      update (their `added` date is its `Updated` date); for an older one, the user asks ("steps for ...").
    - **Today:** one recommended task, with its link, and "or name another". Order: work in flight, bugs users hit,
      decided but not done, then deferred work; an item marked ⚠ cross-repo runs alone. Only `Status: Ready` or
      `Status: In progress` issues, or a Backlog issue the user hands out in the chat, are started; another Backlog
      issue is proposed for approval. Leave this line out when the first message already is the task.
-   - Not in the brief: the skills list (the user's own mod shows them; the cheat sheet the hook prints is for
-     Claude), the lists of Ready and Backlog issues, open pull requests with green checks, and what finished since
+   - Not in the brief: the skills list, the lists of Ready and Backlog issues, open pull requests with green checks, and what finished since
      last time unless it changes today's work.
 5. **Wait for the user's choice** before long work or anything outward (push, PR, merge, release, comments,
    messages). Reading and checking are fine. The user decides the day's priorities, and the handoff can be stale.

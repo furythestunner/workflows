@@ -73,7 +73,6 @@ with_timeout() { # <seconds> <command...>
 }
 
 echo "GROUND TRUTH — $(date '+%Y-%m-%d %H:%M %Z')"
-echo "MERGE MODE: ${MERGE_MODE:-released} (.claude/rules/workflow.md, Merging)"
 
 # Facts that can go stale end with exactly "(check by YYYY-MM-DD)". Due ones come first: the brief names them
 # before anything relies on them. A tag in another spelling is listed too, since this script cannot read it.
@@ -81,7 +80,9 @@ echo
 stale=""
 today=$(date +%F)
 # The shared lessons (synced from the master copy) carry facts too, in every repo
-case " $FACT_FILES " in *" .claude/rules/shared-lessons.md "*) ;; *) FACT_FILES="$FACT_FILES .claude/rules/shared-lessons.md" ;; esac
+for f in .claude/rules/shared-lessons.md .claude/lessons/shared-facts.md; do
+  case " $FACT_FILES " in *" $f "*) ;; *) FACT_FILES="$FACT_FILES $f" ;; esac
+done
 for f in $FACT_FILES; do
   [ -f "$ROOT/$f" ] || continue
   out=$(awk -v today="$today" -v f="$f" '
@@ -265,7 +266,7 @@ for spec in "${REPOS[@]}"; do
       else
         echo "  open issues ($gh_repo):"
         awk -F'\t' '
-          BEGIN { n = split("in-progress review blocked ready backlog done", order, " ")
+          BEGIN { n = split("in-progress ready backlog", order, " ")
                   for (i = 1; i <= n; i++) valid[order[i]] = 1
                   split("feature bug config docs", t, " "); for (i in t) types[t[i]] = 1 }
           { line = "      #" $3 " [" ($2 == "" ? "no type" : $2) "] " $4
@@ -276,7 +277,7 @@ for spec in "${REPOS[@]}"; do
                   shown = (s == "backlog" && count[s] > 10) ? 10 : count[s]
                   for (k = 1; k <= shown; k++) print item[s, k]
                   if (shown < count[s]) print "      ... and " (count[s] - shown) " more" }
-                if (bad) { print "    NEEDS A LABEL (" bad "):"; for (k = 1; k <= bad; k++) print badline[k] } }
+                if (bad) { print "    NEEDS A LABEL (" bad "; one of Status: Backlog, Ready, In progress, and one Type:):"; for (k = 1; k <= bad; k++) print badline[k] } }
         ' <<<"$issues"
       fi
     fi

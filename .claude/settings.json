@@ -6,27 +6,27 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/issue-guard.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" issue-guard.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/branch-guard.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" branch-guard.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/review-guard.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" review-guard.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/secret-guard.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" secret-guard.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/push-check.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" push-check.mjs",
             "timeout": 120
           }
         ]
@@ -36,8 +36,18 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/synced-guard.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" synced-guard.mjs",
             "timeout": 30
+          }
+        ]
+      },
+      {
+        "matcher": "Skill",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" --skill",
+            "timeout": 10
           }
         ]
       }
@@ -48,7 +58,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/session-start.sh\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" session-start.sh",
             "timeout": 120
           }
         ]
@@ -59,27 +69,22 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PROJECT_DIR/.claude/hooks/handoff-check.sh\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" handoff-check.sh",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/decision-check.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" decision-check.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/round-timer.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" lesson-check.mjs",
             "timeout": 30
           },
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/lesson-check.mjs\"",
-            "timeout": 30
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/fact-check.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" fact-check.mjs",
             "timeout": 10
           }
         ]
@@ -90,12 +95,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/skill-nudge.mjs\"",
-            "timeout": 10
-          },
-          {
-            "type": "command",
-            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/dash-check.mjs\"",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/run.mjs\" dash-check.mjs",
             "timeout": 10
           }
         ]

@@ -45,6 +45,7 @@ function bullets(text) {
 }
 let text = fs.readFileSync(shared, 'utf8');
 const have = new Set(bullets(text).map(b => b.key));
+try { for (const b of bullets(fs.readFileSync('.claude/lessons/shared-facts.md', 'utf8'))) have.add(b.key); } catch {}
 const add = [];
 for (const pair of pairs) {
   const i = pair.indexOf('='); const repo = pair.slice(0, i);
@@ -79,7 +80,8 @@ body=$work/body.md
 {
   echo "Lessons the repos marked as shared (\"## Shared\" in their \`notes/lessons.md\`), added to \`$shared\`."
   echo "Opened by the lesson collector. Before merging, move each line from \"New from the repos\" into its section"
-  echo "(or edit it here); merging starts the sync, which brings the file to every repo."
+  echo "(or edit it here); a narrow fact (one tool, one PC, one limit) goes to \`.claude/lessons/shared-facts.md\`"
+  echo "instead. Merging starts the sync, which brings the files to every repo."
   echo
   echo "## New lessons"
   echo "$added"

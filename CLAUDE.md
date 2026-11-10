@@ -25,7 +25,9 @@ whose first language is not English):
 ## Before saying a change is done
 
 - `bash scripts/check.sh` prints no FAIL (CI runs the same on every pull request).
-- A hook change: start a new cloud session on dev-test; the first reply must open with the brief.
+- A hook change: start a new cloud session on dev-test; the first reply must open with the brief. Do this before
+  the merge to `main`: the sync carries a broken hook to every repo (README.md, "When a workflow update breaks the
+  sessions").
 - A change to what is synced (a new file, a removed one): run `bash scripts/sync.sh` against a scratch clone of a
   project repo and read the result.
 - A change that reaches the project repos (anything under `.claude/` or `cloud/`): one line in `CHANGES.md`, starting
@@ -43,7 +45,9 @@ scheduled task, anything in the project repos.
   is still not merged.
 - `.claude/ground-truth.conf` and `.claude/settings.json` are this repo's own; the sync never copies them as they are
   (README.md, "How the sync works").
-- Rulings on the workflow itself are in README.md, "Rules of this setup"; `questions.md` §2 points there.
+- Rulings on the workflow itself are in `questions.md` §2, as in every repo.
+- The freeze (2026-11-10): no new hook or skill until the 3 project repos are current and checked (#44); after it,
+  one in means one out. `scripts/check.sh` holds the numbers; raising one needs Balázs's OK in the chat.
 
 ## Shared rules
 

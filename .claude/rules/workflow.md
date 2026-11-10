@@ -23,30 +23,25 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
   an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.
 - **Issues** are the open work (`BACKLOG.md` only links there; rulings stay in `questions.md`). Each has one `Type:`
-  label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress, Blocked, Review, Done).
-  Ready means the user approved it; any other open status is for the user to look at, or for later. Only the user
-  moves an issue to Ready or Done, on GitHub (Claude gives the link), and closes it, unless the user's own message
-  names it by number ("close #12"). Claude opens issues in Backlog and may move only these
+  label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress). Ready means the user
+  approved it. Only the user moves an issue to Ready, on GitHub (Claude gives the link), and closes it, unless the
+  user's own message names it by number ("close #12"). Claude opens issues in Backlog and may move only these
   (`.claude/hooks/issue-guard.mjs` blocks the rest, even when asked in the chat):
-  - Ready → In progress; Backlog → In progress when the user hands it out in the chat (the chat is the approval);
-  - any → Blocked, after posting the question on the issue (never guess);
-  - any → Backlog when on hold: a comment says what it waits for, the title starts with ⏸️ and names the trigger;
-  - In progress → Review, only with an open pull request that says "Closes #<n>" (merging it closes the issue), or
-    in building mode "Part of #<n>" (the issue stays open until the user has tested it and says to close it).
-- **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues and Blocked
-  ones the user answered; every question goes on the issue; a run never merges and never turns on auto-merge.
+  - Ready → In progress; Backlog → In progress when the user hands it out in the chat (the chat is the approval).
+    It stays In progress until its pull request ("Closes #<n>") is merged, which closes it;
+  - any → Backlog with a comment that says why: a question for the user (never guess; the user answers and sets
+    it back to Ready), or on hold (the title starts with ⏸️ and names the trigger).
+- **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues; every
+  question goes on the issue; a run never merges and never turns on auto-merge.
 - **Pull requests:** before opening one, run `/code-review` on the diff against `main` (`.claude/hooks/review-guard.mjs`
   blocks it otherwise; not needed when only `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
   after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
-  checks and review comments until it is merged or closed. A review on a pull request always goes through `/verify`.
+  checks and review comments until it is merged or closed.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
   its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
-  it once the checks pass if auto-merge cannot be turned on. `MERGE_MODE` in `.claude/ground-truth.conf` (the brief
-  shows it) decides which pull requests:
-  - `building` (before v1.0, nobody uses `main`): every one; it says "Part of #<n>", not "Closes #<n>", and one
-    round's fixes go in one pull request. Moving to v1.0 (`released`) is the user's call in the chat.
-  - `released` (the default when the key is missing): only a two-way door (`/pr-body`, "Merge danger"; when unsure,
-    it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for the user.
+  it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Merge danger"; when
+  unsure, it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for
+  the user.
 - All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.
 - A second branch only when parallel work really needs it (the user asks, or a round must not mix with the work
   branch), named `WORK_BRANCH-<topic>` with 1 to 4 lowercase words joined by hyphens (`app-test-leave-totals` for
@@ -64,11 +59,12 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `.claude/hooks/lesson-check.mjs` asks for both after a reply.
 - **Corrected twice becomes a hook:** the first correction goes under "Hook candidates" in `notes/lessons.md`; at
   the second, propose a hook that blocks it, with a recommendation (`/never-again`). Prose alone is not enough.
-- **Time estimates are measured, not felt:** `.claude/hooks/round-timer.mjs` writes each reply that made a code commit
-  to `notes/rounds.md` and has Claude commit it; the brief shows the latest. Size Claude's work from the closest
-  round there, never by feel (feel ran 4 to 6 times too high), and give the user's part separately.
-- **Use the skill that fits** (`.claude/skills/CHEATSHEET.md`) even when not called, and say so in one line ("Used
-  `/plain` for this"). `.claude/hooks/skill-nudge.mjs` names the likely one on every message.
+- **Time estimates:** a round of Claude's own work (change, checks, commit) takes 1 to 15 min, measured over 18
+  rounds; feel ran 4 to 6 times too high. Say a time in that range, and give the user's part separately.
+- **Use the skill that fits** even when not called, and say so in one line ("Used `/plain` for this"). A review on
+  a pull request always goes through `/verify`.
+- **Off switch:** when the session start says WORKFLOW OFF (the user created `.claude/workflow-off` on GitHub), no
+  hook runs: say so first, and keep to these rules by hand. Claude never creates that file.
 - **Crew rounds:** `/crew` holds roles, models and steps; at start, read an open round's status in `notes/crew/`.
 - **The setup comes from github.com/furythestunner/workflows** (`.claude/workflow-version` names the commit).
   Project values go only in `.claude/ground-truth.conf`, never in the scripts.

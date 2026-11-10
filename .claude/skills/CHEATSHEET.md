@@ -1,7 +1,7 @@
 # Skills cheat sheet
 
-The one list of what is here and when to use it. `session-start.sh` prints it at every start and the brief shows it;
-update it in the same commit when a skill is added, renamed or changes what it is for.
+The one list of what is here and when to use it, for you. Claude Code shows Claude the skills by itself, so no hook
+prints this file. Update it in the same commit when a skill is added, renamed or changes what it is for.
 
 ## Skills (type the command)
 
@@ -39,21 +39,20 @@ update it in the same commit when a skill is added, renamed or changes what it i
 ## Hooks (run by themselves)
 
 - `session-start.sh`: at every start, moves a cloud session to the work branch, runs the ground truth and loads the
-  handoff and this list.
+  handoff.
+- `run.mjs`: every hook starts through it. It holds the off switch (you create the file `.claude/workflow-off` on
+  GitHub when a hook update breaks the sessions: then no hook runs) and counts how often each hook fires and each
+  skill is used, in `notes/usage.md`.
 - `cloud/setup-script.sh`: pasted once into the cloud environment's Setup script, so a session with several repos
-  also opens with the brief (one per repo, this list once).
+  also opens with the brief (one per repo).
 - `handoff-check.sh`: after every reply, sends Claude back once to update the handoff: after pushed commits, after
   4 of your messages (only if something changed), and when the conversation passes 300k tokens (then it tells you
   to start a new session). So you never need to type `/handoff` before closing a session.
 - `decision-check.mjs`: after every reply, asks Claude to record a decision you made that no tracker holds yet.
-- `skill-nudge.mjs`: on every message you send, names the skill that fits (English and Hungarian phrases), so
-  Claude uses it without you typing it. A review on a pull request always goes through `/verify`.
-- `round-timer.mjs`: after every reply that made a commit, writes how long it took to `notes/rounds.md` and has
-  Claude commit it; the brief shows the latest, so time estimates come from measured rounds, not from feel.
 - `lesson-check.mjs`: after a reply that added a lesson, has Claude sort it: only this project, or shared (it then
   reaches every repo through the master copy, `.claude/rules/shared-lessons.md`).
-- `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or Done or closing it;
-  only you do that, on GitHub. Back to Backlog or Blocked is allowed. `labels.sh` creates the issue labels.
+- `issue-guard.mjs`: before every GitHub action, stops Claude from moving an issue to Ready or closing it;
+  only you do that, on GitHub. Back to Backlog is allowed. `labels.sh` creates the issue labels.
 - `branch-guard.mjs`: before every git push or new branch, blocks any branch name other than the work branch,
   `<work branch>-<topic>` or `workflow-sync`.
 - `push-check.mjs`: before every git push, runs the repo's checks (`CHECK` in `ground-truth.conf`); a failure stops it.

@@ -4,7 +4,8 @@
 //    master copy collects it (scripts/collect-lessons.sh); in the master copy itself it goes straight into
 //    .claude/rules/shared-lessons.md. A nudge: Claude decides, and stops without text when it is sorted.
 // 2. When a lesson in that Shared section is already in .claude/rules/shared-lessons.md (it arrived with the sync),
-//    Claude is sent back to delete it from notes/lessons.md, so it is not loaded twice.
+//    Claude is sent back to delete it from notes/lessons.md, so it is not loaded twice. The narrow facts file
+//    (.claude/lessons/shared-facts.md) counts as arrived too.
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -43,7 +44,8 @@ const short = t => (t.length > 90 ? t.slice(0, 87) + '...' : t);
 const block = reason => { console.log(JSON.stringify({ decision: 'block', reason })); process.exit(0); };
 
 const lessons = read(LESSONS);
-const sharedKeys = new Set(bullets(read(SHARED)).map(b => b.key));
+const FACTS = '.claude/lessons/shared-facts.md';  // narrow shared facts, read only when needed
+const sharedKeys = new Set(bullets(read(SHARED) + '\n' + read(FACTS)).map(b => b.key));
 
 // 2. Shared lessons that already arrived with the sync.
 const arrived = bullets(lessons).filter(b => SHARED_HEADING.test(b.heading) && sharedKeys.has(b.key));
