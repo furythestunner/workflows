@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-19 (issues #38, #66, #67, #68 built in pull request #71, auto-merge on; #44 waits for your brief
-check below; #70 opened in Backlog)
+Updated: 2026-11-19 (issues #38, #66, #67, #68 merged with pull request #71; #44 waits for your brief check below;
+#70 opened in Backlog)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -34,5 +34,3 @@ check below; #70 opened in Backlog)
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
-- Issues #38, #66, #67, #68 (`dev-test`, 2026-11-19): pull request #71, auto-merge on; the merge closes them. If
-  it is still open, read its failing check and fix it.
