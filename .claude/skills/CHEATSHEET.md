@@ -15,7 +15,7 @@ prints this file. Update it in the same commit when a skill is added, renamed or
 - `/questionnaire`: turns questions only someone else can answer (`questions.md` §1) into a short document for that
   person. Use it when you are blocked on a client, owner or colleague.
 - `/wait-what`: re-explains Claude's last message in plain words, with the missing context. Use it whenever an
-  answer did not land.
+  answer did not land. Still unclear the second time: Claude shows it as a diagram or a small web page.
 - `/pr-body`: the shape of a pull request description: what changes, evidence, merge danger. Used when a pull request
   is opened; type it to ask how risky a merge is.
 - `/diagnosing-bugs`: a bug loop that first builds a check that fails on the bug, then hypotheses, fix and proof. Use

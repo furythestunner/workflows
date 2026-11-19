@@ -17,6 +17,9 @@ The last message did not land. Re-pitch it; do not repeat it.
    explain it in a few words.
 3. **Say what it means for the user:** what changes, what they need to do (if anything), what happens if they don't.
 4. **If there was a question,** ask it again in one line, with your recommendation.
+5. **Still not clear the second time** (the user says so again about the same thing): stop adding text. Show it as
+   a picture: a diagram, or a small web page (an Artifact) when it has several parts or steps. Say in one line
+   what the picture shows. It is for understanding only: it never goes into the repo.
 
 Answer in the user's language. Keep it shorter than the message that failed. When the earlier message was wrong
 rather than unclear, say so plainly and correct it.

@@ -1,4 +1,27 @@
 {
+  "permissions": {
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Read(!.env.example)",
+      "Read(!.env.sample)",
+      "Read(!.env.template)",
+      "Read(*.pem)",
+      "Read(*.key)",
+      "Read(*.pfx)",
+      "Read(*.p12)",
+      "Read(credentials.json)",
+      "Read(secrets.json)",
+      "Read(secrets.yaml)",
+      "Read(secrets.yml)",
+      "Read(~/.ssh/**)",
+      "Bash(git push *--force*)",
+      "Bash(git push -f*)",
+      "Bash(git push * -f*)",
+      "Bash(git reset *--hard*)",
+      "Bash(git clean *)"
+    ]
+  },
   "hooks": {
     "PreToolUse": [
       {

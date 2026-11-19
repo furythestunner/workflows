@@ -40,9 +40,3 @@ scheduled task, anything in the project repos.
 - Rulings on the workflow itself are in `questions.md` §2, as in every repo.
 - The freeze (2026-11-10): no new hook or skill until the 3 project repos are current and checked (#44); after it,
   one in means one out. `scripts/check.sh` holds the numbers; raising one needs Balázs's OK in the chat.
-
-## Shared rules
-
-The session and tracker rules every repo follows are in `.claude/rules/workflow.md` (Claude Code loads it by itself).
-They are the same file in every repo: change them there, and the sync pull request carries the change to the project
-repos.

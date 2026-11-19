@@ -67,9 +67,23 @@ tmp=$(mktemp -d)
 if git init -q "$tmp" && bash scripts/sync.sh "$tmp" >"$err" 2>&1 &&
    [ -f "$tmp/.claude/rules/workflow.md" ] && [ -s "$tmp/.claude/workflow-manifest" ] &&
    [ -f "$tmp/.claude/hooks/run.mjs" ] && [ -f "$tmp/.claude/lessons/shared-facts.md" ] &&
-   node -e 'const s=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); if(!s.hooks||!s.hooks.SessionStart) process.exit(1)' "$tmp/.claude/settings.json"
+   node -e 'const s=JSON.parse(require("fs").readFileSync(process.argv[1],"utf8")); if(!s.hooks||!s.hooks.SessionStart||!s.permissions?.deny?.length) process.exit(1)' "$tmp/.claude/settings.json"
 then ok "scripts/sync.sh into an empty repo"
 else bad "scripts/sync.sh into an empty repo: $(head -3 "$err")"; fi
+rm -rf "$tmp"
+
+# 7a. Deny rules: the master copy's come first, the project's own stay, one the master copy dropped goes.
+tmp=$(mktemp -d)
+printf '{"permissions":{"deny":["Bash(new *)","Bash(both *)"]}}\n' >"$tmp/master.json"
+printf '{"permissions":{"allow":["Bash(ls)"],"deny":["Bash(own *)","Bash(old *)","Bash(both *)"]}}\n' >"$tmp/proj.json"
+if OLD_MASTER='{"permissions":{"deny":["Bash(old *)"]}}' node scripts/sync-settings.mjs "$tmp/master.json" "$tmp/proj.json" 2>"$err" &&
+   node -e '
+     const p = JSON.parse(require("fs").readFileSync(process.argv[1], "utf8")).permissions;
+     const want = ["Bash(new *)", "Bash(both *)", "Bash(own *)"];
+     if (JSON.stringify(p.deny) !== JSON.stringify(want) || p.allow[0] !== "Bash(ls)") {
+       console.error("got " + JSON.stringify(p)); process.exit(1); }' "$tmp/proj.json" 2>"$err"
+then ok "scripts/sync-settings.mjs merges deny rules"
+else bad "scripts/sync-settings.mjs deny rules: $(head -3 "$err")"; fi
 rm -rf "$tmp"
 
 # 7b. The sync pull request's plain-words part: CHANGES.md lines added since a commit, grouped by their start.

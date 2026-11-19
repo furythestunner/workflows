@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-19 (simple language kept for every repo; issues #66, #67, #68 opened and #38 rewritten, all Backlog)
+Updated: 2026-11-19 (issues #38, #66, #67, #68 built in one pull request; #44 waits for your brief check below)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -33,5 +33,4 @@ Updated: 2026-11-19 (simple language kept for every repo; issues #66, #67, #68 o
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
-- Simple language for every repo (`dev-test`, 2026-11-19): in a pull request to `main` until merged; the sync
-  then brings it to the project repos.
+- Issues #38, #66, #67, #68 (`dev-test`, 2026-11-19): in a pull request to `main` until merged; it closes them.
