@@ -66,6 +66,6 @@ console.log(JSON.stringify({
     permissionDecision: 'deny',
     permissionDecisionReason: 'Review guard: no /code-review since the last pull request (or the session start). Run it on the diff against main ' +
       '(the code-review skill), fix what it finds, and give each finding left as is a line in the pull request ' +
-      'saying why (.claude/rules/workflow.md, "Every pull request gets a review and a watcher"). Then open it again.',
+      'saying why (.claude/rules/workflow.md, "Sessions and trackers", item "Pull requests"). Then open it again.',
   },
 }));

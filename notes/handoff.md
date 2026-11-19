@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-19 (issues #38, #66, #67, #68 merged with pull request #71; #44 waits for your brief check below;
-#70 opened in Backlog)
+Updated: 2026-11-19 (#70 fixed on dev-test: the review guard message names the right rule; its pull request
+merges by itself once the brief test passes and the checks are green)
 
 ## Next (Claude's own work, nothing for you)
 
