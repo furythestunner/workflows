@@ -4,7 +4,8 @@
 # What it does in the project checkout (README.md, "How the sync works"):
 #   - copies every committed file under .claude/ here, except this repo's own ground-truth.conf and settings.json;
 #   - deletes files an earlier sync brought that are no longer here (the old .claude/workflow-manifest lists them);
-#   - in .claude/settings.json, swaps the hooks that run synced hook files for the current ones and keeps the rest;
+#   - in .claude/settings.json, swaps the hooks that run synced hook files for the current ones, puts the master
+#     copy's deny rules first, and keeps the rest;
 #   - writes .claude/workflow-manifest and .claude/workflow-version.
 # It never touches CLAUDE.md, ground-truth.conf, notes/ or the project's own skills. Anything that needs a person
 # (a new config key, the old rules block still in CLAUDE.md) goes into the notes file for the pull request.
@@ -50,8 +51,13 @@ for f in "${files[@]}"; do
   cp "$f" "$target/$f"
 done
 
-# 3. settings.json: keep the project's keys and its own hooks, replace the hooks that run synced files.
-SYNCED=$(printf '%s\n' "${files[@]}" "${previous[@]}") node "$master/scripts/sync-settings.mjs" \
+# 3. settings.json: keep the project's keys, its own hooks and deny rules; replace the hooks that run synced files
+#    and the deny rules the master copy had at the last sync.
+old_master=
+if [ -n "$old" ] && git cat-file -e "$old:.claude/settings.json" 2>/dev/null; then
+  old_master=$(git show "$old:.claude/settings.json")
+fi
+SYNCED=$(printf '%s\n' "${files[@]}" "${previous[@]}") OLD_MASTER=$old_master node "$master/scripts/sync-settings.mjs" \
   "$master/.claude/settings.json" "$target/.claude/settings.json"
 
 # 4. Manifest and version.

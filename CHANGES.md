@@ -9,6 +9,10 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-19 New: Claude Code refuses some actions that cannot be undone: reading secret files (`.env`, keys), force push, `git reset --hard` and `git clean`. Nobody can approve them in a session.
+- 2026-11-19 New: When an explanation still does not land the second time, Claude shows it as a diagram or a small web page.
+- 2026-11-19 New: A shorter sentence keeps every condition and every "may", so a short answer never turns a guess into a fact.
+- 2026-11-19 Fixed: The rules every session loads are a little shorter. Lines that only repeated what a hook says when it fires are gone.
 - 2026-11-19 New: Claude writes in simple language in every repo: short sentences of about 20 words, active voice, one name per thing, common words. It was a trial in the workflows repo since 10 Nov.
 - 2026-11-19 New: Asked for a YouTube transcript in a cloud session, Claude says at once that YouTube blocks it. It still finds the title and looks for other sources.
 - 2026-11-10 For you: Issues have three statuses now: Backlog, Ready, In progress. A question from Claude comes as a comment and the issue goes back to Backlog: answer it, then set the issue to Ready again. An issue stays In progress until its pull request is merged. Blocked, Review and Done are gone.

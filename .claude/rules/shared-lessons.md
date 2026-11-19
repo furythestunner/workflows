@@ -1,11 +1,8 @@
 # Shared lessons (every repo)
 
-Lessons that hold in every repo: tools, PCs, Claude Code, how Claude works with the user. Claude Code loads this
-file by itself. It comes from the workflow master copy with the sync: do not edit it in a project repo. A new shared
-lesson goes under "## Shared (goes to every repo)" in the project's `notes/lessons.md`; a session in the master
-copy writes it here by hand. Project-only lessons stay in `notes/lessons.md`. Only everyday rules belong
-here; a narrow fact (one tool, one PC, one limit) goes to `.claude/lessons/shared-facts.md`. Stale-able facts end
-in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
+Everyday lessons for every repo: tools, PCs, Claude Code, working with the user. From the master copy: do not edit
+it in a project repo. Where a new lesson goes: `.claude/rules/workflow.md`, "Project or shared". A narrow fact (one
+tool, one PC, one limit) goes to `.claude/lessons/shared-facts.md`.
 
 ## Claude Code and sessions
 
@@ -31,10 +28,10 @@ in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
   - One name per thing: once it is "the sync pull request", it stays that in the whole reply.
   - Common words: "use", not "leverage"; "important", not "load-bearing" or "critical path".
   - Say what is happening, not what you will do: "Checking the tests", not "Now I'll run the tests to check".
-- Steps the user has to do go in the chat, written out click by click, never "see README" or another file: opening
-  the file is a hassle and the steps get missed (Balázs, 2026-10-27, workflows; a hook candidate, first correction).
-  Replaced 2026-11-02: the brief repeats open ones as one line each, full steps only when new or asked for; a long
-  repeated list buried the answer.
+  - Shorter must not change the claim: keep every condition, number and "may". "It may have failed" stays "may
+    have failed", never "it failed".
+- Steps the user has to do: the rule is in `.claude/rules/workflow.md`. Why: in another file the steps get missed,
+  and a long repeated list buried the answer (Balázs, 2026-10-27 and 2026-11-02; a hook candidate, first correction).
 - The handoff's Waiting list holds only steps the user clicks or checks himself. "Tell X" (a colleague, the owner)
   goes once into the chat message after a merge, never into Waiting: 20 such small items piled up there and the
   user did not know why (Balázs, 2026-11-04, intranet; first correction, a hook candidate).

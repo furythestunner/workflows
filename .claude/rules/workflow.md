@@ -9,14 +9,11 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 
 ## Sessions and trackers
 
-- **Session start (automatic, hooks in `.claude/settings.json`):** `.claude/hooks/session-start.sh` moves a cloud
-  session to the work branch, runs `.claude/skills/session-start/ground-truth.sh` (configured in
-  `.claude/ground-truth.conf`) and loads the handoff. The first reply opens with the brief (`/session-start` steps 2
-  to 5). The handoff is a claim, the script is the fact: report a contradiction first.
+- **Session start:** the session-start hook prints the ground truth and the handoff. The first reply opens with the
+  brief (`/session-start` steps 2 to 5). The handoff is a claim, the script is the fact: report a contradiction first.
 - **Handoff:** `notes/handoff.md` holds only Next (Claude's own work, in order, never a 🟡), Waiting (the user's
   steps, each 🟡) and Unfinished (on one disk only, or not merged). No diary. It goes in the same commit as the work
-  that changes it; `.claude/hooks/handoff-check.sh` sends Claude back when it is behind (pushed commits, 4 messages,
-  the context past 300k: then a new session). `/handoff` and that check push the docs (`notes/`, trackers) unasked.
+  that changes it. `/handoff` and `.claude/hooks/handoff-check.sh` push the docs (`notes/`, trackers) unasked.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
@@ -33,8 +30,8 @@ and propose a change in the master copy or a fix to CLAUDE.md.
     it back to Ready), or on hold (the title starts with ⏸️ and names the trigger).
 - **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues; every
   question goes on the issue; a run never merges and never turns on auto-merge.
-- **Pull requests:** before opening one, run `/code-review` on the diff against `main` (`.claude/hooks/review-guard.mjs`
-  blocks it otherwise; not needed when only `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
+- **Pull requests:** before opening one, run `/code-review` on the diff against `main` (not needed when only
+  `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
   after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
   checks and review comments until it is merged or closed.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
@@ -44,10 +41,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   the user.
 - All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.
 - A second branch only when parallel work really needs it (the user asks, or a round must not mix with the work
-  branch), named `WORK_BRANCH-<topic>` with 1 to 4 lowercase words joined by hyphens (`app-test-leave-totals` for
-  `app-test`). The only other name is the sync's `workflow-sync`. Say in the chat when one is made, list it in the
-  handoff's Unfinished until merged, then ask the user to click "Delete branch" on the merged pull request (a cloud
-  session cannot). `.claude/hooks/branch-guard.mjs` blocks creating or pushing any other name.
+  branch), named `WORK_BRANCH-<topic>` (1 to 4 lowercase words; `.claude/hooks/branch-guard.mjs` blocks other
+  names). Say in the chat when one is made, list it in the handoff's Unfinished until merged, then ask the user to
+  click "Delete branch" on the merged pull request (a cloud session cannot).
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, ending in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default, 12 at
   most. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over one Claude
