@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-19 (#70 fixed on dev-test: the review guard message names the right rule; its pull request
-merges by itself once the brief test passes and the checks are green)
+Updated: 2026-11-19 (#70 merged with pull request #72: the review guard message names the right rule; brief test
+on dev-test passed; the sync carries it to the project repos)
 
 ## Next (Claude's own work, nothing for you)
 
