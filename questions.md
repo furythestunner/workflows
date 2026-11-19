@@ -99,6 +99,10 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
     (`notes/usage.md`), both in `.claude/hooks/run.mjs`. Tests for `ground-truth.sh` and `session-start.sh`.
   - Trials with an end date: the fact check and the simple-language lines, both judged around 2026-11-17 (the
     fact check by its count in `notes/usage.md` and by how many of its send-backs were false alarms).
+    Simple language decided 2026-11-19 (picker answer): kept, and moved from this repo's CLAUDE.md to
+    `.claude/rules/shared-lessons.md`, so the sync brings it to every repo. Backing seen that day: Anthropic's
+    talk "Rethinking Claude Code Best Practices" and Karpathy's habit of asking for ASD-STE100. The fact check
+    is still open: it never fired in this repo, so its counts come from the project repos.
 - The freeze (Balázs, 2026-11-10): no new hook and no new skill until intranet, KolLab.extension and website are
   on the current workflow and Balázs has checked the brief in each (#44). `scripts/check.sh` enforces the count
   (12 hook files, 13 skills). After the freeze the count stays: a new hook or skill means an old one goes, and raising

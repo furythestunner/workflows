@@ -16,13 +16,21 @@ in `(check by YYYY-MM-DD)`; the brief lists due ones from both files first.
 - A Claude subscription (claude.ai, Claude Code) does not cover the Claude API: a tool that calls the API needs a
   paid API key, billed per use. Say this before planning any feature that calls Claude from a script. (check by 2027-01-22)
 - Narrow facts are in `.claude/lessons/shared-facts.md`, which does not load by itself. Read it before work on:
-  what a cloud session can reach (repos, plugins, uploaded skills, claude.ai Projects), scheduled tasks,
+  what a cloud session can reach (repos, plugins, uploaded skills, claude.ai Projects, YouTube), scheduled tasks,
   GitHub rulesets and auto-merge on the free plan, SharePoint uploads, web pages read by a subagent, fast
   mode, file size advice, and the user's Windows PCs (Git Bash paths, heredocs, PowerShell policy, Python,
   screenshots of a page, the desktop app's browser pane).
 
 ## Working with the user
 
+- Simple language in every reply and every text for the user, after ASD-STE100 (Simplified Technical English,
+  made for readers whose first language is not English). A trial in the master copy from 2026-11-10, kept for
+  every repo by Balázs on 2026-11-19:
+  - Short sentences: at most about 20 words, one idea each. A step is one sentence with one action.
+  - Active voice, present tense: "The hook stops the push", not "The push will be stopped by the hook".
+  - One name per thing: once it is "the sync pull request", it stays that in the whole reply.
+  - Common words: "use", not "leverage"; "important", not "load-bearing" or "critical path".
+  - Say what is happening, not what you will do: "Checking the tests", not "Now I'll run the tests to check".
 - Steps the user has to do go in the chat, written out click by click, never "see README" or another file: opening
   the file is a hassle and the steps get missed (Balázs, 2026-10-27, workflows; a hook candidate, first correction).
   Replaced 2026-11-02: the brief repeats open ones as one line each, full steps only when new or asked for; a long

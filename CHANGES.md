@@ -9,6 +9,8 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-19 New: Claude writes in simple language in every repo: short sentences of about 20 words, active voice, one name per thing, common words. It was a trial in the workflows repo since 10 Nov.
+- 2026-11-19 New: Asked for a YouTube transcript in a cloud session, Claude says at once that YouTube blocks it. It still finds the title and looks for other sources.
 - 2026-11-10 For you: Issues have three statuses now: Backlog, Ready, In progress. A question from Claude comes as a comment and the issue goes back to Backlog: answer it, then set the issue to Ready again. An issue stays In progress until its pull request is merged. Blocked, Review and Done are gone.
 - 2026-11-10 For you: An off switch. If a workflow update ever breaks the sessions of a repo: on GitHub, in that repo's work branch, Add file, Create new file, name it `.claude/workflow-off`, Commit changes. A new session then runs without the hooks and says so. Delete the file to turn them back on.
 - 2026-11-10 For you: If you use sessions with several repos: paste `cloud/setup-script.sh` into the cloud environment's Setup script once more, so the off switch works there too.
