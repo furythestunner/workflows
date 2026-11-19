@@ -6,6 +6,7 @@ cut; a hook or skill with no row never fired. Do not edit by hand.
 
 | What | Times | First | Last |
 |---|---|---|---|
+| `branch-guard` | 1 | 2026-11-19 | 2026-11-19 |
 | `handoff-check` | 1 | 2026-11-10 | 2026-11-10 |
 | `review-guard` | 1 | 2026-11-10 | 2026-11-10 |
-| `skill code-review` | 1 | 2026-11-10 | 2026-11-10 |
+| `skill code-review` | 3 | 2026-11-10 | 2026-11-19 |

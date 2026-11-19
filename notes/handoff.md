@@ -1,6 +1,7 @@
 # Handoff
 
-Updated: 2026-11-19 (issues #38, #66, #67, #68 built in one pull request; #44 waits for your brief check below)
+Updated: 2026-11-19 (#70 fixed on dev-test: the review guard message names the right rule; its pull request
+merges by itself once the brief test passes and the checks are green)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -33,4 +34,3 @@ Updated: 2026-11-19 (issues #38, #66, #67, #68 built in one pull request; #44 wa
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
-- Issues #38, #66, #67, #68 (`dev-test`, 2026-11-19): in a pull request to `main` until merged; it closes them.
