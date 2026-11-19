@@ -1,14 +1,14 @@
 # Handoff
 
-Updated: 2026-11-10 (README cleanup merged, pull request #64; the lists below did not change)
+Updated: 2026-11-19 (simple language kept for every repo; issues #66, #67, #68 opened and #38 rewritten, all Backlog)
 
 ## Next (Claude's own work, nothing for you)
 
 1. Shared lessons are collected by hand now: when Balázs says "collect the shared lessons", read the "## Shared"
    section of each project repo's `notes/lessons.md` and write them into the two shared files here.
-2. Around 2026-11-17, ask Balázs about the two trials. Simple language (this repo's CLAUDE.md): yes, move the
-   lines to `.claude/rules/workflow.md` (76 of 80 lines); no, remove them. Fact check (`fact-check.mjs`): read its
-   count in `notes/usage.md` and how many send-backs were false alarms; keep or cut.
+2. Fact check trial (`fact-check.mjs`, due since 2026-11-17; simple language was decided 2026-11-19): it never
+   fired in this repo. Read its count in each project repo's `notes/usage.md` (attach them read-only), then ask
+   Balázs: keep or cut.
 3. Old status labels: in a session where `gh` is logged in (the PC), run
    `bash .claude/skills/session-start/labels.sh` in this repo; it moves issues out of Blocked and Review and
    deletes those labels. In the project repos only after asking Balázs.
@@ -33,3 +33,5 @@ Updated: 2026-11-10 (README cleanup merged, pull request #64; the lists below di
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
+- Simple language for every repo (`dev-test`, 2026-11-19): in a pull request to `main` until merged; the sync
+  then brings it to the project repos.

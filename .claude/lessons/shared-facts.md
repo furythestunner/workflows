@@ -37,6 +37,12 @@ comes from the workflow master copy with the sync: do not edit it in a project r
   Code's own change, not `/crew` and not this workflow. (check by 2027-02-05)
 - Fast mode (`/fast`) is paid from usage credits only, never from the subscription's included usage, and in a
   cloud session it lasts that session only (Claude Code docs, fast mode page) (check by 2027-02-02)
+- A cloud session cannot download YouTube transcripts, even with youtube.com allowed in the network settings:
+  YouTube answers "Sign in to confirm you're not a bot" or 429 (yt-dlp and youtube-transcript-api, 2026-11-19).
+  The title still comes from `https://www.youtube.com/oembed?format=json&url=<video link>`. A conference talk may
+  have a transcript on the conference's own site; otherwise the user copies it ("...more", "Show transcript").
+  In the same session, web fetch answered "ENOTFOUND" for pages that `curl` in Bash read fine: try `curl` before
+  asking the user to allow a host. (check by 2027-02-19)
 
 ## The user's Windows PCs
 
