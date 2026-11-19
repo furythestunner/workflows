@@ -13,7 +13,8 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   brief (`/session-start` steps 2 to 5). The handoff is a claim, the script is the fact: report a contradiction first.
 - **Handoff:** `notes/handoff.md` holds only Next (Claude's own work, in order, never a 🟡), Waiting (the user's
   steps, each 🟡) and Unfinished (on one disk only, or not merged). No diary. It goes in the same commit as the work
-  that changes it. `/handoff` and `.claude/hooks/handoff-check.sh` push the docs (`notes/`, trackers) unasked.
+  that changes it. `/handoff` and `.claude/hooks/handoff-check.sh` push the docs (`notes/`, trackers) unasked. At
+  about 300k context: bring the handoff up to date, then a new session.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new

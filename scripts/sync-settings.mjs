@@ -5,7 +5,8 @@
 // Keeps every project key and every project hook; a hook whose command runs a synced file is replaced by the
 // master copy's hooks, which come first in each event.
 // permissions.deny: the master copy's rules come first, then the project's own. A rule the master copy had at the
-// last sync (OLD_MASTER) but has no more goes too; every other project rule stays.
+// last sync (OLD_MASTER) but has no more goes too, even when the project had written the same rule itself (the
+// script cannot tell the two apart); every other project rule stays.
 import fs from "node:fs";
 
 const [src, dst] = process.argv.slice(2);
