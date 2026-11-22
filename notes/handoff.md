@@ -45,3 +45,5 @@ still planning")
   mails), ticks matched tasks off and names them in a morning summary; the May 21 TickTick structure stays
   (lists, #health and #wait, the TO-DO board). Open: default list for undated tasks, which senders count as
   proof, summary time and channel, dictation language, repo name. Nothing is built until Balázs says "build".
+  Android phone, budget about €5/month. App comparison (2026-11-22, Balázs not yet convinced about TickTick):
+  https://claude.ai/artifact/YSgMfysifKWzJFaqHoqhC4 ; advice: keep TickTick, Todoist if the test fails.
