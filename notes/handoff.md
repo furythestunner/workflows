@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-22 (todo system planning started in the chat; no build yet, Balázs: "dont build anything yet,
-still planning")
+Updated: 2026-11-22 (todo system: TickTick connector test passed, life-admin repo next; no janitor build yet,
+Balázs: "dont build anything yet, still planning")
 
 ## Next (Claude's own work, nothing for you)
 
@@ -24,7 +24,7 @@ still planning")
   branch to its work branch (`intra-test`, `extension-test`, `website-test`) and send a short question. The reply
   should open with the brief (about 8 lines, your open steps as one 🟡 line each), then a line, then the answer. If
   not, say which repo in the chat. This also ends the freeze (issue #44).
-- 🟡 Run the claude-mods tests on your PC (added 2026-11-02, about 2 min): Start menu, type `Git Bash`, open it,
+- 🟡 Run the claude-mods tests on a PC with Claude Code in the terminal, not DESKTOP-FURY (no `claude` command there, 2026-11-22) (added 2026-11-02, about 2 min): Start menu, type `Git Bash`, open it,
   type `cd /c/GitHub/claude-mods` and Enter, then `claude plugin test mods/cache-clock` and Enter, then
   `claude plugin test mods/skill-picker` and Enter. Paste the last 2 lines of each into the chat.
 - 🟡 Create the life-admin repo (added 2026-11-22, about 3 min): on github.com click "+" (top right), then
