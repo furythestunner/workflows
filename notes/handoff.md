@@ -1,7 +1,7 @@
 # Handoff
 
-Updated: 2026-11-19 (#70 merged with pull request #72: the review guard message names the right rule; brief test
-on dev-test passed; the sync carries it to the project repos)
+Updated: 2026-11-22 (todo system planning started in the chat; no build yet, Balázs: "dont build anything yet,
+still planning")
 
 ## Next (Claude's own work, nothing for you)
 
@@ -27,6 +27,11 @@ on dev-test passed; the sync carries it to the project repos)
 - 🟡 Run the claude-mods tests on your PC (added 2026-11-02, about 2 min): Start menu, type `Git Bash`, open it,
   type `cd /c/GitHub/claude-mods` and Enter, then `claude plugin test mods/cache-clock` and Enter, then
   `claude plugin test mods/skill-picker` and Enter. Paste the last 2 lines of each into the chat.
+- 🟡 TickTick connector test (added 2026-11-22, about 8 min; for the todo system plan below): open TickTick on
+  the PC, go to NOTES > IMPORTANT, copy each login into your password manager, delete them from the note. Then
+  on claude.ai: Settings, Connectors, "Add custom connector", name `TickTick`, URL `https://mcp.ticktick.com`,
+  Add, Connect, sign in to TickTick, Allow. On the phone Claude app say "Add a TickTick task: test task, due
+  tomorrow" and check it shows in TickTick. Paste the result in the chat.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
@@ -34,3 +39,9 @@ on dev-test passed; the sync carries it to the project repos)
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
+- Todo system plan (2026-11-22), only in the chat so far; it gets its own repo, not this one. Decided: TickTick
+  stays (official connector, untested); personal and family only, work stays in M365 Planner; dictate in the
+  phone Claude app, Claude picks the list (dated tasks to EVENTS); a daily run reads Gmail (sent mail and order
+  mails), ticks matched tasks off and names them in a morning summary; the May 21 TickTick structure stays
+  (lists, #health and #wait, the TO-DO board). Open: default list for undated tasks, which senders count as
+  proof, summary time and channel, dictation language, repo name. Nothing is built until Balázs says "build".
