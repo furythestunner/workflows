@@ -1,7 +1,6 @@
 # Handoff
 
-Updated: 2026-11-22 (todo system: TickTick connector test passed, life-admin repo next; no janitor build yet,
-Balázs: "dont build anything yet, still planning")
+Updated: 2026-11-22 (life-admin repo set up and synced; the TickTick janitor plan moved there)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -27,10 +26,6 @@ Balázs: "dont build anything yet, still planning")
 - 🟡 Run the claude-mods tests on a PC with Claude Code in the terminal, not DESKTOP-FURY (no `claude` command there, 2026-11-22) (added 2026-11-02, about 2 min): Start menu, type `Git Bash`, open it,
   type `cd /c/GitHub/claude-mods` and Enter, then `claude plugin test mods/cache-clock` and Enter, then
   `claude plugin test mods/skill-picker` and Enter. Paste the last 2 lines of each into the chat.
-- 🟡 Remove the old TickTick PC connector (added 2026-11-22, about 3 min): in the Claude desktop app, Code, any
-  folder, send: "Remove the user-scope MCP server named ticktick from ~/.claude.json and delete the folder
-  C:\Users\fury\Documents\CLAUDE\CODE\ticktick-mcp." Then on developer.ticktick.com, sign in, open your
-  app list and delete the app you made for it. Keep the claude.ai TickTick connector.
 - 🟡 Try one short `/crew` round, issue #39 (added 2026-10-28, about 10 min): in a project repo with a Ready issue,
   after the sync pull request is merged, type `/crew`, approve the brief, and at the end check that the report has a
   test list with "Claude: ... saw" and "You: ... expect" lines. Then close #39 on GitHub.
@@ -38,25 +33,5 @@ Balázs: "dont build anything yet, still planning")
 ## Unfinished
 
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
-- Todo system plan (2026-11-22), only in the chat so far; it gets its own repo, not this one. Decided: TickTick
-  stays (official connector, untested); personal and family only, work stays in M365 Planner; dictate in the
-  phone Claude app, Claude picks the list (dated tasks to EVENTS); a daily run reads Gmail (sent mail and order
-  mails), ticks matched tasks off and names them in a morning summary; the May 21 TickTick structure stays
-  (lists, #health and #wait, the TO-DO board). Open: default list for undated tasks, which senders count as
-  proof, summary time and channel, dictation language, repo name. Nothing is built until Balázs says "build".
-  Android phone, budget about €5/month. App comparison (2026-11-22, Balázs not yet convinced about TickTick):
-  https://claude.ai/artifact/YSgMfysifKWzJFaqHoqhC4 (now out of date: Todoist was rejected in an earlier chat).
-  From Balázs's pasted briefing (2026-11-22): Claude is the "janitor": you dump notes into the TickTick Inbox
-  (or tell Claude), Claude sorts, removes duplicates, flags stale items; a short digest every day; the first
-  cleanup pass only proposes and waits for OK. Connector: jacepark12/ticktick-mcp is installed on the PC
-  (Claude Code, user scope, no refresh token), never tested live; it cannot serve the phone or a cloud run.
-  Test B passed 2026-11-22: TickTick's own server (mcp.ticktick.com, claude.ai custom connector) can list,
-  read the Inbox ("inbox" alias), create, move, tag and delete; 59 tools, also calendar events; no tool for
-  the trash. Test A not needed (no Claude Code CLI on the PC). The TickTick client secret showed in a
-  screenshot: delete that developer app (Balázs chose to remove the PC connector, 2026-11-22).
-  New repo: furythestunner/life-admin exists; added to sync/repos.txt in pull request #75 (auto-merge on). Next:
-  Round 1 rulings (Balázs, 2026-11-22): after the first approved cleanup the daily run sorts and tags the Inbox
-  alone, deletes and duplicate merges wait for OK; tasks 14+ days overdue: the digest asks once (do, new date,
-  SOMEDAY, delete); digest as a phone push around 07:00. TickTick developer app deleted. Then
-  fill its first sync pull request as README.md
-  "Add it to a repo" says, and move the plan and the decisions into its questions.md and handoff.
+- life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
+  its rulings live there now; continue in a session on that repo.
