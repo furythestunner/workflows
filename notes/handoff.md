@@ -55,5 +55,8 @@ Balázs: "dont build anything yet, still planning")
   the trash. Test A not needed (no Claude Code CLI on the PC). The TickTick client secret showed in a
   screenshot: delete that developer app (Balázs chose to remove the PC connector, 2026-11-22).
   New repo: furythestunner/life-admin exists; added to sync/repos.txt in pull request #75 (auto-merge on). Next:
+  Round 1 rulings (Balázs, 2026-11-22): after the first approved cleanup the daily run sorts and tags the Inbox
+  alone, deletes and duplicate merges wait for OK; tasks 14+ days overdue: the digest asks once (do, new date,
+  SOMEDAY, delete); digest as a phone push around 07:00. TickTick developer app deleted. Then
   fill its first sync pull request as README.md
   "Add it to a repo" says, and move the plan and the decisions into its questions.md and handoff.
