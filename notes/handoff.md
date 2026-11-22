@@ -46,4 +46,10 @@ still planning")
   (lists, #health and #wait, the TO-DO board). Open: default list for undated tasks, which senders count as
   proof, summary time and channel, dictation language, repo name. Nothing is built until Balázs says "build".
   Android phone, budget about €5/month. App comparison (2026-11-22, Balázs not yet convinced about TickTick):
-  https://claude.ai/artifact/YSgMfysifKWzJFaqHoqhC4 ; advice: keep TickTick, Todoist if the test fails.
+  https://claude.ai/artifact/YSgMfysifKWzJFaqHoqhC4 (now out of date: Todoist was rejected in an earlier chat).
+  From Balázs's pasted briefing (2026-11-22): Claude is the "janitor": you dump notes into the TickTick Inbox
+  (or tell Claude), Claude sorts, removes duplicates, flags stale items; a short digest every day; the first
+  cleanup pass only proposes and waits for OK. Connector: jacepark12/ticktick-mcp is installed on the PC
+  (Claude Code, user scope, no refresh token), never tested live; it cannot serve the phone or a cloud run.
+  Next: the same 6-check test on it and on TickTick's own server (mcp.ticktick.com), keep the one that can
+  move and delete. The TickTick client secret showed in a screenshot: make a new one.
