@@ -22,3 +22,9 @@
 Earlier: time estimates (2026-10-26) became `.claude/hooks/estimate-check.mjs`, replaced the same day by
 `.claude/hooks/round-timer.mjs` (the check fired on every time). The timer was cut on 2026-11-10: its 18 measured
 rounds took 1 to 15 min each, which is now a line in `.claude/rules/workflow.md`.
+
+## Shared (goes to every repo)
+
+- DESKTOP-FURY has no Claude Code command-line tool: `claude` is not found in PowerShell or in the MSYS2 UCRT64
+  shell, and `%USERPROFILE%\.local\bin\claude.exe` does not exist. Claude Code runs there only in the desktop app,
+  so steps that type `claude ...` in a terminal fail on that PC (seen 2026-11-22) (check by 2027-02-22)
