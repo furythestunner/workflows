@@ -51,5 +51,7 @@ still planning")
   (or tell Claude), Claude sorts, removes duplicates, flags stale items; a short digest every day; the first
   cleanup pass only proposes and waits for OK. Connector: jacepark12/ticktick-mcp is installed on the PC
   (Claude Code, user scope, no refresh token), never tested live; it cannot serve the phone or a cloud run.
-  Next: the same 6-check test on it and on TickTick's own server (mcp.ticktick.com), keep the one that can
-  move and delete. The TickTick client secret showed in a screenshot: make a new one.
+  Test B passed 2026-11-22: TickTick's own server (mcp.ticktick.com, claude.ai custom connector) can list,
+  read the Inbox ("inbox" alias), create, move, tag and delete; 59 tools, also calendar events; no tool for
+  the trash. Test A not needed (no Claude Code CLI on the PC). The TickTick client secret showed in a
+  screenshot: make a new one, or delete that developer app if the PC connector goes.
