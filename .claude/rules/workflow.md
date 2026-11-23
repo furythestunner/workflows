@@ -37,7 +37,7 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   checks and review comments until it is merged or closed.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
   its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
-  it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Merge danger"; when
+  it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Safe to merge or not"; when
   unsure, it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for
   the user.
 - All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.

@@ -1,8 +1,8 @@
 ---
 name: pr-body
-description: The shape of a pull request description: what changes for the users, evidence that it works, and the merge danger (one-way or two-way door, blast radius). Use whenever you write or update a pull request description, or the user asks how risky a merge is.
+description: The shape of a pull request description: a first line that says whether it is safe to merge, what changes for the users, what the user needs to do, what happens if it is wrong, and the technical checks folded at the bottom. Use whenever you write or update a pull request description, or the user asks how risky a merge is.
 metadata:
-  short: "Pull request description, with how risky the merge is."
+  short: "Pull request description: safe to merge or not, what changes, what you do."
   run-by: claude
 ---
 
@@ -10,43 +10,58 @@ metadata:
 
 Adapted from mattpocock/skills (`pr`, MIT, see `../THIRD-PARTY.md`).
 
-The reader merges it, and may not read code. Write for what people see and do. Skip preambles.
+The reader merges it and does not read code. The first line answers "can I merge this?"; everything above the fold
+is about what people see and do. No preambles, no code words above the fold (no "migration", "door", "blast
+radius", "dry run").
 
 ## Template
 
 ```markdown
-<If the pull request changes the database or needs a manual step after the merge, say so here, first, in bold.>
+✅ **Safe to merge.** <a few words why: "Revert" undoes it; what stays behind after a revert, if anything>
+<or>
+⛔ **Waits for USER_NAME.** <what a revert cannot undo: the database change, the e-mails already sent ...>
 
-## In plain words
-<written with /plain (shape `pr`): what changes for whom, what they will notice, what they need to do>
+<Only if it changes the database or needs a step by hand, in plain words: "Changes the database: adds the task
+'paternity leave'." Never a migration number or file name.>
 
 ## What changes
-- <for whom, on which page or tool, in plain words; one line each>
+<written with /plain (shape `pr`)>
+- <for whom, on which page or tool, what they will notice; one line each>
 
-## Evidence
-- **Before:** <what happened before: screenshot, number, test result>
-  **After:** <what happens now>
+## What you need to do
+- 🟡 <each step click by click: testing on the test branch, a step after the merge>
+<or "Nothing.">
+
+## If something is wrong
+- **Who notices:** <who or what is hit: one page, everyone's numbers, the month-end PDFs, sign-in>
+- **How to undo:** <the "Revert" button on this page; or which backup or restore, and how long it is kept>
+
+<details><summary>Technical checks (for Claude)</summary>
+
+- Before / after: <screenshot, number or test result, before and after>
 - Checks run: <the project's checks from CLAUDE.md, each with its result>
+- Code review: <findings fixed; each finding left as is, with why>
 
-## Merge danger
-**Door:** <one-way or two-way>: <one line why>
-**Blast radius:** <one or two words>: <who or what could break if it is wrong>
-**If it goes wrong:** <how to undo it: revert the pull request, restore the database, re-run an import ...>
+</details>
 
-## How to test
-1. <numbered steps the reader follows on the test branch>
+Closes #<n>
 ```
 
-## Merge danger
+`USER_NAME` is in `.claude/ground-truth.conf`. Keep "Closes #<n>" (or "Part of #<n>") outside the fold, on its own
+last line.
 
-- A **two-way door** can be walked back: revert the pull request and everything is as before (page layout, a new
-  button, a wording change).
-- A **one-way door** cannot be undone by a revert: database changes, data rewritten or deleted, e-mails sent to
-  people, files published, a changed export others already downloaded. Say what the way back is (a backup, a
-  database restore) and how long it stays available.
-- The **blast radius** is who or what is hit if it is wrong: one page, everyone's numbers, the month-end PDFs,
-  billing, sign-in. Think it through before writing "small".
-- If the project merges to publish (the merge is the deploy), say so in the merge danger line.
-- The door decides the merge (`.claude/rules/workflow.md`, Merging): a two-way door merges by itself, a one-way
-  door waits for the user. When unsure, write one-way.
-- A pull request that replaces something an earlier one built says so in one line ("Replaces #<n>'s ...").
+## Safe to merge or not
+
+This decides the first line. Claude's own words for it (never in the description): a two-way or a one-way door.
+
+- **✅ Safe to merge** (two-way door): "Revert" puts everything back as before: page layout, a new button, a wording
+  change, a new list entry nothing else depends on (say that it stays behind).
+- **⛔ Waits for the user** (one-way door): a revert does not undo it: data rewritten or deleted, e-mails sent to
+  people, files published, an export others already downloaded. "How to undo" names the way back (a backup, a
+  database restore) and how long it stays available. When unsure, it waits.
+- **Who notices** needs thought before writing "only one page": whose numbers, which PDFs, billing, sign-in.
+- If the merge publishes (the merge is the deploy), the first line says so: "✅ Safe to merge. Goes live on merge;
+  'Revert' takes it back."
+- The first line decides the merge (`.claude/rules/workflow.md`, Merging): ✅ merges by itself once the checks pass,
+  ⛔ waits for the user.
+- A pull request that replaces something an earlier one built says so under "What changes" ("Replaces #<n>'s ...").

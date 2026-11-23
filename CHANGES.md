@@ -9,6 +9,7 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-23 For you: Pull request descriptions start with "✅ Safe to merge" or "⛔ Waits for you" and why. Then: what changes, what you need to do, and what happens if it is wrong. The test results and review notes are folded at the bottom (one click opens them).
 - 2026-11-19 Fixed: When Claude tries to open a pull request without a review, the message now points to the right rule ("Pull requests" in the session rules). Before, it named a heading that does not exist.
 - 2026-11-19 New: Claude Code refuses the usual commands for some actions that cannot be undone: reading secret files (`.env`, keys), force push, `git reset --hard` and `git clean`. Nobody can approve them in a session. A command written another way can still slip past: a guard against mistakes, not a lock.
 - 2026-11-19 New: When an explanation still does not land the second time, Claude shows it as a diagram or a small web page.

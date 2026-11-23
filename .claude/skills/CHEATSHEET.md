@@ -16,8 +16,9 @@ prints this file. Update it in the same commit when a skill is added, renamed or
   person. Use it when you are blocked on a client, owner or colleague.
 - `/wait-what`: re-explains Claude's last message in plain words, with the missing context. Use it whenever an
   answer did not land. Still unclear the second time: Claude shows it as a diagram or a small web page.
-- `/pr-body`: the shape of a pull request description: what changes, evidence, merge danger. Used when a pull request
-  is opened; type it to ask how risky a merge is.
+- `/pr-body`: the shape of a pull request description: safe to merge or not (first line), what changes, what you
+  need to do, what happens if it is wrong; the technical checks fold away. Used when a pull request is opened; type
+  it to ask how risky a merge is.
 - `/diagnosing-bugs`: a bug loop that first builds a check that fails on the bug, then hypotheses, fix and proof. Use
   it for anything broken, wrong or slow, or when a quick fix did not work.
 - `/issue-run`: what the scheduled runs follow (`check` by day, `build` after midnight). They take only the issues
@@ -27,7 +28,7 @@ prints this file. Update it in the same commit when a skill is added, renamed or
 - `/never-again`: turns a mistake that happened twice, or a slow or error-filled session, into a hook, a check or a
   rule so it does not happen again. Starts when you correct Claude a second time, and at `/handoff`.
 - `/plain`: explains a change or pull request in plain words, ready to paste, or walks you through how a page or
-  feature works ("how does X work?"). Every pull request description gets an "In plain words" section from it.
+  feature works ("how does X work?"). Every pull request description gets its "What changes" section from it.
 - `/verify`: checks each review comment against the code before acting on it, then fixes it or answers with a
   reason. Runs by itself when a review arrives on a pull request.
 - `/distill`: shortens a long text and checks item by item that nothing important was lost. Use it when a rules
