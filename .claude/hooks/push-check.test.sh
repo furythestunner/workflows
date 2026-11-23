@@ -82,7 +82,10 @@ m allow "$MERGED" 'git add notes/z.md && git commit -m z && git push'
 m block "$MERGED" 'git add src/three.js notes/z.md && git commit -m z && git push'
 m block "$MERGED" 'git add -A && git commit -m z && git push'
 m allow "$MERGED" 'git add notes && git commit -m z && git push'
-rm "$repo/src/three.js" "$repo/notes/z.md"
+rm "$repo/src/three.js"; echo i >"$repo/notes/Iván.md"
+m allow "$MERGED" 'git add -A && git commit -m z && git push'
+m allow "$MERGED" "git add -A && git commit -m z && git push && GH_REPO=acme/app $new_pr --title x"
+rm "$repo/notes/z.md" "$repo/notes/Iván.md"
 g checkout main; echo m >"$repo/src/main.js"; g add -A; g commit -m main; g push origin main; g checkout app-test
 g merge --no-ff -m "Merge main" main
 m allow "$MERGED" 'git push'

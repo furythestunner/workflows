@@ -28,7 +28,7 @@ const pushes = []; let cwd = root; const before = new Map();
 for (const seg of command.split(/&&|\|\||[;|\n]/)) {
   const words = (seg.match(/"[^"]*"|'[^']*'|\S+/g) || []).map(w => w.replace(/^(["'])(.*)\1$/, '$2'));
   if (words[0] === 'cd' && words[1]) { cwd = resolve(cwd, words[1]); continue; }
-  if (words[0] === 'gh' && words[1] === 'pr' && words[2] === 'create') { pushes.forEach(p => { p.prAfter = true; }); continue; }
+  if (/(^|\s|\()gh\s+pr\s+create\b/.test(seg)) { pushes.forEach(p => { p.prAfter = true; }); continue; }
   if (words[0] !== 'git') continue;
   let i = 1, dir = cwd;
   if (words[1] === '-C' && words[2]) { dir = resolve(cwd, words[2]); i = 3; }
@@ -44,7 +44,8 @@ const dirs = new Set(pushes.map(p => p.dir));
 const conf = dir => { try { return readFileSync(join(dir, '.claude/ground-truth.conf'), 'utf8'); } catch { return ''; } };
 const val = (text, key) => (text.match(new RegExp(`^${key}="([^"]*)"`, 'm')) || [])[1];
 const git = (dir, args) => {
-  const r = spawnSync('git', ['-C', dir, ...args], { encoding: 'utf8', timeout: 20000 });
+  // core.quotePath=false: accented file names (Iván.md) come out as they are, not quoted.
+  const r = spawnSync('git', ['-C', dir, '-c', 'core.quotePath=false', ...args], { encoding: 'utf8', timeout: 10000 });
   return r.status === 0 ? r.stdout : null;
 };
 const lines = s => (s || '').split('\n').map(l => l.trimEnd()).filter(Boolean);
@@ -84,7 +85,7 @@ function mergedPr(p) {
   const [cmd, pre] = process.env.PUSH_CHECK_GH ? ['node', [process.env.PUSH_CHECK_GH]] : ['gh', []];
   const owner = slug.split('/')[0];
   const r = spawnSync(cmd, [...pre, 'api', `repos/${slug}/pulls?state=all&head=${owner}:${work}&per_page=20`],
-    { cwd: p.dir, encoding: 'utf8', timeout: 20000 });
+    { cwd: p.dir, encoding: 'utf8', timeout: 10000 });
   let prs;
   try { prs = r.status === 0 ? JSON.parse(r.stdout) : null; } catch { prs = null; }
   if (!Array.isArray(prs) || !prs.length) return '';
@@ -108,7 +109,10 @@ function mergedPr(p) {
     for (const step of p.before) {
       const rest = step.slice(1);
       if (rest.some(w => w === '-A' || w === '--all') || (step[0] === 'add' && rest.includes('.')))
-        lines(git(p.dir, ['status', '--porcelain', '-uall'])).forEach(l => files.add(l.slice(3)));
+        for (let f = (git(p.dir, ['status', '--porcelain', '-z', '-uall']) || '').split('\0'), k = 0; k < f.length; k++) {
+          if (f[k].length > 3) files.add(f[k].slice(3));
+          if (/^[RC]/.test(f[k])) k++; // a rename or copy: the old name follows as its own field
+        }
       else if (rest.some(w => w === '-u' || w === '--update' || (step[0] === 'commit' && /^-[a-zA-Z]*a/.test(w))))
         add(git(p.dir, ['diff', '--name-only', 'HEAD']));
       if (step[0] === 'add') rest.filter(w => !w.startsWith('-') && w !== '.').forEach(w => files.add(w.replace(/^\.\//, '')));
