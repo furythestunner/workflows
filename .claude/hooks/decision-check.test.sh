@@ -3,6 +3,7 @@
 # must send Claude back to record a decision.
 # Usage: bash .claude/hooks/decision-check.test.sh   (exit 0 = all pass)
 cd "$(dirname "$0")" || exit 1
+unset CLAUDE_PROJECT_DIR # run from another repo's session (the push check), it named that repo and a case failed
 tmp=$(mktemp -d); trap 'rm -rf "$tmp"' EXIT
 command -v cygpath >/dev/null && tmp=$(cygpath -m "$tmp") # node on Windows needs C:/...
 fail=0
