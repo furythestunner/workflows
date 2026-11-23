@@ -107,3 +107,8 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   on the current workflow and Balázs has checked the brief in each (#44). `scripts/check.sh` enforces the count
   (12 hook files, 13 skills). After the freeze the count stays: a new hook or skill means an old one goes, and raising
   the number needs his OK in the chat.
+- Pull request descriptions (Balázs, 2026-11-23, picker answers): "In plain words", "Evidence" and "Merge danger"
+  (two-way door, blast radius) did not read for him. New shape: a first line "✅ Safe to merge" or "⛔ Waits for
+  Balázs" with why, then What changes, What you need to do, If something is wrong. The technical checks stay, folded
+  at the bottom, not removed: a skipped review finding still needs its written reason. "Door" stays Claude's own
+  word in the rules only.
