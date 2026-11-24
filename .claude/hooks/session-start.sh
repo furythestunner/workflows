@@ -35,7 +35,15 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "$WORK_BRANCH" ]; then
 else
   # PC: fetch (one retry: it can fail once on a cold start), then fast-forward the checked-out branch only when that
   # is safe: nothing uncommitted and no commits that exist only here. Otherwise leave it alone and say why.
-  if git fetch -q origin 2>/dev/null || { sleep 3; git fetch -q origin 2>/dev/null; }; then
+  if git fetch -q --prune origin 2>/dev/null || { sleep 3; git fetch -q --prune origin 2>/dev/null; }; then
+    # Merged branches: gone from GitHub (deleted after the merge) and with no commit outside the default branch.
+    # Deleted here too, so GitHub Desktop's branch list stays short. A branch in use in a worktree stays (git refuses).
+    base=$(git symbolic-ref -q --short refs/remotes/origin/HEAD 2>/dev/null || echo origin/main) pruned=()
+    for b in $(git for-each-ref --format='%(refname:short) %(upstream:track)' refs/heads | sed -n 's/ \[gone\]$//p'); do
+      [ "$b" = "$WORK_BRANCH" ] && continue
+      git merge-base --is-ancestor "$b" "$base" 2>/dev/null && git branch -q -D "$b" >/dev/null 2>&1 && pruned+=("$b")
+    done
+    [ ${#pruned[@]} -gt 0 ] && echo "Deleted ${#pruned[@]} merged local branch(es), already gone from GitHub: ${pruned[*]}"
     current=$(git branch --show-current)
     if [ -n "$current" ] && git rev-parse -q --verify '@{u}' >/dev/null 2>&1; then
       behind=$(git rev-list --count 'HEAD..@{u}') ahead=$(git rev-list --count '@{u}..HEAD')
