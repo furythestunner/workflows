@@ -1,0 +1,26 @@
+# Deletes merged feature branches on GitHub in every repo of sync/repos.txt, once an hour (scripts/branch-cleanup.sh;
+# README.md, "Delete merged branches by themselves"). Run it by hand from the Actions tab, or for one repo.
+# Uses the sync's tokens: SYNC_TOKEN (Kol-Lab-Design-Kft repos) and SYNC_TOKEN_OWN (this owner's repos).
+name: branch-cleanup
+on:
+  schedule:
+    - cron: '23 * * * *'
+  workflow_dispatch:
+    inputs:
+      repo:
+        description: 'Only this repo (owner/repo). Empty: every repo in sync/repos.txt'
+        required: false
+concurrency: branch-cleanup
+permissions:
+  contents: read
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash scripts/branch-cleanup.sh $REPO
+        env:
+          REPO: ${{ inputs.repo }}
+          GH_TOKEN: ${{ secrets.SYNC_TOKEN }}
+          GH_TOKEN_OWN: ${{ secrets.SYNC_TOKEN_OWN }}
+          OWN_OWNER: ${{ github.repository_owner }}

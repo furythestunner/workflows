@@ -39,10 +39,11 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
 - Branches (Balázs, 2026-10-23; replaced 2026-11-24: parallel sessions on the one work branch clashed over the same
   files, and different features got mixed in one pull request): one feature, one branch `WORK_BRANCH-<topic>`
   from `main`, one pull request straight to `main`; the work branch holds only the handoff, notes and trackers;
-  two sessions never share a folder (a worktree each on the PC). The branch guard blocks any other name. Merged branches are deleted by GitHub
-  ("Automatically delete head branches", 2026-10-26), with a ruleset that protects `main` and the work branch from
-  deletion (README.md, "Delete merged branches by themselves"; only where GitHub enforces rulesets, so not in the
-  private project repos); a cloud session cannot delete branches (GitHub answers 403).
+  two sessions never share a folder (a worktree each on the PC). The branch guard blocks any other name. Merged branches delete themselves
+  (replaced 2026-11-24: with a branch per feature they piled up on GitHub and in GitHub Desktop): an hourly job here
+  deletes merged `WORK_BRANCH-<topic>` branches in the project repos, the session start deletes merged local ones
+  on the PC, and this public repo uses GitHub's "Automatically delete head branches" with a ruleset that protects
+  `main` and the work branch (README.md, "Delete merged branches by themselves"). The old intranet branches go too.
 - A pull request that changes only `notes/` skips `/code-review` (Balázs, 2026-11-02; replaced 2026-11-02, same
   day: Claude first recorded the opposite after misreading "3 ok"). Rules, skills, CLAUDE.md and README still get
   the review: they are text files that change how Claude works.

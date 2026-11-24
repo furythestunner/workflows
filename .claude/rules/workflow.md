@@ -48,9 +48,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   `main`; rename a `claude/...` branch first (`git branch -m`). `WORK_BRANCH` holds only the docs (handoff, `notes/`,
   trackers); from a feature branch, commit them in `git worktree add --detach <scratch> origin/WORK_BRANCH` and
   `git push origin HEAD:WORK_BRANCH` (rejected: fetch, rebase, retry). Sessions never share a folder (on the PC, a
-  worktree each). Say so before two features change one file. Open feature branches go in Unfinished. After the
-  merge, GitHub deletes the branch where set; else a PC session deletes it, a cloud one (403) asks the user to click
-  "Delete branch".
+  worktree each). Say so before two features change one file. Open feature branches go in Unfinished. Merged
+  branches delete themselves: on GitHub within the hour, on the PC at the next session start (README.md, "Delete
+  merged branches by themselves").
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, ending in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default, 12 at
   most. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over one Claude
