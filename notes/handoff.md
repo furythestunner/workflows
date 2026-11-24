@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-24 (labels cleaned in 5 repos; only `Status: Done` is left, for you)
+Updated: 2026-11-24 (labels cleaned in 6 repos; the labels tool fix is pull request #79, auto-merge on)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -9,10 +9,7 @@ Updated: 2026-11-24 (labels cleaned in 5 repos; only `Status: Done` is left, for
 2. Fact check trial (`fact-check.mjs`, due since 2026-11-17; simple language was decided 2026-11-19): it never
    fired in this repo. Read its count in each project repo's `notes/usage.md` (attach them read-only), then ask
    Balázs: keep or cut.
-3. Labels tool (`.claude/skills/session-start/labels.sh`): it needs `jq`, which this PC lacks, and it keeps
-   GitHub's default labels. Make it work without `jq` and delete the defaults (ruling 2026-11-24), then run it on
-   life-admin (not cleaned yet). The 5 other repos were cleaned by hand on 2026-11-24.
-4. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods waits for the PC test run
+3. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods waits for the PC test run
    below: in the cloud 20 tests fail in cache-clock and skill-picker, all built around Windows paths (C:/...);
    if they pass on the PC, the cloud is the cause and the check needs a cloud skip.
 
@@ -36,6 +33,8 @@ Updated: 2026-11-24 (labels cleaned in 5 repos; only `Status: Done` is left, for
 
 ## Unfinished
 
+- Pull request #79 (`dev-test-labels-tool`): the labels tool works without `jq` and deletes GitHub's default
+  labels. Auto-merge is on; it merges when its checks pass.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.
