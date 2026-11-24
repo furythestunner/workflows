@@ -15,6 +15,9 @@ Updated: 2026-11-24 (merged branches delete themselves: pull request #80, waits 
 
 ## Waiting for Balázs (your steps)
 
+- 🟡 Test pull request #80 in the cloud (added 2026-11-24, about 3 min): on claude.ai/code start a new session,
+  pick `workflows`, set the branch to `dev-test-branch-cleanup` and send a short question. The reply must open with
+  the brief. If it does, say "merge" in the chat; if not, paste the first lines.
 - 🟡 Delete the `Status: Done` label in 5 repos (added 2026-11-24, about 3 min; the issue guard stops Claude): open
   github.com/furythestunner/workflows/labels, find `Status: Done`, click its `...` menu (or `Delete`), then confirm.
   Do the same in Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension, Kol-Lab-Design-Kft/website and
@@ -33,8 +36,8 @@ Updated: 2026-11-24 (merged branches delete themselves: pull request #80, waits 
 
 ## Unfinished
 
-- Pull request #79 (`dev-test-labels-tool`): the labels tool works without `jq` and deletes GitHub's default
-  labels. Auto-merge is on; it merges when its checks pass.
+- Pull request #80 (`dev-test-branch-cleanup`): an hourly job deletes merged feature branches in the project repos
+  (first run: 6 old intranet ones), and the PC session start deletes merged local ones. Waits for the cloud test.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.
