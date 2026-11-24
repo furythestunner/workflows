@@ -19,7 +19,7 @@ session can find out what happened and why.
 | Next tasks (task of the day, background work to check), what waits for the user, unfinished work | `notes/handoff.md` (live) | Rewritten at each handoff, after the old one is distilled and archived |
 | Earlier handoffs | `notes/handoff-archive.md` | Newest first, word for word. Never read at session start; searched when needed |
 | Open work | GitHub issues of each repo | One issue per item, one `Type:` and one `Status:` label. New work opens in `Status: Backlog`. A landed item closes when its pull request ("Closes #n") merges; Claude never closes one. Cross-repo items marked ⚠. `BACKLOG.md` only links there |
-| Questions for the user, rulings, deliberate non-fixes | `questions.md` | §1 💬 open; when the user rules, it moves to §2 as 🟢 with their words and the date |
+| Questions for the user, rulings, deliberate non-fixes | `questions.md` | §1 💬 open; when the user rules, it moves to §2 as 🟢 with their words, the date and one line of why |
 | Long-term state, rules, how-tos | `CLAUDE.md` | State, not history: no PR lists, no commit hashes, no to-dos |
 | Details of a topic (plans, measurements, incident notes, how-tos) | `notes/*.md`, component READMEs | Linked from where they are needed |
 | Non-obvious learnings, user preferences, corrections (never a fact that can go stale) | memory directory | One fact per file + one line in `MEMORY.md`; update instead of duplicating |

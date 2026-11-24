@@ -55,6 +55,7 @@ prints this file. Update it in the same commit when a skill is added, renamed or
 - `branch-guard.mjs`: before every git push or new branch, blocks any branch name other than the work branch,
   `<work branch>-<topic>` or `workflow-sync`.
 - `push-check.mjs`: before every git push, runs the repo's checks (`CHECK` in `ground-truth.conf`); a failure stops it.
+  It also stops new work on the work branch while its last pull request is merged: the work needs a new one.
 - `secret-guard.mjs`: stops a commit or push that holds a password, token or key file.
 - `review-guard.mjs`: stops a pull request from opening before `/code-review` has run (not when only `notes/`
   changed).

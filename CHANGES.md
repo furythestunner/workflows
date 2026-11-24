@@ -9,6 +9,9 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-24 New: Every ruling Claude writes into `questions.md` gets one line on why you decided it. A later session then does not reopen it. If Claude does not know the why, it asks you.
+- 2026-11-24 New: When a pull request adds or changes a feature, Claude also updates that feature's part of the README: what it does for you and which files hold it.
+- 2026-11-23 Fixed: Claude can no longer push new work onto the work branch after you merged its pull request without opening a new pull request in the same step. Before, that work sat unseen behind the merged pull request (intranet, twice). Notes and handoff updates still go through as before.
 - 2026-11-23 For you: Pull request descriptions start with "✅ Safe to merge" or "⛔ Waits for you" and why. Then: what changes, what you need to do, and what happens if it is wrong. The test results and review notes are folded at the bottom (one click opens them).
 - 2026-11-19 Fixed: When Claude tries to open a pull request without a review, the message now points to the right rule ("Pull requests" in the session rules). Before, it named a heading that does not exist.
 - 2026-11-19 New: Claude Code refuses the usual commands for some actions that cannot be undone: reading secret files (`.env`, keys), force push, `git reset --hard` and `git clean`. Nobody can approve them in a session. A command written another way can still slip past: a guard against mistakes, not a lock.
