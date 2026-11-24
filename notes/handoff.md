@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-24 (push check and pull request descriptions in pull request #77, not merged yet)
+Updated: 2026-11-24 (rulings carry a why, README per feature; both in pull request #77, not merged yet)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -32,8 +32,8 @@ Updated: 2026-11-24 (push check and pull request descriptions in pull request #7
 
 ## Unfinished
 
-- Pull request #77 (dev-test): push check, pull request descriptions, decision check test fix. CI green,
-  not merged yet.
+- Pull request #77 (dev-test): push check, pull request descriptions, decision check test fix, the why on
+  rulings and the README rule. Not merged yet: it waits for your test session.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.
