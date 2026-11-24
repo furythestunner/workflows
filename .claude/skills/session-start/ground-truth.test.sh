@@ -90,7 +90,7 @@ g checkout -q main; g pull -q origin work 2>/dev/null; g push -q origin main 2>/
 g checkout -q -b work-done; g push -q -u origin work-done 2>/dev/null
 g checkout -q -b work-open; echo o >"$r/open.sh"; g add -A; g commit -qm open; g push -q -u origin work-open 2>/dev/null
 g checkout -q -b work-local main
-g checkout -q main; g push -q origin --delete work-done work-open 2>/dev/null
+g checkout -q main; g push -q origin --delete work-done work-open work 2>/dev/null
 out=$(cd "$r" && PATH="$tmp/bin:$PATH" CLAUDE_PROJECT_DIR="$r" bash .claude/hooks/session-start.sh 2>&1)
 has "pc: merged branch deleted" "merged local branch(es), already gone from GitHub: work-done"
 for b in work-open work work-local; do

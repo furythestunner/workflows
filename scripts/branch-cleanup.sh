@@ -52,6 +52,6 @@ for repo in "${repos[@]}"; do
       echo "::error::$repo: could not delete $b"; rc=1
     fi
   done <<<"$branches"
-  echo "$repo: $deleted deleted$([ "$dry" = 1 ] && echo ' (dry run)'), $kept kept"
+  echo "$repo: $deleted $([ "$dry" = 1 ] && echo 'would be deleted (dry run)' || echo deleted), $kept kept"
 done
 exit $rc
