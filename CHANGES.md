@@ -9,6 +9,7 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-24 Fixed: The issue label picker shows only your own labels: 4 `Type:` and 3 `Status:`. GitHub's default labels (bug, enhancement...) and the dropped statuses are gone. The labels tool now also works on a PC without extra programs.
 - 2026-11-24 For you: Each feature now gets its own branch and its own pull request, so features no longer mix and parallel sessions stop clashing. Run each desktop session in its own worktree (the worktree option when you start a session in the Code tab). The work branch keeps only the handoff and notes.
 - 2026-11-24 New: Every ruling Claude writes into `questions.md` gets one line on why you decided it. A later session then does not reopen it. If Claude does not know the why, it asks you.
 - 2026-11-24 New: When a pull request adds or changes a feature, Claude also updates that feature's part of the README: what it does for you and which files hold it.
