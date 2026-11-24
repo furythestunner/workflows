@@ -36,8 +36,10 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   copy.
 - Skills live only in the repos, never uploaded to a claude.ai account (Balázs, 2026-10-23): he works on a personal
   and a company account and does not want to install them on each, and only the repo copy reaches every session.
-- Branches (Balázs, 2026-10-23): work goes on the work branch; a second branch only for parallel work, named
-  `WORK_BRANCH-<topic>`, and the branch guard blocks any other name. Merged branches are deleted by GitHub
+- Branches (Balázs, 2026-10-23; replaced 2026-11-24: parallel sessions on the one work branch clashed over the same
+  files, and different features got mixed in one pull request): one feature, one branch `WORK_BRANCH-<topic>`
+  from `main`, one pull request straight to `main`; the work branch holds only the handoff, notes and trackers;
+  two sessions never share a folder (a worktree each on the PC). The branch guard blocks any other name. Merged branches are deleted by GitHub
   ("Automatically delete head branches", 2026-10-26), with a ruleset that protects `main` and the work branch from
   deletion (README.md, "Delete merged branches by themselves"; only where GitHub enforces rulesets, so not in the
   private project repos); a cloud session cannot delete branches (GitHub answers 403).

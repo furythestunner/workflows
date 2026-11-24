@@ -30,8 +30,8 @@ Why: the expensive model spends its tokens on judgment, the cheaper models on vo
 ## Steps
 
 1. **Intake.** Find the issue (or take the user's words) and re-confirm it is still open. Start only a
-   `Status: Ready` issue (the user approved it) and set it to `Status: In progress`. Check the branch: the work branch (`WORK_BRANCH` in `.claude/ground-truth.conf`), up to date
-   with `main` (CLAUDE.md, Git workflow).
+   `Status: Ready` issue (the user approved it) and set it to `Status: In progress`. Make the round's own branch from `origin/main`: `WORK_BRANCH-<topic>`
+   (`WORK_BRANCH` in `.claude/ground-truth.conf`; `.claude/rules/workflow.md`, one feature, one branch).
 2. **Scout** (skip when you already know where everything is). One question per scout; several scouts may run in
    parallel. Before you build the plan on a finding, open the cited line yourself: a scout's finding is a lead, not a
    fact.
@@ -53,7 +53,7 @@ Why: the expensive model spends its tokens on judgment, the cheaper models on vo
    - **Send back** to a new `implementer` with the brief plus a numbered list of exactly what to fix. At most 2
      send-backs; after that, stop and ask the user.
 7. **Commit, push, pull request.** Stage the changed paths by name, read `git diff --cached --name-only`, commit to
-   the work branch, push, and open or update the one pull request from it to `main` (a migration or other manual step
+   the round's branch, push, and open or update its pull request to `main` (a migration or other manual step
    is named at the top; the body says "Closes #<n>"); the issue stays `Status: In progress` until the merge closes
    it. Never merge.
 8. **Report** to the user per CLAUDE.md: what changed for the people who use it, how it was checked, and the smoke
