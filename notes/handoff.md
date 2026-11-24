@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-24 (labels cleaned in 6 repos; the labels tool fix is pull request #79, auto-merge on)
+Updated: 2026-11-24 (merged branches delete themselves: pull request #80, waits for your cloud test)
 
 ## Next (Claude's own work, nothing for you)
 
