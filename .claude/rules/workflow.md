@@ -17,9 +17,10 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   about 300k context: bring the handoff up to date, then a new session.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
-- **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2, new
-  open work to a GitHub issue, a rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces
-  an earlier one edits that entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it.
+- **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2 (with
+  the date and one line of why: without the why, a later session reopens it), new open work to a GitHub issue, a
+  rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces an earlier one edits that
+  entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it. Do not guess a missing why: ask the user.
 - **Issues** are the open work (`BACKLOG.md` only links there; rulings stay in `questions.md`). Each has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress). Ready means the user
   approved it. Only the user moves an issue to Ready, on GitHub (Claude gives the link), and closes it, unless the
@@ -34,7 +35,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 - **Pull requests:** before opening one, run `/code-review` on the diff against `main` (not needed when only
   `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
   after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
-  checks and review comments until it is merged or closed.
+  checks and review comments until it is merged or closed. A pull request that adds or changes a feature also
+  updates its section in `README.md` (what it does for the user, which files hold it); read that section before
+  searching the code.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
   its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
   it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Safe to merge or not"; when

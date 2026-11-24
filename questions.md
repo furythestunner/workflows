@@ -112,3 +112,10 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   Balázs" with why, then What changes, What you need to do, If something is wrong. The technical checks stay, folded
   at the bottom, not removed: a skipped review finding still needs its written reason. "Door" stays Claude's own
   word in the rules only.
+- Two ideas from an r/ClaudeCode thread on handoffs (Balázs, 2026-11-24: "do both ideas"). Every ruling here
+  carries one line of why: several commenters saw that a decision without its reason gets reopened by a later
+  session. And a pull request that adds or changes a feature updates its `README.md` section (every project repo
+  has one), so a session reads one page instead of searching the code. Older rulings get their why only when
+  someone edits them, from the user, never guessed. Dropped from the same thread: a local issue database (beads;
+  issues stay on GitHub, which Balázs reads on his phone), a hook that writes the handoff before a compaction (the
+  stop hook already keeps it current), separate plan, build and review sessions (more clicks, little saving).
