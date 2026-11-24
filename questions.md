@@ -20,6 +20,9 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   no approval, so Claude may do it (Balázs, 22 Oct 2026): anything not in Ready is then the user's signal to look.
 - Labels read as plain words, "Status: Ready", "Type: Bug" (Balázs, 22 Oct 2026; until then `status::ready`).
   `labels.sh` renames the old ones, so every issue keeps its status.
+- Only our own labels, 4 `Type:` and 3 `Status:` (Balázs, 2026-11-24): GitHub's default labels (bug, enhancement,
+  documentation...) are deleted in every repo, because they do the same job as `Type:` and make the picker long.
+  Done in workflows, intranet, KolLab.extension, website and claude-mods on 2026-11-24.
 - Scheduled runs (Balázs, 22 Oct 2026): a day check every 4 hours asks its questions on the issues, a night build
   after midnight Budapest time builds the approved ones and opens the pull request; a phone notification only
   when something needs the user.
