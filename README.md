@@ -187,7 +187,15 @@ before merging (`.claude/rules/workflow.md`, Merging):
 
 ## When a workflow update breaks the sessions
 
-The sync merges itself into every repo, so a broken hook reaches all of them. Two ways out:
+The sync merges itself into every repo, so a broken hook reaches all of them. Two signs (Claude Code 2.1.327 and
+later):
+
+- **A hook line shows in red:** that hook failed. A yellow line is a hook that stopped Claude on purpose, with the
+  reason under it; that is the workflow at work, not a fault.
+- **Type `/status`:** it lists the skill, agent, command and hook files that do not load, and the hook rules with a
+  fault.
+
+Two ways out:
 
 - **Turn the hooks off in one repo** (about 1 min): on GitHub open the repo, pick its work branch, Add file, Create
   new file, name it `.claude/workflow-off` (empty), Commit changes. Start a new session: its first reply says
