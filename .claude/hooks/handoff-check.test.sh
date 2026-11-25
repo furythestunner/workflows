@@ -29,6 +29,8 @@ t() { # <name> <block|allow> <setup commands> [stop_hook_active]
 # Pushed commits newer than the handoff.
 t code-pushed-after-handoff block 'c app.sh; g push -q'
 t docs-pushed-after-handoff block 'c notes/x.md; g push -q'
+t ignored-path-pushed allow 'echo HANDOFF_IGNORE=\"notes/q.md notes/r.md\" >>$r/.claude/ground-truth.conf; c notes/handoff.md; c notes/q.md; c notes/r.md; g push -q'
+t ignored-path-and-code block 'echo HANDOFF_IGNORE=notes/q.md >>$r/.claude/ground-truth.conf; c notes/handoff.md; c notes/q.md; c app.sh; g push -q'
 t code-not-pushed allow 'c app.sh'
 t handoff-newer allow 'c app.sh; c notes/handoff.md; g push -q'
 t other-branch allow 'g checkout -q -b other; c app.sh; g push -q -u origin other 2>/dev/null'
