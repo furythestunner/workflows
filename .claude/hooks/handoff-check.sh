@@ -3,7 +3,9 @@
 # cold cache, re-reads the whole conversation). After each reply, the first that applies sends Claude back once:
 # 1. Context size: the conversation passed CONTEXT_WARN tokens (default 300000; a cloud session starts at about
 #    77k), then every further 50k. Claude saves the handoff and tells the user to start a new session.
-# 2. Pushed commits on WORK_BRANCH (code or docs; not the handoff) newer than the handoff.
+# 2. Pushed commits on WORK_BRANCH (code or docs; not the handoff, not HANDOFF_IGNORE) newer than the handoff.
+#    HANDOFF_IGNORE: paths an unattended run pushes on its own (a scheduled run's question file); a stop there
+#    made the run write its last message twice.
 # 3. Talk: TALK_TURNS (4) messages from the user since the handoff was last committed, and nothing in 2. Asked once
 #    per 4 messages; "nothing to hand off" is a valid answer (Claude stops without text).
 # Unpushed commits are left alone (work in progress). What was already asked is kept in the git folder
@@ -11,7 +13,7 @@
 input=$(cat)
 case "$input" in *'"stop_hook_active":true'*|*'"stop_hook_active": true'*) exit 0 ;; esac
 cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
-WORK_BRANCH="" HANDOFF="notes/handoff.md" USER_NAME="the user" CONTEXT_WARN=300000
+WORK_BRANCH="" HANDOFF="notes/handoff.md" USER_NAME="the user" CONTEXT_WARN=300000 HANDOFF_IGNORE=""
 [ -f .claude/ground-truth.conf ] && . .claude/ground-truth.conf
 [ -n "$WORK_BRANCH" ] || exit 0
 STEP=50000 TALK_TURNS=4
@@ -71,7 +73,8 @@ git rev-parse -q --verify '@{u}' >/dev/null 2>&1 || exit 0
 [ "$(git rev-list --count '@{u}..HEAD')" = "0" ] || exit 0
 
 # 2. Pushed commits newer than the handoff.
-n=$(git rev-list --count --no-merges "$h"..HEAD -- . ":(exclude)$HANDOFF")
+ign=(); for p in $HANDOFF_IGNORE; do ign+=(":(exclude)$p"); done
+n=$(git rev-list --count --no-merges "$h"..HEAD -- . ":(exclude)$HANDOFF" "${ign[@]}")
 if [ "$n" -gt 0 ]; then
   fold
   block "Handoff is behind: $n pushed commit(s) on $WORK_BRANCH are newer than $HANDOFF. Before stopping, bring its three sections up to date (.claude/rules/workflow.md, Sessions and trackers): Next, Waiting for $USER_NAME, Unfinished; drop items that landed (their issues close when the pull request merges). If nothing in them changed, update only the date line. Then stage only those files (and the usage counts next to it, usage.md, if they changed), commit and push to $WORK_BRANCH (handoff rule: no need to ask). One line to $USER_NAME that the handoff was updated."
