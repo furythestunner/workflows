@@ -9,6 +9,7 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-27 New: `/gemini-image-prompt` turns a rough image idea (Hungarian is fine) into one English prompt for the free Gemini app, with two ready lines for small fixes. It also turns a Revit or Enscape view into a rendered image prompt.
 - 2026-11-24 New: Every ruling Claude writes into `questions.md` gets one line on why you decided it. A later session then does not reopen it. If Claude does not know the why, it asks you.
 - 2026-11-24 New: When a pull request adds or changes a feature, Claude also updates that feature's part of the README: what it does for you and which files hold it.
 - 2026-11-23 Fixed: Claude can no longer push new work onto the work branch after you merged its pull request without opening a new pull request in the same step. Before, that work sat unseen behind the merged pull request (intranet, twice). Notes and handoff updates still go through as before.

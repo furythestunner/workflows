@@ -45,6 +45,7 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | `.claude/skills/plain/` | `/plain`, "what changed?", every pull request | Explains a change in plain words for a non-developer; `/pr-body` puts it in the "What changes" section. |
 | `.claude/skills/verify/` | `/verify`, a review on a pull request | Checks each review comment against the code, then fixes it or answers with a reason. |
 | `.claude/skills/distill/` | `/distill`, "too long", a length warning from `scripts/check.sh` | Shortens a text and checks item by item that nothing needed was lost. |
+| `.claude/skills/gemini-image-prompt/` | `/gemini-image-prompt`, "Gemini prompt", a weak image prompt | Turns a rough idea into one English prompt for the free Gemini app (new image, edit of a Revit or Enscape view, or one fix), with two follow-up lines. Rules from the nano-banana prompting guide (`THIRD-PARTY.md`); no API key. |
 
 The scripts hold no project data. Everything project-specific is in `.claude/ground-truth.conf`.
 
