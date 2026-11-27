@@ -36,6 +36,8 @@ prints this file. Update it in the same commit when a skill is added, renamed or
 - `/crew`: runs a backlog item as a crew; this session plans, talks to you and reviews, Haiku scouts read, a Sonnet
   implementer writes and a Sonnet reviewer checks. You get a test list of only what Claude could not check. Use it
   for a bigger feature round you want done with workers.
+- `/gemini-image-prompt`: turns a rough image idea (Hungarian is fine) into one English prompt to paste into the
+  free Gemini app, plus two ready follow-up lines. Also for turning a Revit or Enscape view into a rendered image.
 
 ## Hooks (run by themselves)
 

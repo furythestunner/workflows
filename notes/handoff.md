@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-24 (rulings carry a why, README per feature; both in pull request #77, not merged yet)
+Updated: 2026-11-27 (new skill /gemini-image-prompt, pull request #84, auto-merge on)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -9,15 +9,16 @@ Updated: 2026-11-24 (rulings carry a why, README per feature; both in pull reque
 2. Fact check trial (`fact-check.mjs`, due since 2026-11-17; simple language was decided 2026-11-19): it never
    fired in this repo. Read its count in each project repo's `notes/usage.md` (attach them read-only), then ask
    Balázs: keep or cut.
-3. Old status labels: in a session where `gh` is logged in (the PC), run
-   `bash .claude/skills/session-start/labels.sh` in this repo; it moves issues out of Blocked and Review and
-   deletes those labels. In the project repos only after asking Balázs.
-4. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods waits for the PC test run
+3. Upload checks: intranet, website and KolLab.extension are on (2026-11-02). claude-mods waits for the PC test run
    below: in the cloud 20 tests fail in cache-clock and skill-picker, all built around Windows paths (C:/...);
    if they pass on the PC, the cloud is the cause and the check needs a cloud skip.
 
 ## Waiting for Balázs (your steps)
 
+- 🟡 Delete the `Status: Done` label in 5 repos (added 2026-11-24, about 3 min; the issue guard stops Claude): open
+  github.com/furythestunner/workflows/labels, find `Status: Done`, click its `...` menu (or `Delete`), then confirm.
+  Do the same in Kol-Lab-Design-Kft/intranet, Kol-Lab-Design-Kft/KolLab.extension, Kol-Lab-Design-Kft/website and
+  furythestunner/claude-mods. No open issue uses it.
 - 🟡 Check the brief in each project (added 2026-11-02, about 2 min each; the 4 sync pull requests were merged 2026-11-10):
   on claude.ai/code start a new session, pick the repo (intranet, then KolLab.extension, then website), set the
   branch to its work branch (`intra-test`, `extension-test`, `website-test`) and send a short question. The reply
@@ -32,8 +33,7 @@ Updated: 2026-11-24 (rulings carry a why, README per feature; both in pull reque
 
 ## Unfinished
 
-- Pull request #77 (dev-test): push check, pull request descriptions, decision check test fix, the why on
-  rulings and the README rule. Not merged yet: it waits for your test session.
+- Pull request #84 (`/gemini-image-prompt`, freeze raised to 14 skills): auto-merge is on; it merges once the checks pass.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.

@@ -20,6 +20,9 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   no approval, so Claude may do it (Balázs, 22 Oct 2026): anything not in Ready is then the user's signal to look.
 - Labels read as plain words, "Status: Ready", "Type: Bug" (Balázs, 22 Oct 2026; until then `status::ready`).
   `labels.sh` renames the old ones, so every issue keeps its status.
+- Only our own labels, 4 `Type:` and 3 `Status:` (Balázs, 2026-11-24): GitHub's default labels (bug, enhancement,
+  documentation...) are deleted in every repo, because they do the same job as `Type:` and make the picker long.
+  Done in workflows, intranet, KolLab.extension, website and claude-mods on 2026-11-24.
 - Scheduled runs (Balázs, 22 Oct 2026): a day check every 4 hours asks its questions on the issues, a night build
   after midnight Budapest time builds the approved ones and opens the pull request; a phone notification only
   when something needs the user.
@@ -109,7 +112,9 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
 - The freeze (Balázs, 2026-11-10): no new hook and no new skill until intranet, KolLab.extension and website are
   on the current workflow and Balázs has checked the brief in each (#44). `scripts/check.sh` enforces the count
   (12 hook files, 13 skills). After the freeze the count stays: a new hook or skill means an old one goes, and raising
-  the number needs his OK in the chat.
+  the number needs his OK in the chat. Raised to 14 skills on 2026-11-27 (Balázs, picker answer "Workflow skill")
+  for `gemini-image-prompt`: why, the Android app cannot upload a skill, and skills live only in the repos (ruling
+  of 2026-10-23 above).
 - Pull request descriptions (Balázs, 2026-11-23, picker answers): "In plain words", "Evidence" and "Merge danger"
   (two-way door, blast radius) did not read for him. New shape: a first line "✅ Safe to merge" or "⛔ Waits for
   Balázs" with why, then What changes, What you need to do, If something is wrong. The technical checks stay, folded
