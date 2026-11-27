@@ -15,9 +15,9 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | File | When | What |
 |---|---|---|
 | `.claude/hooks/run.mjs` | around every hook | The runner: every hook in `.claude/settings.json` starts through it. It holds the off switch (the file `.claude/workflow-off` stops every hook; "When a workflow update breaks the sessions" below) and the usage record (each hook that fires and each skill used is counted into `notes/usage.md`). `run.test.sh` tests it. |
-| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not. Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff (and a project's own skills list, when it has one). Claude's first reply opens with the brief. |
+| `.claude/hooks/session-start.sh` | every session start | Cloud session: switches to `WORK_BRANCH` and pulls. PC: fast-forwards the checked-out branch when nothing is uncommitted or unpushed, otherwise says why not, and deletes local branches that are gone from GitHub and fully in `main` (GitHub Desktop's list stays short). Runs `ground-truth.sh`, checks whether the handoff is older than the last code commit, prints the handoff (and a project's own skills list, when it has one). Claude's first reply opens with the brief. |
 | `cloud/setup-script.sh` | once, in the cloud environment | Pasted into the environment's Setup script (environment menu in the session's title bar, Edit, Setup script). A session with two or more repos opens in the folder that holds them, where no repo's hook runs; this installs a user-level hook that runs each repo's `session-start.sh` from there: one brief per repo. In a one-repo session it does nothing. |
-| `.claude/hooks/handoff-check.sh` | after every reply | Keeps the handoff current while the cache is warm, so nobody has to type `/handoff`. Sends Claude back once to update and push it when: the conversation passes `CONTEXT_WARN` tokens (default 300000; a cloud session starts at about 77k) and again every further 50k, and then Claude tells the user to start a new session; pushed commits on `WORK_BRANCH` (code or docs) are newer than the handoff; 4 of the user's messages came after the handoff's last commit (asked once per 4; Claude stops without text when nothing changed). Unpushed work is left alone. What it already asked is kept in `.git/handoff-check.state`. Before it sends Claude back it adds the session's hook and skill counts to `notes/usage.md`, which goes into the same commit. `handoff-check.test.sh` tests it. |
+| `.claude/hooks/handoff-check.sh` | after every reply | Keeps the handoff current while the cache is warm, so nobody has to type `/handoff`. Sends Claude back once to update and push it when: the conversation passes `CONTEXT_WARN` tokens (default 300000; a cloud session starts at about 77k) and again every further 50k, and then Claude tells the user to start a new session; pushed commits on `WORK_BRANCH` (code or docs, except paths in `HANDOFF_IGNORE` in `.claude/ground-truth.conf`) are newer than the handoff; 4 of the user's messages came after the handoff's last commit (asked once per 4; Claude stops without text when nothing changed). Unpushed work is left alone. What it already asked is kept in `.git/handoff-check.state`. Before it sends Claude back it adds the session's hook and skill counts to `notes/usage.md`, which goes into the same commit. `handoff-check.test.sh` tests it. |
 | `.claude/hooks/decision-check.mjs` | after every reply | If the user answered a multiple-choice question or used decision words and no tracker changed (and no issue was opened), asks Claude to record the decision. `README.md` and `.claude/rules/` count as trackers; plain "decision" or "szabály" in a sentence does not count as deciding. `decision-check.test.sh` tests it. |
 | `.claude/rules/shared-lessons.md` | every session (loaded by itself, like the rules) | Everyday lessons that hold in every repo (README, "Shared lessons"). Edited only here. |
 | `.claude/lessons/shared-facts.md` | when the topic comes up | Narrow facts that hold in every repo (one tool, one PC, one limit). Not loaded by itself: the shared lessons name its topics, and Claude reads it then. Its check-by dates are in the brief like the others. |
@@ -32,7 +32,7 @@ unless it needs a step by hand (its "Do before merging" list). Workflow to-dos a
 | `.claude/hooks/dash-check.mjs` | every message the user sends | If CLAUDE.md says "no em dashes" and Claude's previous reply had one, reminds Claude before it answers. No extra turn. `dash-check.test.sh` tests it. |
 | `.claude/rules/workflow.md` | every session (Claude Code loads it like CLAUDE.md) | The shared session and tracker rules, the same in every repo. A project's CLAUDE.md only adds to them. |
 | `.claude/skills/CHEATSHEET.md` | when you want the list | One line per skill and hook: what it does, when to use it. For the user; no hook prints it (Claude Code lists the skills for Claude by itself). Update it with any skill change. |
-| `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (stale facts first, branches against GitHub, uncommitted work, open PRs and CI, open issues by status). `labels.sh` creates the issue labels and moves issues out of the statuses that were dropped. `ground-truth.test.sh` tests the script and the session start hook on a scratch repo. |
+| `.claude/skills/session-start/` | `/session-start`, and the hook | The brief, and `ground-truth.sh` (stale facts first, branches against GitHub, uncommitted work, open PRs and CI, open issues by status). `labels.sh` creates the issue labels, moves issues out of the statuses that were dropped, and deletes GitHub's default labels (add `owner/repo` to run it on one repo). `ground-truth.test.sh` tests the script and the session start hook on a scratch repo. |
 | `.claude/skills/handoff/` | `/handoff` | The full tidy-up at the end of a session. |
 | `.claude/skills/crew/`, `.claude/agents/` | `/crew` | A feature round as a crew: this session plans, talks to the user, reviews and commits; a Haiku `scout` reads, a Sonnet `implementer` writes and a Sonnet `reviewer` checks the diff against the brief. `fence.sh` stops a round whose change touches a file the brief does not list. The user gets a smoke list of only the steps no check could cover. Checks come from the repo's CLAUDE.md. Round records in `notes/crew/`. |
 | `.claude/skills/grill-me/` | `/grill-me`, or before a big change | Interview in rounds, no cap on questions, each with a recommended answer ("yes" accepts it). |
@@ -56,6 +56,7 @@ Only in this master copy (not copied to the repos):
 | `scripts/check.sh` | every pull request (`.github/workflows/check.yml`), and before a push | Every script parses, `settings.json` is valid and its hook files exist, every hook's tests pass, the cheat sheet lists every skill, and the freeze holds (no more hooks or skills than the set limit). |
 | `.github/workflows/sync.yml`, `scripts/sync-all.sh` | every push to `main` that changes the workflow; by hand from the Actions tab | Runs `scripts/check.sh`, then opens or updates the "Workflow update" pull request in each repo of `sync/repos.txt` and merges it when it needs no step by hand. |
 | `CHANGES.md`, `scripts/changes-since.sh` | read by the sync | What changed, in plain words, one line per change. The sync pull request opens with the lines added since that repo's last sync, grouped into "Changes for you", "New" and "Fixed"; the commits follow, folded. |
+| `.github/workflows/branch-cleanup.yml`, `scripts/branch-cleanup.sh` | every hour; by hand from the Actions tab | Deletes merged feature branches on GitHub in each repo of `sync/repos.txt` ("Delete merged branches by themselves"). |
 | `scripts/sync.sh`, `scripts/sync-settings.mjs` | inside the sync; by hand to try a change | Brings one checkout up to this copy (README.md, "How the sync works"). |
 | `sync/repos.txt` | read by the sync | The repos that get the workflow, one `owner/repo` per line. |
 | `scripts/drift-check.sh` | Mondays 07:43 Budapest, scheduled task "Workflow drift check" | Compares each repo's `.claude/workflow-version` with `main` here and lists the workflow commits it is missing. The task opens or updates one Backlog issue here when a repo is behind. |
@@ -143,8 +144,21 @@ Needs `bash`, `git` and `node` (cloud sessions have them; on Windows, Git Bash).
 
 ## Delete merged branches by themselves
 
-Only for a public repo, or a repo on a paid GitHub plan. Private repos on the free plan do not enforce rulesets
-(`.claude/lessons/shared-facts.md`). There, leave "Automatically delete head branches" off, or the work branch is deleted at its next merge to `main`.
+Every feature gets its own branch, so merged branches would pile up. Three things delete them:
+
+- **The project repos on GitHub** (private, free plan): `.github/workflows/branch-cleanup.yml` runs
+  `scripts/branch-cleanup.sh` once an hour, with the sync's tokens. In each repo of `sync/repos.txt` it deletes a
+  branch only when its name is `<WORK_BRANCH>-<topic>`, a pull request from it was merged, and it has no commit
+  that is not in `main`. `main`, the work branch and any other branch stay. A new repo in `sync/repos.txt` is
+  covered by itself. The "Restore branch" button on the pull request brings a branch back. To see what it would
+  delete: `bash scripts/branch-cleanup.sh --dry-run`.
+- **Your PC:** the session start deletes local branches that are gone from GitHub and fully in `main`, and names
+  them. A branch open in a worktree stays.
+- **This repo on GitHub** (public): GitHub's own setting, below.
+
+GitHub's own setting works only for a public repo, or a repo on a paid GitHub plan. Private repos on the free plan
+do not enforce rulesets (`.claude/lessons/shared-facts.md`). There, leave "Automatically delete head branches" off,
+or the work branch is deleted at its next merge to `main`.
 
 Once per repo that qualifies (about 2 min). Do step 1 first: without it, GitHub would delete the work branch when
 it is merged to `main`.
@@ -174,7 +188,15 @@ before merging (`.claude/rules/workflow.md`, Merging):
 
 ## When a workflow update breaks the sessions
 
-The sync merges itself into every repo, so a broken hook reaches all of them. Two ways out:
+The sync merges itself into every repo, so a broken hook reaches all of them. Two signs (Claude Code 2.1.327 and
+later):
+
+- **A hook line shows in red:** that hook failed. A yellow line is a hook that stopped Claude on purpose, with the
+  reason under it; that is the workflow at work, not a fault.
+- **Type `/status`:** it lists the skill, agent, command and hook files that do not load, and the hook rules with a
+  fault.
+
+Two ways out:
 
 - **Turn the hooks off in one repo** (about 1 min): on GitHub open the repo, pick its work branch, Add file, Create
   new file, name it `.claude/workflow-off` (empty), Commit changes. Start a new session: its first reply says

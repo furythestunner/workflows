@@ -12,9 +12,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
 - **Session start:** the session-start hook prints the ground truth and the handoff. The first reply opens with the
   brief (`/session-start` steps 2 to 5). The handoff is a claim, the script is the fact: report a contradiction first.
 - **Handoff:** `notes/handoff.md` holds only Next (Claude's own work, in order, never a 🟡), Waiting (the user's
-  steps, each 🟡) and Unfinished (on one disk only, or not merged). No diary. It goes in the same commit as the work
-  that changes it. `/handoff` and `.claude/hooks/handoff-check.sh` push the docs (`notes/`, trackers) unasked. At
-  about 300k context: bring the handoff up to date, then a new session.
+  steps, each 🟡) and Unfinished (on one disk only, or not merged). No diary. It lives on `WORK_BRANCH`, pushed with
+  or right after the work that changes it; `/handoff` and `.claude/hooks/handoff-check.sh` push the docs (`notes/`,
+  trackers) unasked. At about 300k context: bring the handoff up to date, then a new session.
 - **The user's own steps are written out in the chat** (every click and setting), never "see README" or another
   file. Each Waiting item keeps its full steps and an `added` date; the brief shows it as one 🟡 line until done.
 - **Decisions go into a tracker in the same reply, never only into the chat:** a ruling to `questions.md` §2 (with
@@ -43,11 +43,14 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Safe to merge or not"; when
   unsure, it is a one-way door), and nothing this repo's CLAUDE.md lists as always asking. A one-way door waits for
   the user.
-- All work goes on `WORK_BRANCH`: never on the cloud session's `claude/...` branch, never on `main`.
-- A second branch only when parallel work really needs it (the user asks, or a round must not mix with the work
-  branch), named `WORK_BRANCH-<topic>` (1 to 4 lowercase words; `.claude/hooks/branch-guard.mjs` blocks other
-  names). Say in the chat when one is made, list it in the handoff's Unfinished until merged, then ask the user to
-  click "Delete branch" on the merged pull request (a cloud session cannot).
+- **One feature, one branch, one pull request** (`questions.md` §2): each feature or issue gets `WORK_BRANCH-<topic>`
+  (1 to 4 lowercase words; `branch-guard.mjs`) from `origin/main`, and its own pull request to `main`. Never work on
+  `main`; rename a `claude/...` branch first (`git branch -m`). `WORK_BRANCH` holds only the docs (handoff, `notes/`,
+  trackers); from a feature branch, commit them in `git worktree add --detach <scratch> origin/WORK_BRANCH` and
+  `git push origin HEAD:WORK_BRANCH` (rejected: fetch, rebase, retry). Sessions never share a folder (on the PC, a
+  worktree each). Say so before two features change one file. Open feature branches go in Unfinished. Merged
+  branches delete themselves: on GitHub within the hour, on the PC at the next session start (README.md, "Delete
+  merged branches by themselves").
 - **Facts expire:** a fact that can go stale (a version, an IP address, a price, who owns what, a menu path) goes in
   `notes/lessons.md`, never in a memory, ending in exactly `(check by YYYY-MM-DD)`: 3 months ahead by default, 12 at
   most. One the user confirmed reads `(verified by the user, YYYY-MM-DD)`, gets 12 months and wins over one Claude

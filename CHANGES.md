@@ -10,6 +10,10 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
 - 2026-11-27 New: `/gemini-image-prompt` turns a rough image idea (Hungarian is fine) into one English prompt for the free Gemini app, with two ready lines for small fixes. It also turns a Revit or Enscape view into a rendered image prompt.
+- 2026-11-25 Fixed: A scheduled run that pushes a file by itself (like the janitor's question file) no longer shows its last message twice. A repo lists such files in `HANDOFF_IGNORE` in `.claude/ground-truth.conf`.
+- 2026-11-24 New: Merged feature branches delete themselves. On GitHub they go within an hour of the merge. On your PC the session start removes the local copies, so GitHub Desktop's branch list stays short. A branch with unmerged work always stays.
+- 2026-11-24 Fixed: The issue label picker shows only your own labels: 4 `Type:` and 3 `Status:`. GitHub's default labels (bug, enhancement...) and the dropped statuses are gone. The labels tool now also works on a PC without extra programs.
+- 2026-11-24 For you: Each feature now gets its own branch and its own pull request, so features no longer mix and parallel sessions stop clashing. Run each desktop session in its own worktree (the worktree option when you start a session in the Code tab). The work branch keeps only the handoff and notes.
 - 2026-11-24 New: Every ruling Claude writes into `questions.md` gets one line on why you decided it. A later session then does not reopen it. If Claude does not know the why, it asks you.
 - 2026-11-24 New: When a pull request adds or changes a feature, Claude also updates that feature's part of the README: what it does for you and which files hold it.
 - 2026-11-23 Fixed: Claude can no longer push new work onto the work branch after you merged its pull request without opening a new pull request in the same step. Before, that work sat unseen behind the merged pull request (intranet, twice). Notes and handoff updates still go through as before.

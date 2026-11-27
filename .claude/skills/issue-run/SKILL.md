@@ -44,20 +44,21 @@ Mode is the argument: `check` or `build`. Without one, `check`.
 ## Build (after midnight)
 
 1. Run the check steps first, so nothing unclear gets built.
-2. Bring the work branch up to date with `main` (merge, never rebase). Check the pull request from the work branch:
-   if the last one was merged, the next commits need a new one.
+2. One issue, one branch, one pull request (`.claude/rules/workflow.md`): each issue gets its own
+   `WORK_BRANCH-<topic>`, made from `origin/main`.
 3. Take at most 3 issues per repo per night, oldest first. For each:
-   - Set it to **In progress** and comment "Started by the night run."
+   - Set it to **In progress** and comment "Started by the night run." Make its branch.
    - Build it. Run every check in the repo CLAUDE.md's "Before saying a change is done" that runs here (no Revit,
      no remote database). A check that cannot run here is named in the pull request as untested.
    - A check fails and the fix is not clear: undo this issue's changes, comment what failed, set **Backlog**.
-   - Commit (stage only the paths changed) and push to the work branch.
-4. One pull request work branch → `main` (pr-body skill). First run `/code-review` on the diff against `main` and
-   fix what it finds (a finding left as is gets a line in the description saying why). Open it, or add to the open
-   one; its description says "Closes #<n>" for each issue built. Subscribe to its activity, so failing checks and
+   - Commit (stage only the paths changed) and push to the issue's branch.
+4. One pull request per issue branch → `main` (pr-body skill). First run `/code-review` on the diff against `main`
+   and fix what it finds (a finding left as is gets a line in the description saying why). Its description says
+   "Closes #<n>". Subscribe to its activity, so failing checks and
    review comments are handled. Those issues stay **In progress** until the merge closes them. Never merge and never
    turn on auto-merge.
-5. Update `notes/handoff.md` (Waiting for the user: the pull request to test and merge) and push.
+5. Update `notes/handoff.md` on the work branch (Waiting for the user: the pull requests to test and merge) and
+   push.
 
 ## Final message
 

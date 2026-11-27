@@ -48,8 +48,8 @@ open that already shipped, "done" items whose code changed since).
    - **Open pull requests or issues when the script says UNKNOWN for them:** list them with the GitHub tools
      instead (the repos in `.claude/ground-truth.conf`). The script reads GitHub through `gh api` (REST); on a PC
      it needs the GitHub CLI (`winget install --id GitHub.cli`, then `gh auth login`).
-   - **Expected, not news:** the work branch (`WORK_BRANCH` in `.claude/ground-truth.conf`) ahead of `main` while a
-     round waits for the user to test and merge; leftover `claude/*` or `ccr-*` branches on GitHub from earlier cloud
+   - **Expected, not news:** the work branch (`WORK_BRANCH` in `.claude/ground-truth.conf`) or a feature branch
+     (`WORK_BRANCH-<topic>`) ahead of `main` while its pull request waits to merge; leftover `claude/*` or `ccr-*` branches on GitHub from earlier cloud
      sessions.
    - **Is the work branch up to date with `main`?** If `main` has commits the work branch lacks, merging `main` in
      comes before new work (CLAUDE.md, Git workflow).
