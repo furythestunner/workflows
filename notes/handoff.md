@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-27 (/gemini-image-prompt merged in #84; bug #86 found: dev-test can lag main)
+Updated: 2026-11-27 (/gemini-image-prompt merged in #84 and #85; bug #86 found: dev-test can lag main)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -33,7 +33,6 @@ Updated: 2026-11-27 (/gemini-image-prompt merged in #84; bug #86 found: dev-test
 
 ## Unfinished
 
-- Pull request #85 (`dev-test-changes-note`, one line in CHANGES.md): auto-merge is on; it merges once the checks pass.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.
