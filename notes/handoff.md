@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-24 (merged branches delete themselves: pull request #80 merged without the cloud test, on your word)
+Updated: 2026-11-27 (new skill /gemini-image-prompt, pull request #84, auto-merge on)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -33,6 +33,7 @@ Updated: 2026-11-24 (merged branches delete themselves: pull request #80 merged 
 
 ## Unfinished
 
+- Pull request #84 (`/gemini-image-prompt`, freeze raised to 14 skills): auto-merge is on; it merges once the checks pass.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.

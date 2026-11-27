@@ -7,9 +7,10 @@ cut; a hook or skill with no row never fired. Do not edit by hand.
 | What | Times | First | Last |
 |---|---|---|---|
 | `branch-guard` | 1 | 2026-11-19 | 2026-11-19 |
-| `decision-check` | 5 | 2026-11-22 | 2026-11-22 |
+| `decision-check` | 6 | 2026-11-22 | 2026-11-27 |
 | `fact-check` | 2 | 2026-11-22 | 2026-11-22 |
-| `handoff-check` | 3 | 2026-11-10 | 2026-11-22 |
-| `review-guard` | 1 | 2026-11-10 | 2026-11-10 |
+| `handoff-check` | 4 | 2026-11-10 | 2026-11-27 |
+| `push-check` | 1 | 2026-11-27 | 2026-11-27 |
+| `review-guard` | 2 | 2026-11-10 | 2026-11-27 |
 | `skill anthropic-skills:computer-use` | 1 | 2026-11-22 | 2026-11-22 |
-| `skill code-review` | 4 | 2026-11-10 | 2026-11-22 |
+| `skill code-review` | 6 | 2026-11-10 | 2026-11-27 |
