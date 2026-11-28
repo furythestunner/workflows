@@ -15,11 +15,11 @@ open that already shipped, "done" items whose code changed since).
 
 ## Steps
 
-1. **Ground truth first:** `bash .claude/skills/session-start/ground-truth.sh` (facts past their check-by date,
-   the user's Waiting steps 14 days old or more, repos and their worktrees against the remote, LOCAL ONLY and
-   uncommitted work, branches no worktree holds, open PRs with a CI verdict, open issues by status label, background jobs; what it looks at is in
-   `.claude/ground-truth.conf`). Exit 2 means a probe failed: that section is UNKNOWN, never "clean" or "no
-   issues". An open PR is usually the active thread.
+1. **Ground truth first:** `bash .claude/skills/session-start/ground-truth.sh` (facts past their check-by date, the
+   user's Waiting steps 14 days old or more, repos and their worktrees against the remote, LOCAL ONLY and uncommitted
+   work, branches no worktree holds, open PRs with a CI verdict, open issues by status label, background jobs; what
+   it looks at is in `.claude/ground-truth.conf`). Exit 2 means a probe failed: that section is UNKNOWN, never
+   "clean" or "no issues". An open PR is usually the active thread.
 2. **Read `notes/handoff.md`**: Next, Waiting for the user, Unfinished.
    - If it is missing, or older than the latest activity in git or on GitHub, say so, and build the brief from
      the issues, `questions.md` and the ground truth instead.

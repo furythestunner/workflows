@@ -9,9 +9,9 @@ shows the lines added since that repo's last sync, grouped by their start (`scri
 
 Write what the user notices, not the file names. Lines are never edited later: a correction is a new line.
 
+- 2026-11-28 New: A step of yours that waits 14 days or more shows as OLD in the brief. Claude asks once: do it now, drop it, or put it on hold until a date you name. A step on hold is not marked OLD until that date.
 - 2026-11-28 Fixed: A scheduled run (like the daily janitor) no longer shows its last message twice when other commits landed since the handoff. The handoff reminder now skips scheduled runs.
 - 2026-11-27 Fixed: The session start tests now pass when run from a cloud session. Before, one PC test failed there and blocked every push.
-- 2026-11-28 New: A step of yours that waits 14 days or more shows as OLD in the brief. Claude asks once: do it now, drop it, or put it on hold until a date you name. A step on hold stays out of the brief until that date.
 - 2026-11-27 New: `/gemini-image-prompt` turns a rough image idea (Hungarian is fine) into one English prompt for the free Gemini app, with two ready lines for small fixes. It also turns a Revit or Enscape view into a rendered image prompt.
 - 2026-11-25 Fixed: A scheduled run that pushes a file by itself (like the janitor's question file) no longer shows its last message twice. A repo lists such files in `HANDOFF_IGNORE` in `.claude/ground-truth.conf`.
 - 2026-11-24 New: Merged feature branches delete themselves. On GitHub they go within an hour of the merge. On your PC the session start removes the local copies, so GitHub Desktop's branch list stays short. A branch with unmerged work always stays.
