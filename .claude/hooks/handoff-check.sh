@@ -8,10 +8,14 @@
 #    made the run write its last message twice.
 # 3. Talk: TALK_TURNS (4) messages from the user since the handoff was last committed, and nothing in 2. Asked once
 #    per 4 messages; "nothing to hand off" is a valid answer (Claude stops without text).
+# Never in a scheduled run (nobody reads it, and each stop made the run repeat its last message): a message before
+# Claude's first reply says "Fired by routine", or CLAUDE_CODE_SESSION_ATTENDED is 0. The run's skill says what it
+# writes (/issue-run updates the handoff itself).
 # Unpushed commits are left alone (work in progress). What was already asked is kept in the git folder
 # (handoff-check.state), never committed. Anything it cannot read is skipped.
 input=$(cat)
 case "$input" in *'"stop_hook_active":true'*|*'"stop_hook_active": true'*) exit 0 ;; esac
+[ "${CLAUDE_CODE_SESSION_ATTENDED:-}" = 0 ] && exit 0
 cd "${CLAUDE_PROJECT_DIR:-.}" || exit 0
 WORK_BRANCH="" HANDOFF="notes/handoff.md" USER_NAME="the user" CONTEXT_WARN=300000 HANDOFF_IGNORE=""
 [ -f .claude/ground-truth.conf ] && . .claude/ground-truth.conf
@@ -32,24 +36,29 @@ h=$(git log -1 --format=%H -- "$HANDOFF" 2>/dev/null)
 since=0; [ -n "$h" ] && since=$(git log -1 --format=%ct "$h")
 
 # From the transcript: the context size of the last reply, and the user's messages after the handoff's commit.
-tx="" tokens=0 turns=0
+tx="" tokens=0 turns=0 sched=0
 if command -v node >/dev/null; then
-  read -r tokens turns tx < <(printf '%s' "$input" | SINCE=$since node -e '
+  read -r tokens turns sched tx < <(printf '%s' "$input" | SINCE=$since node -e '
     const fs = require("fs");
     let i; try { i = JSON.parse(fs.readFileSync(0, "utf8") || "{}"); } catch { process.exit(0); }
     const p = i.transcript_path; if (!p) process.exit(0);
     let es; try { es = fs.readFileSync(p, "utf8").split("\n").filter(Boolean).map(l => { try { return JSON.parse(l); } catch { return null; } }).filter(Boolean); } catch { process.exit(0); }
     const typed = e => { const c = e.message?.content; return typeof c === "string" ? c.trim() !== "" :
       Array.isArray(c) && c.some(b => b.type === "image" || (b.type === "text" && b.text.trim())); };
+    const text = e => { const c = e.message?.content; return typeof c === "string" ? c :
+      Array.isArray(c) ? c.filter(b => b.type === "text").map(b => b.text).join(" ") : ""; };
+    const a = es.findIndex(e => e.type === "assistant");  // the prompt: user entries before the first reply
+    const sched = es.slice(0, a < 0 ? es.length : a).some(e => e.type === "user" && text(e).includes("Fired by routine")) ? 1 : 0;
     const since = Number(process.env.SINCE) * 1000;
     const turns = es.filter(e => e.type === "user" && !e.isMeta && !e.isSidechain && typed(e) && Date.parse(e.timestamp) > since).length;
     const last = [...es].reverse().find(e => e.type === "assistant" && !e.isSidechain && e.message?.usage);
     const u = last?.message.usage || {};
     const tokens = (u.input_tokens || 0) + (u.cache_read_input_tokens || 0) + (u.cache_creation_input_tokens || 0);
-    console.log(tokens, turns, p);  // the path last: it may hold spaces' 2>/dev/null)
+    console.log(tokens, turns, sched, p);  // the path last: it may hold spaces' 2>/dev/null)
 fi
 tokens=${tokens:-0} turns=${turns:-0}
 case "$tokens$turns" in *[!0-9]*) tokens=0 turns=0 ;; esac
+[ "$sched" = 1 ] && exit 0
 
 # 1. Context size.
 if [ -n "$tx" ]; then

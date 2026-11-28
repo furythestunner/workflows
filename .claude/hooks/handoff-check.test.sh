@@ -14,7 +14,7 @@ tool() { echo '{"type":"user","message":{"content":[{"type":"tool_result","conte
 ctx() { printf '{"type":"assistant","message":{"usage":{"input_tokens":2,"cache_read_input_tokens":%s,"cache_creation_input_tokens":0}}}\n' "$(($1 - 2))" >>"$tx"; }
 run() { # <expected block|allow> <name>: runs the hook on the current case
   local out got
-  out=$(printf '{"stop_hook_active":%s,"transcript_path":"%s"}' "${active:-false}" "$tx" | CLAUDE_PROJECT_DIR=$r bash "$hook")
+  out=$(printf '{"stop_hook_active":%s,"transcript_path":"%s"}' "${active:-false}" "$tx" | CLAUDE_PROJECT_DIR=$r CLAUDE_CODE_SESSION_ATTENDED=${attended:-1} bash "$hook")
   case $out in *'"block"'*) got=block ;; *) got=allow ;; esac
   if [ "$got" = "$1" ]; then echo "ok    $1: $2"; else echo "FAIL  expected $1, got $got: $2"; fail=1; fi
 }
@@ -35,6 +35,12 @@ t code-not-pushed allow 'c app.sh'
 t handoff-newer allow 'c app.sh; c notes/handoff.md; g push -q'
 t other-branch allow 'g checkout -q -b other; c app.sh; g push -q -u origin other 2>/dev/null'
 t second-stop allow 'c app.sh; g push -q' true
+# A scheduled run: never sent back (each stop made it repeat its last message).
+fired() { printf '{"type":"user","message":{"content":"/janitor\\n<system-reminder>Fired by routine \\"X\\"</system-reminder>"},"timestamp":"2099-01-01T00:00:00Z"}\n' >>"$tx"; }
+t scheduled-run allow 'fired; c app.sh; g push -q'
+t scheduled-run-long allow 'fired; user 6; ctx 400000'
+t routine-message-later block 'user 1; ctx 1000; fired; c app.sh; g push -q'
+attended=0 t not-attended allow 'c app.sh; g push -q'
 # Talk since the handoff.
 t talk-3-messages allow 'user 3; tool'
 t talk-4-messages block 'user 4'
