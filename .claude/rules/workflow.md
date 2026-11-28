@@ -21,6 +21,8 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   the date and one line of why: without the why, a later session reopens it), new open work to a GitHub issue, a
   rule for Claude to this file, a lesson to `notes/lessons.md`. A ruling that replaces an earlier one edits that
   entry ("replaced YYYY-MM-DD: ..."), never a second entry beside it. Do not guess a missing why: ask the user.
+- **Park side ideas:** an idea the user brings up mid-task is not started: Claude opens a Backlog issue (a one-line
+  sketch, its size in rounds), says "Parked as #n" and goes back to the task. "Do it now" starts it (`questions.md` §2).
 - **Issues** are the open work (`BACKLOG.md` only links there; rulings stay in `questions.md`). Each has one `Type:`
   label (Feature, Bug, Config, Docs) and one `Status:` label (Backlog, Ready, In progress). Ready means the user
   approved it. Only the user moves an issue to Ready, on GitHub (Claude gives the link), and closes it, unless the
@@ -32,12 +34,11 @@ and propose a change in the master copy or a fix to CLAUDE.md.
     it back to Ready), or on hold (the title starts with ⏸️ and names the trigger).
 - **Unattended runs** follow `/issue-run` (`check` by day, `build` after midnight): only Ready issues; every
   question goes on the issue; a run never merges and never turns on auto-merge.
-- **Pull requests:** before opening one, run `/code-review` on the diff against `main` (not needed when only
-  `notes/` changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). Right
-  after opening it, subscribe to its activity (auto-fix; needs the Claude GitHub App on the repo) and handle failing
-  checks and review comments until it is merged or closed. A pull request that adds or changes a feature also
-  updates its section in `README.md` (what it does for the user, which files hold it); read that section before
-  searching the code.
+- **Pull requests:** before opening one, run `/code-review` on the diff against `main` (not needed when only `notes/`
+  changed) and fix what it finds (a finding left as is gets a line in the pull request saying why). After opening it,
+  subscribe to its activity (auto-fix; needs the Claude GitHub App) and handle failing checks and review comments
+  until it is merged or closed. A pull request that adds or changes a feature also updates its section in `README.md`
+  (what it does for the user, which files hold it); read it before searching the code.
 - **Merging** (the user's ruling: the chat approval is the merge approval). Work the user approved in the chat, with
   its checks green, merges without asking: turn on auto-merge when opening the pull request (merge commit), or merge
   it once the checks pass if auto-merge cannot be turned on. Only a two-way door (`/pr-body`, "Safe to merge or not"; when
@@ -66,10 +67,9 @@ and propose a change in the master copy or a fix to CLAUDE.md.
   measured rounds; feel ran 4 to 6 times too high. Size from that: a change across many files is several rounds,
   so say how many. Give the user's part separately.
 - **Use the skill that fits** even when not called, and say so in one line ("Used `/plain` for this"). A review on
-  a pull request always goes through `/verify`.
+  a pull request always goes through `/verify`. `/crew` holds its roles; at start, read an open round in `notes/crew/`.
 - **Off switch:** when the session start says WORKFLOW OFF (the user created `.claude/workflow-off` on GitHub), no
   hook runs: say so first, and keep to these rules by hand. Claude never creates that file.
-- **Crew rounds:** `/crew` holds roles, models and steps; at start, read an open round's status in `notes/crew/`.
 - **The setup comes from github.com/furythestunner/workflows** (`.claude/workflow-version` names the commit).
   Project values go only in `.claude/ground-truth.conf`, never in the scripts.
 - **Workflow changes** (hooks, skills, agents, cheat sheets, these rules) and workflow to-dos (issues) belong in the

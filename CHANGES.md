@@ -11,6 +11,7 @@ Write what the user notices, not the file names. Lines are never edited later: a
 
 - 2026-11-28 Fixed: A scheduled run (like the daily janitor) no longer shows its last message twice when other commits landed since the handoff. The handoff reminder now skips scheduled runs.
 - 2026-11-27 Fixed: The session start tests now pass when run from a cloud session. Before, one PC test failed there and blocked every push.
+- 2026-11-28 For you: A new idea you bring up in the middle of a task no longer starts at once. Claude parks it as a Backlog issue with a one-line sketch, says "Parked as #n", and goes back to the task. Say "do it now" to start it anyway.
 - 2026-11-27 New: `/gemini-image-prompt` turns a rough image idea (Hungarian is fine) into one English prompt for the free Gemini app, with two ready lines for small fixes. It also turns a Revit or Enscape view into a rendered image prompt.
 - 2026-11-25 Fixed: A scheduled run that pushes a file by itself (like the janitor's question file) no longer shows its last message twice. A repo lists such files in `HANDOFF_IGNORE` in `.claude/ground-truth.conf`.
 - 2026-11-24 New: Merged feature branches delete themselves. On GitHub they go within an hour of the merge. On your PC the session start removes the local copies, so GitHub Desktop's branch list stays short. A branch with unmerged work always stays.

@@ -127,3 +127,8 @@ Balázs on 2026-10-22, from an r/ClaudeCode post ("runs like a small engineering
   someone edits them, from the user, never guessed. Dropped from the same thread: a local issue database (beads;
   issues stay on GitHub, which Balázs reads on his phone), a hook that writes the handoff before a compaction (the
   stop hook already keeps it current), separate plan, build and review sessions (more clicks, little saving).
+- Park side ideas (Balázs, 2026-11-28, #89): a new idea mid-task becomes a Backlog issue with a one-line sketch and
+  its size, and the task goes on; "do it now" starts it anyway. Why: Balázs wants to see where an idea leads without
+  losing the task at hand (a Reddit thread on rabbit holes). Every side idea is parked, not only big ones: one rule
+  is easier to keep than a size line. Same day, from that thread: Waiting steps 14 days old show as OLD in the brief
+  (#88), since 4 of them had sat 26 to 31 days unseen.
