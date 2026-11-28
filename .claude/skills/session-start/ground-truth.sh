@@ -28,6 +28,8 @@ KEEP_LOCAL=""
 UNITS=1
 ISSUES=1
 FACT_FILES="notes/lessons.md"
+HANDOFF="notes/handoff.md"
+OLD_DAYS=14
 # shellcheck source=/dev/null
 [ -f "$CONF" ] && . "$CONF"
 
@@ -105,6 +107,54 @@ if [ -n "$stale" ]; then
   printf '%s' "$stale"
 else
   echo "== STALE FACTS: none (checked: ${FACT_FILES:-nothing})"
+fi
+
+# The user's own steps (Waiting in the handoff, each "- 🟡 ... (added YYYY-MM-DD ...") that sit for OLD_DAYS or more
+# get skipped brief after brief. Listed here so the brief marks them OLD and asks: do it, drop it, or put it on hold.
+# An item with "hold until YYYY-MM-DD" is left out until that date. The handoff lives on WORK_BRANCH: from another
+# branch (a feature worktree on the PC), read the pushed copy there, since the file in this checkout is main's old one.
+echo
+[[ $OLD_DAYS =~ ^[0-9]+$ ]] || OLD_DAYS=14
+handoff_text=""
+if [ -n "${WORK_BRANCH:-}" ] && [ "$(git -C "$ROOT" branch --show-current 2>/dev/null)" != "$WORK_BRANCH" ]; then
+  handoff_text=$(git -C "$ROOT" show "origin/$WORK_BRANCH:$HANDOFF" 2>/dev/null)
+fi
+[ -z "$handoff_text" ] && [ -f "$ROOT/$HANDOFF" ] && handoff_text=$(cat "$ROOT/$HANDOFF")
+if [ -z "$handoff_text" ]; then
+  echo "== OLD STEPS: UNKNOWN, no handoff at $HANDOFF"
+else
+  old=$(printf '%s\n' "$handoff_text" | awk -v today="$today" -v limit="$OLD_DAYS" '
+    function jdn(d,  y, m, a) {
+      y = substr(d, 1, 4) + 0; m = substr(d, 6, 2) + 0; a = int((14 - m) / 12); y += 4800 - a; m += 12 * a - 3
+      return substr(d, 9, 2) + int((153 * m + 2) / 5) + 365 * y + int(y / 4) - int(y / 100) + int(y / 400) - 32045
+    }
+    function check(item,  t, i, added, bad, age) {
+      if (item == "") return
+      if (!match(item, /added [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/)) return
+      added = substr(item, RSTART + 6, 10)
+      bad = ""
+      if (match(item, /hold until [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/)) {
+        if (substr(item, RSTART + 11, 10) > today) return
+      } else if (index(item, "hold until") > 0) bad = " BAD HOLD DATE, write it as hold until YYYY-MM-DD:"
+      age = jdn(today) - jdn(added)
+      if (age < limit) return
+      t = item; sub(/^-[ \t]*/, "", t); sub(/^🟡[ \t]*/, "", t)
+      if ((i = index(t, " (added")) > 0) t = substr(t, 1, i - 1)
+      printf "  %d days (added %s):%s %s\n", age, added, bad, t
+    }
+    { sub(/\r$/, "") }
+    /^## / { check(item); item = ""; inw = ($0 ~ /^## Waiting/); next }
+    !inw { next }
+    /^- / { check(item); item = $0; next }
+    /^[ \t]+[^ \t]/ && item != "" { t = $0; sub(/^[ \t]+/, "", t); item = item " " t; next }
+    { check(item); item = "" }
+    END { check(item) }')
+  if [ -n "$old" ]; then
+    echo "== OLD STEPS (the user's Waiting steps, $OLD_DAYS days or older: in the brief, mark each OLD and ask: do it, drop it, or hold it until a date)"
+    printf '%s\n' "$old"
+  else
+    echo "== OLD STEPS: none (no Waiting step is $OLD_DAYS days old, or it is on hold)"
+  fi
 fi
 
 root_listed=0
