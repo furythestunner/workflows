@@ -1,6 +1,6 @@
 # Handoff
 
-Updated: 2026-11-27 (/gemini-image-prompt merged in #84 and #85; bug #86 found: dev-test can lag main)
+Updated: 2026-11-28 (#88 old-step reminder and #89 parking rule built: pull requests #90 and #91, auto-merge on)
 
 ## Next (Claude's own work, nothing for you)
 
@@ -33,6 +33,8 @@ Updated: 2026-11-27 (/gemini-image-prompt merged in #84 and #85; bug #86 found: 
 
 ## Unfinished
 
+- workflows: `dev-test-old-steps` (#90) and `dev-test-parking-rule` (#91), auto-merge on, not merged yet. Both
+  add a line at the top of `CHANGES.md`: the second one needs `main` merged in before it can merge.
 - claude-mods `mods-test`: its new work branch, with the branch rule in CLAUDE.md; not on `main` yet.
 - life-admin: set up 2026-11-22 (its pull request #1 merged, work branch `life-test`). The TickTick janitor plan and
   its rulings live there now; continue in a session on that repo.
