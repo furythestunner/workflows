@@ -15,11 +15,11 @@ open that already shipped, "done" items whose code changed since).
 
 ## Steps
 
-1. **Ground truth first:** `bash .claude/skills/session-start/ground-truth.sh` (facts past their check-by date,
-   repos and their worktrees against the remote, LOCAL ONLY and uncommitted work, branches no worktree holds, open
-   PRs with a CI verdict, open issues by status label, background jobs; what it looks at is in
-   `.claude/ground-truth.conf`). Exit 2 means a probe failed: that section is UNKNOWN, never "clean" or "no
-   issues". An open PR is usually the active thread.
+1. **Ground truth first:** `bash .claude/skills/session-start/ground-truth.sh` (facts past their check-by date, the
+   user's Waiting steps 14 days old or more, repos and their worktrees against the remote, LOCAL ONLY and uncommitted
+   work, branches no worktree holds, open PRs with a CI verdict, open issues by status label, background jobs; what
+   it looks at is in `.claude/ground-truth.conf`). Exit 2 means a probe failed: that section is UNKNOWN, never
+   "clean" or "no issues". An open PR is usually the active thread.
 2. **Read `notes/handoff.md`**: Next, Waiting for the user, Unfinished.
    - If it is missing, or older than the latest activity in git or on GitHub, say so, and build the brief from
      the issues, `questions.md` and the ground truth instead.
@@ -43,6 +43,9 @@ open that already shipped, "done" items whose code changed since).
      spot-check that it still holds.
    - **STALE FACTS** → say each one first in the brief, and re-check it before anything relies on it. A fact the user
      confirmed (`verified by <name>, <date>`) wins over one Claude worked out; a re-checked fact gets a new date.
+   - **OLD STEPS** → the user's Waiting steps that are 14 days old or more. Add "OLD, N days" to each one's 🟡
+     line and ask once, in the brief: do it now, drop it, or put it on hold. Drop: remove it from the handoff. Hold:
+     add `hold until YYYY-MM-DD` to the item (the date the user names); the script leaves it out until then.
    - **NEEDS A LABEL** → name the issue in the brief. A missing type, or a missing status on an issue nobody has
      approved, Claude may fix (`Status: Backlog`); anything else waits for the user.
    - **Open pull requests or issues when the script says UNKNOWN for them:** list them with the GitHub tools

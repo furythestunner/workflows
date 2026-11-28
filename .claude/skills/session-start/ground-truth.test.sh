@@ -45,6 +45,7 @@ has "due fact listed" "notes/lessons.md:1 (due 2000-01-01)"
 has "bad tag listed" "BAD TAG (check by next year)"
 hasnot "fresh fact not listed" "fresh fact"
 has "ends complete" "GROUND TRUTH: complete"
+has "no waiting, no old steps" "== OLD STEPS: none"
 # 2. The repo: pushed and clean.
 has "clean checkout" ". [main]: = origin/main"
 # 3. Issues: three statuses in order, an old or missing status asks for a label.
@@ -55,6 +56,29 @@ has "old Blocked shown as backlog" "#4 [bug] Old status (label is still Status: 
 has "old Done needs a label" "#6 [bug] Gone status (status: done)"
 has "no status needs a label" "#5 [bug] No status (status: none)"
 hasnot "no merge mode line" "MERGE MODE"
+
+# 3b. Old steps, on the work branch: a Waiting item 14+ days old is listed with its age; a fresh one, one on hold and
+#     one outside Waiting are not. A hold date in another spelling is called out.
+g checkout -q work
+cp "$r/notes/handoff.md" "$tmp/handoff.keep"
+printf '%s\n' '# Handoff' '' '## Waiting for the user' '' '- 🟡 Ancient step (added 2000-01-01, about 2 min): click it.' \
+  "- 🟡 Fresh step (added $(date +%F)): click." '- 🟡 Parked step (added 2000-01-01, hold until 2999-01-01): later.' \
+  '- 🟡 Wrapped' '  step (added 2000-01-02): yes.' '- 🟡 Typo hold (added 2000-01-01, hold until soon): y.' \
+  '' '## Unfinished' '' '- 🟡 Not waiting (added 2000-01-01).' \
+  >"$r/notes/handoff.md"
+out=$(gt --no-fetch)
+has "old step listed" "(added 2000-01-01): Ancient step"
+has "wrapped old step listed" "(added 2000-01-02): Wrapped step"
+hasnot "fresh step not listed" "Fresh step"
+hasnot "step on hold not listed" "Parked step"
+hasnot "outside Waiting not listed" "Not waiting"
+has "bad hold date called out" "BAD HOLD DATE, write it as hold until YYYY-MM-DD: Typo hold"
+cp "$r/notes/handoff.md" "$tmp/handoff.old"; cp "$tmp/handoff.keep" "$r/notes/handoff.md"; g checkout -q main
+# On another branch the handoff comes from origin's work branch (here without Waiting), not this checkout's copy.
+cp "$tmp/handoff.old" "$r/notes/handoff.md"
+out=$(gt --no-fetch)
+has "other branch reads the work branch's handoff" "== OLD STEPS: none"
+cp "$tmp/handoff.keep" "$r/notes/handoff.md"
 
 # 4. Work that is only here: an unpushed commit and a loose file.
 echo x >"$r/code.sh"; g add -A; g commit -qm code; echo y >"$r/loose.txt"
