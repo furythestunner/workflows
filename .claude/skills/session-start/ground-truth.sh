@@ -28,6 +28,8 @@ KEEP_LOCAL=""
 UNITS=1
 ISSUES=1
 FACT_FILES="notes/lessons.md"
+HANDOFF="notes/handoff.md"
+OLD_DAYS=14
 # shellcheck source=/dev/null
 [ -f "$CONF" ] && . "$CONF"
 
@@ -105,6 +107,42 @@ if [ -n "$stale" ]; then
   printf '%s' "$stale"
 else
   echo "== STALE FACTS: none (checked: ${FACT_FILES:-nothing})"
+fi
+
+# The user's own steps (Waiting in the handoff, each "- 🟡 ... (added YYYY-MM-DD ...") that sit for OLD_DAYS or more
+# get skipped brief after brief. Listed here so the brief marks them OLD and asks: do it, drop it, or put it on hold.
+# An item with "hold until YYYY-MM-DD" is left out until that date.
+echo
+if [ -f "$ROOT/$HANDOFF" ]; then
+  old=$(awk -v today="$today" -v limit="$OLD_DAYS" '
+    function jdn(d,  y, m, a) {
+      y = substr(d, 1, 4) + 0; m = substr(d, 6, 2) + 0; a = int((14 - m) / 12); y += 4800 - a; m += 12 * a - 3
+      return substr(d, 9, 2) + int((153 * m + 2) / 5) + 365 * y + int(y / 4) - int(y / 100) + int(y / 400) - 32045
+    }
+    function check(item,  t, i, added, hold, age) {
+      if (item == "") return
+      if (!match(item, /added [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/)) return
+      added = substr(item, RSTART + 6, 10)
+      if (match(item, /hold until [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]/) && substr(item, RSTART + 11, 10) > today) return
+      age = jdn(today) - jdn(added)
+      if (age < limit) return
+      t = item; sub(/^-[ \t]*/, "", t); sub(/^🟡[ \t]*/, "", t)
+      if ((i = index(t, " (added")) > 0) t = substr(t, 1, i - 1)
+      if (length(t) > 100) t = substr(t, 1, 97) "..."
+      printf "  %d days (added %s): %s\n", age, added, t
+    }
+    /^## / { check(item); item = ""; inw = ($0 ~ /^## Waiting/); next }
+    !inw { next }
+    /^- / { check(item); item = $0; next }
+    /^[ \t]+[^ \t]/ && item != "" { t = $0; sub(/^[ \t]+/, "", t); item = item " " t; next }
+    { check(item); item = "" }
+    END { check(item) }' "$ROOT/$HANDOFF")
+  if [ -n "$old" ]; then
+    echo "== OLD STEPS (the user's Waiting steps, $OLD_DAYS days or older: in the brief, mark each OLD and ask: do it, drop it, or hold it until a date)"
+    printf '%s\n' "$old"
+  else
+    echo "== OLD STEPS: none (no Waiting step is $OLD_DAYS days old, or it is on hold)"
+  fi
 fi
 
 root_listed=0
